@@ -1,4 +1,4 @@
-# CLAUDE.md · Analyst to Architect eBook + agent-ops-playbook
+# CLAUDE.md · From Archivist to Architect eBook + agent-ops-playbook
 
 > Resuming work? Read `SESSION_STATE.md` (repo root) FIRST: the living handoff (active
 > branch, in-flight work, next steps, pending decisions). Refresh it when Jovan says
@@ -28,8 +28,8 @@ definitions the quality gate references).
 
 ## WHAT THIS PROJECT IS
 
-The workstream: finish the **Analyst to Architect** eBook, publish it on Kindle (KDP),
-and sell it well. This repo (`agent-ops-playbook`) is the hands-on companion repo readers
+The workstream: finish the **From Archivist to Architect** eBook (Book 1 of the
+Architect's Blueprint series), publish it on Kindle (KDP), and sell it well. This repo (`agent-ops-playbook`) is the hands-on companion repo readers
 land on from the book, and the working home for the manuscript, marketing assets, and
 KDP metadata.
 

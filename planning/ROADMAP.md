@@ -1,4 +1,4 @@
-# ROADMAP · Analyst to Architect eBook
+# ROADMAP · From Archivist to Architect eBook
 
 Pipeline stages in order. One current stage at a time. Update the status column when a
 stage completes; the definition of done for launch is `LAUNCH_CHECKLIST.md`.

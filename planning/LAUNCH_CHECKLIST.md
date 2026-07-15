@@ -1,4 +1,4 @@
-# LAUNCH_CHECKLIST · Analyst to Architect
+# LAUNCH_CHECKLIST · From Archivist to Architect
 
 Nothing launches until its item is checked. Checking an item requires the evidence named
 on the item. This file is the launch gate referenced by CLAUDE.md rule 11.

@@ -22,3 +22,12 @@ assets/, and planning/. kdp-metadata/ is the source of truth over the KDP dashbo
 Why: One versioned home for everything the listing depends on; dashboard-only edits
 drift and get lost.
 Source: Workstream setup PR (claude/ebook-claude-md).
+
+## D-2 · 2026-07-15 · Book title
+
+Ruling: The book title is "From Archivist to Architect" (Book 1 of the Architect's
+Blueprint series). The earlier analyst-phrased working title is retired; do not use it
+in any doc, metadata, or copy.
+Why: Jovan's ruling; matches the manuscript and series naming in the 2026-05 series
+review.
+Source: Jovan in-session, 2026-07-15.
