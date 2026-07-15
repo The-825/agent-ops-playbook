@@ -82,7 +82,7 @@ skeleton, model-ops docs, and the skills/hooks/settings bundle for the agent har
 ## What was deliberately left out
 
 No domain content and no filled instances. The private repos this kit was extracted from
-contain schemas, reports, student data handling, staff references, and operational state; none
+contain schemas, reports, regulated-domain record handling, staff references, and operational state; none
 of that ships, in whole or in scrubbed part. Templates here are authored fresh from the
 documented skeletons rather than scrubbed from filled instances, because scrubbing risks
 residue and fresh authoring does not. Where an incident makes a rule land, it appears as an
