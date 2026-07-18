@@ -31,3 +31,12 @@ in any doc, metadata, or copy.
 Why: Jovan's ruling; matches the manuscript and series naming in the 2026-05 series
 review.
 Source: Jovan in-session, 2026-07-15.
+
+## D-3 · 2026-07-18 · Repo split: public companion vs private book repo
+
+Ruling: Repo split. 8two5/agent-ops-playbook becomes the public companion holding only
+shareable artifacts (skills, templates, checklists, playbook pages); the manuscript, KDP
+metadata, and launch planning move to a private repo, proposed
+8two5/archivist-to-architect-book.
+Why: KDP Select exclusivity and sales mean the book content never sits public.
+Source: Jovan's "yes split" approval, session 2026-07-18.

@@ -1,16 +1,11 @@
-# ROADMAP · From Archivist to Architect eBook
+# ROADMAP · agent-ops-playbook (public companion repo)
 
-Pipeline stages in order. One current stage at a time. Update the status column when a
-stage completes; the definition of done for launch is `LAUNCH_CHECKLIST.md`.
+The book pipeline (manuscript, formatting, cover, metadata, launch) lives in the private
+book repo. This roadmap covers only the public companion.
 
-| # | Stage | Status | Notes |
+| # | Item | Status | Notes |
 |---|---|---|---|
-| 1 | Manuscript | **CURRENT** | Draft exists outside this repo; import into `manuscript/` is the next move. Single-edition decision pending (see DECISIONS ledger). |
-| 2 | Edit passes | Not started | Per-chapter quality gate: humanizer + fact-checker + reading-level check (CLAUDE.md rule 7). |
-| 3 | Formatting (KDP/EPUB) | Not started | Validate in Kindle Previewer before calling final. |
-| 4 | Cover | Not started | Final files at KDP specs into `assets/`. |
-| 5 | Metadata | Not started | Title, subtitle, keywords, categories into `kdp-metadata/`; research documented first. |
-| 6 | Launch | Not started | Gated entirely by `LAUNCH_CHECKLIST.md`. Publish needs Jovan's recorded go-ahead. |
-| 7 | Marketing | Not started | Launch essay, LinkedIn posts, landing page, AMS campaigns. |
-| 8 | Reviews | Not started | ARC-driven, Amazon-TOS-compliant only. |
-| 9 | Iterate | Not started | Keyword pruning, description A/B, price step per logged strategy. |
+| 1 | Repo split: strip book-side content, re-scope docs to the companion mission | **CURRENT** | This branch (`claude/companion-split`). Ruled in DECISIONS D-3. |
+| 2 | Populate `skills/`, `templates/`, `checklists/` | In progress | Content lands as chapters finish. A sibling session is building the content components on a `claude/playbook-components` branch. |
+| 3 | Add the Amazon link to README.md | Blocked until launch | Placeholder is marked in the README; fill it the day the listing goes live. |
+| 4 | Post-launch upkeep | Not started | Keep artifacts in sync with the published book; fix issues readers open. |
