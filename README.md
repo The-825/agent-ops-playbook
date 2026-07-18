@@ -1,21 +1,32 @@
 # agent-ops-playbook
 
-An agent-engineering field kit, extracted from two years of running Claude Code against a
-production system that handles regulated PII for real users. Patterns, not product: the
-runnable CI enforcement kit, the templates, and the hard-won gotchas, with every domain
-identifier removed.
+The hands-on companion repo for **From Archivist to Architect**, Book 1 of the
+Architect's Blueprint series.
 
-The premise behind all of it: a rule that lives only in a doc gets violated silently; a rule
-with a guard, a gate, or a template becomes structurally hard to break. This repo ships the
-guards, gates, and templates.
+The book is for analysts who are done being the person who just pulls the data. It walks
+the path from report-writer to data and solution architect: how to design systems instead
+of one-off queries, how to put AI agents to work on real operations, and how to build the
+habits that make the work hold up after you ship it.
+
+This repo is where the book's ideas become files you can actually use. No theory rehash,
+no summaries of chapters you already read. Just the working artifacts, extracted from two
+years of running Claude Code against a production system that handles regulated PII for
+real users. Patterns, not product: the runnable CI enforcement kit, the templates, and
+the hard-won gotchas, with every domain identifier removed.
+
+The premise behind all of it: a rule that lives only in a doc gets violated silently; a
+rule with a guard, a gate, or a template becomes structurally hard to break. This repo
+ships the guards, gates, and templates.
 
 ## Who this is for
 
-- Teams running coding agents (Claude Code or similar) against a codebase that matters, where
-  "the agent moved fast" is not an acceptable root cause.
+- Analysts leveling up to data and solution architects, following the book chapter by
+  chapter.
+- Teams running coding agents (Claude Code or similar) against a codebase that matters,
+  where "the agent moved fast" is not an acceptable root cause.
 - Anyone rebuilding a legacy system and determined not to rebuild its debt along with it.
-- Solo operators who want production discipline without a platform team: everything here is
-  stdlib Python, bash, and GitHub Actions.
+- Solo operators who want production discipline without a platform team: everything here
+  is stdlib Python, bash, and GitHub Actions.
 
 ## The three over-arching principles
 
@@ -28,7 +39,16 @@ guards, gates, and templates.
    guards, then runtime tests, then data assertions, then unit tests. Each layer runs cheaply
    on every PR forever.
 
-## Map of the kit
+## Map of the repo
+
+Book-keyed artifact folders (content lands as chapters finish):
+
+- **`skills/`** · reusable AI skill definitions you can drop into your own agent setup
+- **`templates/`** · copy-and-adapt templates for the documents and workflows the book covers
+- **`checklists/`** · the operational checklists, ready to run
+
+Everything is keyed to the book's chapters, so when a chapter says "the template for this
+is in the repo," this is the repo.
 
 What has landed so far:
 
@@ -79,6 +99,10 @@ skeleton, model-ops docs, and the skills/hooks/settings bundle for the agent har
 3. Lay the floor first: guards, tests, migration runner, CI gates. Features come after, and
    compose the patterns.
 
+## Get the book
+
+> **[Amazon link goes here at launch]** <!-- PLACEHOLDER: fill with the Amazon listing URL at launch -->
+
 ## What was deliberately left out
 
 No domain content and no filled instances. The private repos this kit was extracted from
@@ -88,10 +112,13 @@ documented skeletons rather than scrubbed from filled instances, because scrubbi
 residue and fresh authoring does not. Where an incident makes a rule land, it appears as an
 anonymized war story in a clearly labeled callout.
 
-## Provenance and credits
+## Who made this
 
-825 Consulting. Extracted from private production repos; identifiers removed.
+Jovan Smith, 825 Consulting. I built and ran these systems as
+an operator inside a real program before writing about them. The material here is what I
+actually use, cleaned up so you can use it too.
 
-## License
+## Using this repo
 
-MIT. See [LICENSE](LICENSE).
+Everything here is MIT licensed. See [LICENSE](LICENSE). Take it, adapt it, ship it. If
+something is unclear or broken, open an issue.
