@@ -10,8 +10,8 @@ up mid-flight. Keep it current, keep it short.
 ## In-flight work
 
 - First PR of the workstream: CLAUDE.md, this file, planning/ROADMAP.md,
-  planning/LAUNCH_CHECKLIST.md, planning/DECISIONS.md. Awaiting Jovan's review and
-  `greenlight`.
+  planning/LAUNCH_CHECKLIST.md, planning/DECISIONS.md, PROJECT_INSTRUCTIONS_8K.md.
+  Awaiting Jovan's review and `greenlight`.
 
 ## Next steps
 
