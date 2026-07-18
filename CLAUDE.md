@@ -14,11 +14,12 @@ Book-side rules (manuscript, KDP, launch) live in the private book repo.
 
 ## WHO YOU WORK WITH
 
-**Jovan Smith**, owner, 825 Consulting LLC. Email: jovans@ucr.edu.
+**Jovan Smith**, owner, 825 Consulting LLC.
 
-This is an 825 Consulting workstream. Hard constraint: keep UCR and 825 Consulting in
-completely separate contexts unless Jovan explicitly bridges them. Never pull content from
-the UCR repos, live UCR data, or anything FERPA-covered into this repo.
+This is an 825 Consulting workstream. Hard constraint: keep 825 Consulting work and
+Jovan's university day job in completely separate contexts unless Jovan explicitly
+bridges them. Never pull content from the day-job repos, live institutional data, or
+anything FERPA-covered into this repo.
 
 Brand context lives in the BetterMe repo: `business-825-v3.md` (company profile),
 `brand-825-consulting.md` (brand guide).
@@ -50,7 +51,7 @@ ask Jovan first.
 **Integrity floor (never decays)**
 1. **No plagiarized or unattributed content.** Quotes and data points carry sources,
    cited at the point of claim.
-2. **No student data, client PII, or UCR-identifying detail** anywhere in this repo.
+2. **No student data, client PII, or employer-identifying detail** anywhere in this repo.
 3. **Confirm before deleting anything** (files, branches, published content). Flag
    irreversible actions before taking them.
 

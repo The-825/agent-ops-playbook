@@ -5,7 +5,7 @@ up mid-flight. Keep it current, keep it short.
 
 ## Active branch
 
-`claude/companion-split` (pushed to the fork `ucr-mrjovansmith/agent-ops-playbook`;
+`claude/companion-split` (pushed to the private fork;
 Jovan opens the cross-account PR into `8two5/agent-ops-playbook` himself from the
 compare link, because the Claude GitHub App is not installed on the 8two5 account).
 
@@ -30,12 +30,12 @@ compare link, because the Claude GitHub App is not installed on the 8two5 accoun
 
 - Confirm the private repo name (`archivist-to-architect-book` is the proposal).
 - Whether to install the Claude GitHub App on the 8two5 account (until then, all writes
-  route through the `ucr-mrjovansmith` fork).
+  route through the private fork).
 
 ## Coordinate Closet (irreplaceable exact values)
 
 - Public repo: 8two5/agent-ops-playbook, default branch `main`.
-- Write path: push branches to the fork `ucr-mrjovansmith/agent-ops-playbook`; direct
+- Write path: push branches to the private fork; direct
   writes to 8two5 return 403 (no app install).
 - Private book repo (pending creation): proposed 8two5/archivist-to-architect-book.
 - Brand guide: BetterMe repo, `brand-825-consulting.md`.
