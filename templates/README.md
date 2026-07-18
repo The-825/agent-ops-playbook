@@ -1,6 +1,14 @@
-# templates/
+# Templates
 
-Copy-and-adapt templates for the documents and workflows the book covers (decision
-ledgers, handoff docs, operating rules, and the rest), keyed to the book's chapters.
+Copy-paste starting points for the working files described in From Archivist to Architect, keyed to the book's chapters. To adopt one: copy the file, fill the angle-bracket placeholders, delete what does not apply, and commit it to your repo root or docs directory. Each template's intro explains the failure it prevents, so read that before deciding whether you need it.
 
-Content lands here as chapters finish. Empty for now; check back after launch.
+| File | What it is | Book chapter |
+|---|---|---|
+| [CLAUDE_TEMPLATE.md](CLAUDE_TEMPLATE.md) | Starter rules file for any agent-assisted repo: operating tier, binding rules, PR conventions, known-issues ledger | Chapter 10 |
+| [SESSION_STATE_TEMPLATE.md](SESSION_STATE_TEMPLATE.md) | The living handoff file, refreshed on "checkpoint", so a new session picks up mid-flight | Chapter 10 |
+| [DECISIONS_TEMPLATE.md](DECISIONS_TEMPLATE.md) | Append-only decisions ledger: durable rulings captured the turn they land | Chapter 6 |
+| [CONCLUSIONS_TEMPLATE.md](CONCLUSIONS_TEMPLATE.md) | JSONL store of settled facts, keyed by path, read at session start so knowledge survives sessions | Chapter 10 |
+| [PARITY_TEMPLATE.md](PARITY_TEMPLATE.md) | Zero-regression parity inventory for a rebuild or migration, bucketed and checked with evidence | Chapter 1 |
+| [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | One-page architecture decision records, framed for data platforms, with a filled example | Chapter 2 |
+
+The templates reference each other (the rules file points at the state file, the ledger, and the conclusions store). They work fine alone, but they were designed as a set.
