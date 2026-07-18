@@ -5,35 +5,38 @@ up mid-flight. Keep it current, keep it short.
 
 ## Active branch
 
-`claude/ebook-claude-md` (draft PR open: project instructions + planning stubs).
+`claude/companion-split` (pushed to the fork `ucr-mrjovansmith/agent-ops-playbook`;
+Jovan opens the cross-account PR into `8two5/agent-ops-playbook` himself from the
+compare link, because the Claude GitHub App is not installed on the 8two5 account).
 
 ## In-flight work
 
-- First PR of the workstream: CLAUDE.md, this file, planning/ROADMAP.md,
-  planning/LAUNCH_CHECKLIST.md, planning/DECISIONS.md, PROJECT_INSTRUCTIONS_8K.md.
-  Awaiting Jovan's review and `greenlight`.
+- Repo split in progress (DECISIONS D-3): this repo becomes the public companion
+  (skills, templates, checklists, playbook pages only). Book-side content removed:
+  planning/LAUNCH_CHECKLIST.md and PROJECT_INSTRUCTIONS_8K.md deleted here, they move
+  to the private book repo.
+- Stub indexes created for `skills/`, `templates/`, `checklists/`. A sibling session is
+  building the actual content components on a `claude/playbook-components` branch.
 
 ## Next steps
 
-1. Jovan reviews the draft PR, marks ready, greenlights.
-2. Decide the manuscript import path: which edition file becomes `manuscript/` content
-   (the 2026-05 review recommends the Consulting Press edition as the single SKU).
-3. Stand up `kdp-metadata/` from the existing KDP metadata package, applying the fixes
-   flagged in BetterMe `ebook-series-review.md` section 1 (royalty-tier pricing, bundle
-   language removal, KENPC math).
-4. Update README.md with the companion-repo pitch.
+1. Jovan creates the private book repo (proposed `8two5/archivist-to-architect-book`)
+   and moves the manuscript, KDP metadata, and launch planning there.
+2. Jovan opens and merges the cross-account PR for this split.
+3. Merge in the playbook components from the sibling branch as they land.
+4. At launch: fill the Amazon link placeholder in README.md.
 
 ## Pending decisions (need Jovan)
 
-- Confirm the single-edition call (Consulting Press edition to KDP, trade foreword
-  repurposed as launch essay). Log in planning/DECISIONS.md when ruled.
-- Book 1 launch price and the review-threshold price step. Log when ruled.
-- Title/subtitle final wording (subtitle trim suggested in the review, section 4.4).
+- Confirm the private repo name (`archivist-to-architect-book` is the proposal).
+- Whether to install the Claude GitHub App on the 8two5 account (until then, all writes
+  route through the `ucr-mrjovansmith` fork).
 
 ## Coordinate Closet (irreplaceable exact values)
 
-- Repo: 8two5/agent-ops-playbook, default branch `main`.
-- Strategy baseline doc: BetterMe repo, `ebook-series-review.md` (2026-05-18 review).
+- Public repo: 8two5/agent-ops-playbook, default branch `main`.
+- Write path: push branches to the fork `ucr-mrjovansmith/agent-ops-playbook`; direct
+  writes to 8two5 return 403 (no app install).
+- Private book repo (pending creation): proposed 8two5/archivist-to-architect-book.
 - Brand guide: BetterMe repo, `brand-825-consulting.md`.
-- Quality-gate skill definitions: BetterMe repo, `skills-v2.md` (humanizer, fact-checker).
-- KDP 70% royalty cap: $9.99 (as of the 2026-05 review; re-verify before pricing).
+- Split ruling: planning/DECISIONS.md D-3 (2026-07-18).
