@@ -21,7 +21,7 @@ Ruling: The eBook lives in this repo under manuscript/, marketing/, kdp-metadata
 assets/, and planning/. kdp-metadata/ is the source of truth over the KDP dashboard.
 Why: One versioned home for everything the listing depends on; dashboard-only edits
 drift and get lost.
-Source: Workstream setup PR (claude/ebook-claude-md).
+Source: Workstream setup PR.
 
 ## D-2 · 2026-07-15 · Book title
 
@@ -36,7 +36,6 @@ Source: Jovan in-session, 2026-07-15.
 
 Ruling: Repo split. 8two5/agent-ops-playbook becomes the public companion holding only
 shareable artifacts (skills, templates, checklists, playbook pages); the manuscript, KDP
-metadata, and launch planning move to a private repo, proposed
-8two5/archivist-to-architect-book.
+metadata, and launch planning move to a private book repo.
 Why: KDP Select exclusivity and sales mean the book content never sits public.
 Source: Jovan's "yes split" approval, session 2026-07-18.

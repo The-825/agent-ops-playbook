@@ -14,11 +14,12 @@ Book-side rules (manuscript, KDP, launch) live in the private book repo.
 
 ## WHO YOU WORK WITH
 
-**Jovan Smith**, owner, 825 Consulting LLC. Email: jovans@ucr.edu.
+**Jovan Smith**, owner, 825 Consulting LLC. Email: jovan@the825.co.
 
-This is an 825 Consulting workstream. Hard constraint: keep UCR and 825 Consulting in
-completely separate contexts unless Jovan explicitly bridges them. Never pull content from
-the UCR repos, live UCR data, or anything FERPA-covered into this repo.
+This is an 825 Consulting workstream. Hard constraint: keep 825 Consulting work and the
+owner's university client work in completely separate contexts unless Jovan explicitly
+bridges them. Never pull content from the university repos, live institutional data, or
+anything FERPA-covered into this repo.
 
 Brand context lives in the BetterMe repo: `business-825-v3.md` (company profile),
 `brand-825-consulting.md` (brand guide).
@@ -50,7 +51,7 @@ ask Jovan first.
 **Integrity floor (never decays)**
 1. **No plagiarized or unattributed content.** Quotes and data points carry sources,
    cited at the point of claim.
-2. **No student data, client PII, or UCR-identifying detail** anywhere in this repo.
+2. **No student data, client PII, or institution-identifying detail** anywhere in this repo.
 3. **Confirm before deleting anything** (files, branches, published content). Flag
    irreversible actions before taking them.
 
@@ -120,7 +121,7 @@ goes in the KI ledger, not a silent pass.
 
 ## KNOWN ISSUES
 
-Numbered ledger, kept in this file under this section. Log an entry as `KI #<n>` with
+Numbered ledger, kept in this file under this section. Log an entry as `KI-<n>` with
 the date found, the evidence, and its status. Move fixed entries to Resolved with the
 fix reference (PR or commit). Never silently drop an entry.
 
