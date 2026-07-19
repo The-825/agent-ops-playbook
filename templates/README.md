@@ -6,7 +6,7 @@ Copy-paste starting points for the working files described in From Archivist to 
 |---|---|---|
 | [CLAUDE_TEMPLATE.md](CLAUDE_TEMPLATE.md) | Starter rules file for any agent-assisted repo: operating tier, binding rules, PR conventions, known-issues ledger | Chapter 10 |
 | [SESSION_STATE_TEMPLATE.md](SESSION_STATE_TEMPLATE.md) | The living handoff file, refreshed on "checkpoint", so a new session picks up mid-flight | Chapter 10 |
-| [DECISIONS_TEMPLATE.md](DECISIONS_TEMPLATE.md) | Append-only decisions ledger: durable rulings captured the turn they land | Chapter 6 |
+| [DECISIONS_TEMPLATE.md](DECISIONS_TEMPLATE.md) | Append-only decisions ledger: durable rulings captured the turn they land, plus the rebuild variant pairing each day-one decision with the failure it prevents | Chapter 6 |
 | [CONCLUSIONS_TEMPLATE.md](CONCLUSIONS_TEMPLATE.md) | JSONL store of settled facts, keyed by path, read at session start so knowledge survives sessions | Chapter 10 |
 | [PARITY_TEMPLATE.md](PARITY_TEMPLATE.md) | Zero-regression parity inventory for a rebuild or migration, bucketed and checked with evidence | Chapter 1 |
 | [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | One-page architecture decision records, framed for data platforms, with a filled example | Chapter 2 |

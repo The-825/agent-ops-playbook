@@ -68,11 +68,13 @@ What has landed so far:
   - `workflows/`: the CI floor as one workflow with two required-check jobs (`checks.yml`), a
     fail-closed automerge for agent PRs (`automerge.yml`), and `AUTOMERGE_GOTCHAS.md`, the six
     non-obvious failure modes a naive automerge hits, each one paid for in production.
-- **`docs/rebuild-method/`**: templates from the legacy-rebuild methodology.
-  - `DECISIONS_TEMPLATE.md`: the decision ledger. Every day-one rule paired with the specific
-    past failure it prevents, so abstract rules earn their place.
-  - `PARITY_TEMPLATE.md`: the zero-regression parity contract. Every old-surface capability is
-    a tracked row across eight buckets; nothing ships until its row is checked.
+- **`templates/`** also carries the rebuild-method pair:
+  - `templates/DECISIONS_TEMPLATE.md`: the decisions ledger, plus the rebuild variant where
+    every day-one rule is paired with the specific past failure it prevents, so abstract
+    rules earn their place.
+  - `templates/PARITY_TEMPLATE.md`: the zero-regression parity contract. Every old-surface
+    capability is a tracked row, bucketed and checked with evidence; nothing ships until its
+    row is checked.
 
 Upcoming waves will add the rest of the playbook: the founding-doc templates (operating rules,
 phased build order), session-memory and handoff templates, the in-process test harness
@@ -92,10 +94,11 @@ skeleton, model-ops docs, and the skills/hooks/settings bundle for the agent har
 
 **Start a disciplined rebuild.**
 
-1. Copy `DECISIONS_TEMPLATE.md` and fill the right column from your own retrospective. If you
-   cannot name the failure a decision prevents, cut the decision.
-2. Copy `PARITY_TEMPLATE.md` and enumerate the old surface across all eight buckets before
-   writing code.
+1. Copy `templates/DECISIONS_TEMPLATE.md` and fill the right column of the rebuild tables
+   from your own retrospective. If you cannot name the failure a decision prevents, cut the
+   decision.
+2. Copy `templates/PARITY_TEMPLATE.md` and enumerate the old surface across all eight
+   buckets before writing code.
 3. Lay the floor first: guards, tests, migration runner, CI gates. Features come after, and
    compose the patterns.
 
