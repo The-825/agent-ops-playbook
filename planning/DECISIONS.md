@@ -21,7 +21,8 @@ Ruling: The eBook lives in this repo under manuscript/, marketing/, kdp-metadata
 assets/, and planning/. kdp-metadata/ is the source of truth over the KDP dashboard.
 Why: One versioned home for everything the listing depends on; dashboard-only edits
 drift and get lost.
-Source: Workstream setup PR (claude/ebook-claude-md).
+Source: Workstream setup PR, 2026-07-15 (the eBook workstream has since moved to the
+private book repo, see D-3).
 
 ## D-2 · 2026-07-15 · Book title
 
