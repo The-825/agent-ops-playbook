@@ -14,7 +14,8 @@ Copy-paste starting points for the working files an agent-assisted repo needs. T
 | [AGENT_PREAMBLE_TEMPLATE.md](AGENT_PREAMBLE_TEMPLATE.md) | Numbered binding blocks that every skill, command, and spawned-agent prompt references instead of restating, so rule wording never forks |
 | [INCIDENT_TEMPLATE.md](INCIDENT_TEMPLATE.md) | Incident postmortem format whose load-bearing section is misdiagnosis lessons: where the diagnosis went wrong and what check would have caught it sooner |
 | [MECHANICAL_FACTS_TEMPLATE.md](MECHANICAL_FACTS_TEMPLATE.md) | One regenerated home for rot-prone counts, so prose points at the numbers instead of restating figures that drift |
-| [commands/](commands/README.md) | Nineteen copy-paste slash-command definitions for Claude Code, each a markdown file with frontmatter; its README carries the install steps and the full table |
+| [AUTHORITY_LEDGER_TEMPLATE.md](AUTHORITY_LEDGER_TEMPLATE.md) | Append-only ledger of standing authority grants (who may do what, until when), paired with [authority_ledger.jsonl](authority_ledger.jsonl), a ready-to-copy starter store, and the CI citation guard; see [docs/authority-ledger.md](../docs/authority-ledger.md) |
+| [commands/](commands/README.md) | Twenty copy-paste slash-command definitions for Claude Code, each a markdown file with frontmatter; its README carries the install steps and the full table |
 | [test-harness/](test-harness/README.md) | In-process test harness skeleton: boot the real app, fake only the edges, prove route behavior on every PR in seconds |
 | [ledger-tools/](ledger-tools/README.md) | Tools that keep a long-lived conclusions ledger trustworthy: provenance tiers, a staleness auditor, the capture nudge, union-merge hygiene |
 

@@ -6,8 +6,9 @@
 # workflow has at least ten non-obvious failure modes.
 #
 # Squash-merges an agent PR once EVERY required check is green on the PR head
-# SHA. Stands in for GitHub's paid auto-merge feature on Free-plan private
-# repos. Gated hard on draft == false, so a PR opened as a DRAFT never
+# SHA and, with REQUIRE_LABEL on (the shipped default), a human has applied
+# APPROVAL_LABEL. Stands in for GitHub's paid auto-merge feature on Free-plan
+# private repos. Gated hard on draft == false, so a PR opened as a DRAFT never
 # self-merges. Only head branches matching ELIGIBLE_PREFIXES are considered.
 #
 # Required checks (single source of truth: REQUIRED_CHECKS below):
@@ -22,19 +23,21 @@
 # workflow_run conclusion.
 #
 # Two trigger paths, one gate. The workflow_run trigger fires when the checks
-# workflow completes. The pull_request(ready_for_review) trigger re-evaluates
-# a PR when a draft is flipped to ready: that transition fires no new checks
-# run, so without it a PR whose checks went green DURING the draft window
-# would sit unmerged until a hand-merge. Both paths run the SAME considerPR()
-# gate.
+# workflow completes. The pull_request(ready_for_review, labeled) trigger
+# re-evaluates a PR when a draft is flipped to ready or a label is applied:
+# neither transition fires a new checks run, so without them a PR whose
+# checks went green DURING the draft window, or before the operator applied
+# the approval label, would sit unmerged until a hand-merge. All paths run
+# the SAME considerPR() gate.
 #
-# Optional hardening (see AUTOMERGE_GOTCHAS.md, "The operator-label gate"):
-# require an operator-applied label before merging, and add a
-# pull_request(labeled) trigger so applying the label to an already-green PR
-# merges it without waiting for another checks run.
+# The operator-label gate ships ON (see AUTOMERGE_GOTCHAS.md, "The
+# operator-label gate"): with REQUIRE_LABEL true, a PR merges only after an
+# operator applies APPROVAL_LABEL, read from a fresh API fetch so a stale
+# event payload cannot vouch for it. Set REQUIRE_LABEL false for hands-free
+# merges on green checks alone once trust is earned.
 #
-# When this single file stops being enough (an operator label, protected
-# paths, content-policy lanes), graduate to the tested decision script:
+# When this single file stops being enough (protected paths, per-lane label
+# rules, content-policy lanes), graduate to the tested decision script:
 # decision_script.py in this directory, plus AUTOMERGE_GOTCHAS.md "The
 # second generation: extract the decision, then graduate trust".
 name: Auto-merge agent PRs
@@ -44,7 +47,7 @@ on:
     workflows: ["Required checks"]   # EDIT ME: must match checks.yml `name:`
     types: [completed]
   pull_request:
-    types: [ready_for_review]
+    types: [ready_for_review, labeled]
 
 # An explicit permissions block zeroes every unlisted scope. All three scopes
 # below are required; see AUTOMERGE_GOTCHAS.md, gotchas 1 and 5.
@@ -69,6 +72,13 @@ jobs:
 
             // EDIT ME: your autonomous-agent branch namespaces.
             const ELIGIBLE_PREFIXES = ["agent/"];
+
+            // EDIT ME: the operator-label gate (AUTOMERGE_GOTCHAS.md, "The
+            // operator-label gate"). With REQUIRE_LABEL true, a PR merges
+            // only when a human has applied APPROVAL_LABEL on top of green
+            // checks. Set false for hands-free merges on green alone.
+            const REQUIRE_LABEL = true;
+            const APPROVAL_LABEL = "greenlight";
 
             const eligible = (ref) =>
               ELIGIBLE_PREFIXES.some((p) => ref.startsWith(p));
@@ -100,9 +110,11 @@ jobs:
               return true;
             };
 
-            // Apply the same guards (non-draft, open, agent branch, all
-            // required checks green on head SHA) and merge. Shared by both
-            // event paths so the gate stays identical.
+            // Apply the same guards (non-draft, open, agent branch, operator
+            // label when required, all required checks green on head SHA)
+            // and merge. Shared by both event paths so the gate stays
+            // identical. Labels are read from this fresh pulls.get response,
+            // never from the triggering event's frozen payload.
             const considerPR = async (number) => {
               const { data: pr } = await github.rest.pulls.get({
                 owner: context.repo.owner,
@@ -120,6 +132,16 @@ jobs:
               if (!eligible(pr.head.ref)) {
                 core.info(`PR #${pr.number} head ${pr.head.ref} not an agent branch; skipping.`);
                 return;
+              }
+              if (REQUIRE_LABEL) {
+                // A missing labels array counts as unlabeled: fail closed.
+                const labels = (pr.labels || []).map((l) => l.name);
+                if (!labels.includes(APPROVAL_LABEL)) {
+                  core.info(
+                    `PR #${pr.number} lacks the "${APPROVAL_LABEL}" label; skipping.`
+                  );
+                  return;
+                }
               }
               if (!(await requiredChecksGreen(pr.head.sha))) {
                 core.info(

@@ -131,14 +131,16 @@ The earlier variant required an operator-applied label (its convention: a "green
 on PRs from the primary agent's branch namespace before they could merge to the production
 branch. Checks-green alone was not enough; a human explicitly released each merge, and the gate
 failed closed (a PR with no labels never merged). Other, lower-stakes agent namespaces merged
-on green checks alone. The version shipped here drops the label gate for a faster hands-free
-flow.
+on green checks alone. The file shipped here has that gate on by default: `REQUIRE_LABEL`
+and `APPROVAL_LABEL` sit in automerge.yml's EDIT ME block, the label is read from a fresh API
+fetch inside the gate (never from the triggering event's frozen payload, so a stale payload
+cannot vouch for it), a missing labels array counts as unlabeled (fail closed), and
+`pull_request: [labeled]` is wired as a trigger so applying the label to an already-green PR
+merges it without waiting for another checks run.
 
-This is a genuine trade-off, not a recommendation: the label gate buys a human in the loop
-before production at the cost of one manual action per PR. If you adopt it, add
-`pull_request: [labeled]` as a third trigger running the identical gate, so applying the label
-to an already-green PR merges it without waiting for another checks run, and treat a missing
-labels array as unlabeled (fail closed).
+The label gate buys a human in the loop before production at the cost of one manual action
+per PR. Setting `REQUIRE_LABEL = false` restores the hands-free flow on green checks alone;
+do that deliberately, once trust is earned, not by default.
 
 ### The GITHUB_TOKEN recursion-guard trap
 

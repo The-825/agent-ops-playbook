@@ -121,7 +121,10 @@ becoming the bottleneck.
 
 **The afternoon version.** Start with the convention alone: the agent never merges; the
 operator's label is the merge instruction. When you want the automated version, this kit
-ships one ([ci-kit/workflows/automerge.yml](../ci-kit/workflows/automerge.yml)), and
+ships it label-gated by default
+([ci-kit/workflows/automerge.yml](../ci-kit/workflows/automerge.yml), `REQUIRE_LABEL`);
+relaxing that flag is the documented graduation step, and the self-protecting machinery
+for merge-gate edits lives in the tested decision script in the same directory.
 [AUTOMERGE_GOTCHAS.md](../ci-kit/workflows/AUTOMERGE_GOTCHAS.md) documents the ten
 non-obvious ways a naive automerge fails, each one paid for in production.
 
@@ -233,7 +236,7 @@ fixture) becomes a guard that fails the build. The guard is the rule; the senten
 the spine is its documentation. Two disciplines keep guards honest: each guard is proven
 to fail against a deliberately-bad fixture, because a guard that never fails is worse
 than no guard, and guards do not short-circuit, so an author sees every violation at
-once. The [ci-kit](../ci-kit/) in this repo is a working set of six.
+once. The [ci-kit](../ci-kit/) in this repo is a working set of seven.
 
 **The merge gate keeps a human on the button.** Whatever the guards miss, a person sees
 before it lands, and the fail-closed default means the outcome of anything ambiguous is

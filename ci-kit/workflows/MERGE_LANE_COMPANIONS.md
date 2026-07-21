@@ -2,11 +2,10 @@
 
 > Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
-The automerge template in this directory merges agent PRs on green checks alone. The
-optional hardening described in `AUTOMERGE_GOTCHAS.md` ("The operator-label gate") adds a
-human-held approval label: checks green is necessary, and an operator-applied label is the
-explicit merge instruction. That gate buys a human in the loop at the cost of one manual
-action per PR.
+The automerge template in this directory ships label-gated by default (`REQUIRE_LABEL` in
+`automerge.yml`; see `AUTOMERGE_GOTCHAS.md`, "The operator-label gate"): checks green is
+necessary, and an operator-applied approval label is the explicit merge instruction. That
+gate buys a human in the loop at the cost of one manual action per PR.
 
 The three workflows and one template in this set exist to make that manual action cheap
 without removing it. The framing matters, so here it is plainly: **these are conveniences
