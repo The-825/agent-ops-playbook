@@ -112,9 +112,9 @@ Never silently rewrite an entry.
 
 After any change to companion content or positioning, sweep the public surfaces that cite
 the changed thing for drift before you finish: the README, the companion content
-(`skills/`, `templates/`, `checklists/`, playbook pages), and the series positioning. A
-renamed artifact, a restructured directory, or a reworded pitch must match everywhere it
-appears.
+(`skills/`, `templates/`, `checklists/`, `docs/`, `ci-kit/`, `playbook/`, `marketing/`),
+and the series positioning. A renamed artifact, a restructured directory, or a reworded
+pitch must match everywhere it appears.
 
 Fix only the impacted files, never touch consistent ones. If everything is consistent,
 report "no drift" and change nothing. Drift found but out of scope for the current PR
