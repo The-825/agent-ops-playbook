@@ -1,5 +1,7 @@
 # Command starter set
 
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+
 Thirteen copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
 
 Note: this location is provisional pending a repo-layout decision on how command artifacts are packaged; if they move, it is one `git mv` and the files themselves do not change.
@@ -33,5 +35,3 @@ Frontmatter fields: `description` (shown in the command picker), `argument-hint`
 ## Safety posture
 
 These commands are deliberately one-sided about write authority. `/sprint` creates a local branch and stops. `/ship` opens the PR and stops: it never merges, never enables auto-merge, and never applies an approval or merge-gate label, because authorizing a merge is the operator's act. `/status`, `/warp`, `/pending`, `/verify-deploy`, and `/model-check` read and report only. Keep that boundary when you adapt them; a command that can both open and approve its own PR removes the one human checkpoint in an agent-driven flow.
-
-Part of the companion repo for From Archivist to Architect.
