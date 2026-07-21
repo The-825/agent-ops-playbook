@@ -64,8 +64,8 @@ Body:
 > to be all three, it turns into a log nobody reads.
 >
 > Blank templates for all three, with the usage rules written in, are in the companion
-> repo I maintain: [REPO LINK]. They came out of two years of running Claude Code
-> against that production system, and they are the files I actually use, with the
+> repo I maintain: [REPO LINK]. They came out of running Claude Code daily against
+> that production system since 2025, and they are the files I actually use, with the
 > domain scrubbed out.
 >
 > (The repo pairs with a book I am finishing on the analyst-to-architect path, first
@@ -152,7 +152,7 @@ wrecking the warehouse.
 Body:
 
 > I operate a production system with a warehouse behind it. Regulated PII, real users,
-> one human (me). Over the last two years most of the code has come from coding
+> one human (me). Since 2025 most of the code has come from coding
 > agents. The question that turned out to matter is not "can the model write SQL", it
 > is "what stops PR number one thousand from quietly breaking an invariant a human
 > would have caught on PR number ten". These four pieces earned their keep.

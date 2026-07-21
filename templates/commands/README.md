@@ -2,7 +2,7 @@
 
 > Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
-Nineteen copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
+Twenty copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
 
 Note: this location is provisional pending a repo-layout decision on how command artifacts are packaged; if they move, it is one `git mv` and the files themselves do not change.
 
@@ -25,6 +25,7 @@ Frontmatter fields: `description` (shown in the command picker), `argument-hint`
 | [model-check.md](model-check.md) | Classifies a task description (LOOKUP / SHIP / COMPLEX) and recommends a model tier from a table you fill in. Run before starting work when the right tier is not obvious. |
 | [status.md](status.md) | One-screen snapshot: open PRs, local tree, what awaits the operator, what is blocked, next recommended action. Run at session start or after time away. |
 | [checkpoint.md](checkpoint.md) | Rewrites `SESSION_STATE.md`, the living handoff file, from current reality, preserving the irreplaceable-values section verbatim. Run on the operator's "checkpoint" trigger, and before any model or session switch. |
+| [grant.md](grant.md) | Captures a standing authority grant in the authority ledger the same turn it lands, or revokes/expires an existing one (status flip, lines never deleted). Records grants only; never applies labels, never merges. Run the turn the operator grants standing authority. |
 | [warp.md](warp.md) | Answers "what do we know about X?" from the conclusions store, the repo index, and recent git history, without re-deriving from source. Run before touching an area you have not worked in recently. |
 | [pending.md](pending.md) | Sweeps the repo for every deferred idea and follow-up, and reports each with its current status (delivered, ripe, blocked, invalidated, recurring). Run periodically so deferred work resurfaces instead of dying. |
 | [scout.md](scout.md) | Evaluates an external URL against your repo with a have / borrow / adopt / skip verdict per concept, and persists a dated report. Run when someone sends you a tool or repo worth a look. |

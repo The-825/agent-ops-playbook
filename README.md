@@ -6,8 +6,8 @@ human reviewed, the docs quietly fall behind the code, a decision gets made in o
 session and is invisible to the next, and every new session starts blind because the
 context lived in the last one's window.
 
-This repo is the working operating system for that job, extracted from two years of
-running Claude Code against a production system that handles regulated PII for real
+This repo is the working operating system for that job, extracted from running Claude
+Code daily since 2025 against a production system that handles regulated PII for real
 users, with every domain identifier removed: copy-and-adapt templates, a CI kit with
 self-tested guards, command skills, and pattern docs, all MIT licensed and written in
 this repo's own words. It is for analysts leveling up to data and solution architects,
@@ -95,10 +95,12 @@ work a memory and a brake:
    `templates/CLAUDE_TEMPLATE.md`.
 2. **A session handoff file.** Copy `templates/SESSION_STATE_TEMPLATE.md` and refresh it
    on a trigger word, so the next session picks up mid-flight instead of starting blind.
-3. **A label-gated merge.** Adopt `ci-kit/workflows/automerge.yml` with the
-   operator-label gate described in `AUTOMERGE_GOTCHAS.md`: an agent PR merges only when
-   every required check is green AND a human has applied the approval label. Nothing
-   lands unreviewed while you sleep.
+3. **A label-gated merge.** Adopt `ci-kit/workflows/automerge.yml`. As shipped it
+   requires the operator label (`REQUIRE_LABEL` in its EDIT ME block): an agent PR
+   merges only when every required check is green AND a human has applied the approval
+   label, so nothing lands unreviewed while you sleep. Relaxing `REQUIRE_LABEL` once
+   trust is earned is the documented graduation step in
+   `ci-kit/workflows/AUTOMERGE_GOTCHAS.md`.
 
 Then adopt the full CI kit:
 

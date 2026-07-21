@@ -4,8 +4,11 @@ Runs the guard as a subprocess, the same way CI does, against a deliberately
 broken ledger fixture (must fail), a clean ledger fixture (must pass), and
 synthetic GitHub event payloads exercising the citation paths (valid passes;
 unknown and revoked citations fail). Also proves the shipped starter ledger
-(templates/authority_ledger.jsonl) passes the guard, and that the guard's own
---selftest fixture suite is green.
+passes the guard (via a fixture copy in good_fixtures/, so the suite stays
+green in an adopter tree that copied only ci-kit/), that the companion repo's
+templates/authority_ledger.jsonl has not drifted from that fixture (skipped
+when the templates tree is absent), and that the guard's own --selftest
+fixture suite is green.
 
 GITHUB_EVENT_PATH is controlled explicitly per case: popped for the no-event
 cases (CI always sets it, so inheriting the real one would leak the host
@@ -24,7 +27,8 @@ _REPO = os.path.dirname(os.path.dirname(_GUARDS_DIR))     # repo root
 _GUARD = os.path.join(_GUARDS_DIR, "guard_authority_citations.py")
 _BAD_LEDGER = os.path.join(_HERE, "bad_fixtures", "bad_authority_ledger.jsonl")
 _GOOD_LEDGER = os.path.join(_HERE, "good_fixtures", "good_authority_ledger.jsonl")
-_STARTER_LEDGER = os.path.join(_REPO, "templates", "authority_ledger.jsonl")
+_STARTER_FIXTURE = os.path.join(_HERE, "good_fixtures", "starter_ledger.jsonl")
+_REPO_STARTER = os.path.join(_REPO, "templates", "authority_ledger.jsonl")
 
 # Ids in the good fixture: G-20260101-01 is active, G-20260102-01 is revoked.
 ACTIVE_ID = "G-20260101-01"
@@ -99,10 +103,25 @@ class TestAuthorityCitationsGuard(unittest.TestCase):
         )
 
     def test_shipped_starter_ledger_passes(self):
-        res = _run(["--ledger", _STARTER_LEDGER])
+        res = _run(["--ledger", _STARTER_FIXTURE])
         self.assertEqual(
             res.returncode, 0,
             f"shipped starter ledger failed its own guard\n{res.stdout}\n{res.stderr}",
+        )
+
+    @unittest.skipUnless(
+        os.path.exists(_REPO_STARTER),
+        "templates/authority_ledger.jsonl not present in this tree (kit-only copy)",
+    )
+    def test_repo_starter_matches_fixture(self):
+        with open(_REPO_STARTER, encoding="utf-8") as f:
+            repo_copy = f.read()
+        with open(_STARTER_FIXTURE, encoding="utf-8") as f:
+            fixture = f.read()
+        self.assertEqual(
+            repo_copy, fixture,
+            "templates/authority_ledger.jsonl drifted from "
+            "good_fixtures/starter_ledger.jsonl; update the fixture copy to match",
         )
 
 
