@@ -1,6 +1,6 @@
 # The agent-ops operating model
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 10 (The Force Multiplier: Building with AI Agents), with section 9.5 as a secondary read.
 
 Agent-assisted development has a default failure mode, and it is not bad code.
 It is fast, plausible, inconsistent work where every session is a cold start,

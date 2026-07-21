@@ -1,5 +1,7 @@
 # The four founding docs
 
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.2 (The Rules Floor) and chapter 8 (The Implementation Lab).
+
 A rebuild, or any new agent-operated repo, starts with four blank documents. Before the first line of code lands, the repo already knows its rules, its scope, its order, and its reasons. That is the whole meta-pattern: discipline is not something the project grows into, it is the state the project is born in, and four small files are enough to hold it.
 
 The four, with their templates:

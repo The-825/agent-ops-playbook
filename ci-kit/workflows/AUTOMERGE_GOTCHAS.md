@@ -1,5 +1,7 @@
 # Automerge gotchas: ten failure modes a naive automerge hits
 
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.5 (The Human Gate).
+
 `automerge.yml` squash-merges an agent PR only when every required check is green on the PR
 head SHA, fail-closed. It stands in for GitHub's paid auto-merge feature on Free-plan private
 repos. The workflow looks simple. It is not. Every gotcha below is a real failure mode that was

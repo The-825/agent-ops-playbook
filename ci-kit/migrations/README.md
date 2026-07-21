@@ -1,8 +1,11 @@
 # Migrations kit: numbering integrity, apply ledger, merge-time policy
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.4 (One Concern Per Change, Reversible by Config).
 
-Two tools guard the same folder at two different layers:
+A loose migrations folder fails in two predictable ways: two changes claim the same number,
+or a destructive statement rides in on a routine-looking PR. Adopt this kit as soon as more
+than one author, human or agent, cuts migrations against the same folder; the first collision
+is cheaper to prevent than to adjudicate. Two tools guard the folder at two different layers:
 
 - **`runner.py`**: repo-state integrity plus the applied-per-tenant ledger. It refuses a
   duplicate migration number anywhere in the folder and an out-of-order apply, and it tracks

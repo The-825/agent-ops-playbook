@@ -1,6 +1,6 @@
 # Playbook
 
-This directory holds the connective essays: how the pieces of the kit fit together and why the patterns exist. The copy-paste artifacts themselves live in `templates/` and `checklists/`.
+This directory holds the connective essays: how the pieces of the kit fit together and why the patterns exist. The copy-paste artifacts themselves live in `ci-kit/`, `skills/`, `templates/`, and `checklists/`.
 
 | File | What it is |
 |---|---|

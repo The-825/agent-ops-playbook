@@ -31,7 +31,7 @@ each post).
 > A guard that never fails is worse than no guard. You stop looking at the thing it
 > was supposed to watch.
 >
-> The six guards I run, with their fixtures and self-tests, are in the public playbook
+> The seven guards I run, with their fixtures and self-tests, are in the public playbook
 > repo: https://github.com/The-825/agent-ops-playbook
 >
 > #ContinuousIntegration #AIAgents
@@ -75,8 +75,8 @@ each post).
 > Autonomy is a dial, not a switch. Low-stakes branches merge on green alone.
 > Production waits for the label. Nothing merges on vibes.
 >
-> The naive version of this workflow has at least six failure modes, and I hit them in
+> The naive version of this workflow has at least ten failure modes, and I hit them in
 > production before the current version existed. The workflow, plus the write-up of
-> all six: https://github.com/The-825/agent-ops-playbook
+> all ten: https://github.com/The-825/agent-ops-playbook
 >
 > #AIAgents #SoftwareEngineering

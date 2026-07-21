@@ -1,6 +1,6 @@
 # How this was built: the launch build story
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.7 (The Proof You Are Holding).
 
 On Tuesday, July 21, 2026, I uploaded *From Archivist to Architect* to Amazon KDP. The repo it shipped from had existed since the previous Friday evening. The book had existed much longer than that.
 

@@ -1,6 +1,6 @@
 # PR discipline checklist
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with sections 10.4 (One Concern Per Change, Reversible by Config) and 10.5 (The Human Gate).
 
 The failure this prevents: a 2,000-line PR that mixes a refactor with a feature, sits unreviewed for a week, and cannot be reverted without taking both down. Its cousin fails the same way from the other direction, a flurry of one-line PRs that chop a single concern into fragments nobody can review as a whole. Run this checklist before you open any PR.
 
@@ -22,6 +22,8 @@ The failure this prevents: a 2,000-line PR that mixes a refactor with a feature,
 - [ ] **Summary.** What changed and why, two to four sentences.
 - [ ] **Test plan.** The checks you actually ran, named specifically. "Ran the parse check and the order-export unit tests," not "tested locally."
 - [ ] **What's NOT in scope.** The section that does the real work. Writing it forces you to notice everything that snuck in. If you cannot write this section honestly, the PR has a scope problem; fix the diff, not the description.
+
+Add a Versions line if your repo CI-stamps versions; the fuller body template with that section is [ci-kit/pull_request_template.md](../ci-kit/pull_request_template.md).
 
 ## Why the last section matters
 
