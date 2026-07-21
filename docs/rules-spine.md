@@ -122,7 +122,7 @@ becoming the bottleneck.
 **The afternoon version.** Start with the convention alone: the agent never merges; the
 operator's label is the merge instruction. When you want the automated version, this kit
 ships one ([ci-kit/workflows/automerge.yml](../ci-kit/workflows/automerge.yml)), and
-[AUTOMERGE_GOTCHAS.md](../ci-kit/workflows/AUTOMERGE_GOTCHAS.md) documents the six
+[AUTOMERGE_GOTCHAS.md](../ci-kit/workflows/AUTOMERGE_GOTCHAS.md) documents the ten
 non-obvious ways a naive automerge fails, each one paid for in production.
 
 ## The numbered issue ledger
