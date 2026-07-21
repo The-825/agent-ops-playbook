@@ -1,13 +1,13 @@
 # Reddit drafts
 
 Three value-first text posts. The lesson is complete in each post body. The repo appears
-exactly once per post, in the body or in a first comment depending on the sub's norms.
-The book appears at most as one pointer line. Fill `[REPO LINK]` at posting time.
+exactly once per post, in the body or in a first comment depending on the sub's written rules.
+The book appears at most as one pointer line.
 
-On verification: Reddit blocks rule reads from the drafting environment, so the approach
-notes below combine what was verifiable secondhand at drafting time with the
-conservative default (all value in the post, minimal linking). Re-read each sub's
-sidebar rules on posting day. If the rules or a mod point to a designated showcase
+Rules status: the posting notes below were re-verified against each sub's written
+rules on 2026-07-21 (dated snapshots; Reddit blocks direct reads from the drafting
+environment). The r/AI_Agents rules capture is the oldest of the three, so give that
+sidebar an extra look on posting day. If a rule or a mod points to a designated
 thread or a required flair, follow that over these notes.
 
 ---
@@ -18,9 +18,18 @@ Why here: the home crowd for Claude Code workflow write-ups, and session memory 
 pain everyone in the sub has hit. Concrete posts with real files do well; bare repo
 links do not.
 
-Approach: text post, full lesson in the body, repo link once at the end. Pick whatever
-flair fits project or workflow shares on posting day. Stay in the comments for the
-first hour and answer specifics.
+Posting notes (rules verified 2026-07-21):
+
+- Rule 7 encourages showing your project on the feed if you built it with Claude
+  Code, you say so, you describe what it does, and it is free to try and says so.
+  The body below does all four. Promotional language stays at zero; plain repo link
+  only, no referral or UTM parameters.
+- Flair is required (rule 9). Use "Built with Claude"; "Claude Code Workflow" also
+  fits if the picker has changed.
+- Feed posts require the account to have more than 50 karma. If the account is under
+  that, post the same text in the Built with Claude Project Showcase Megathread
+  instead.
+- Text post. Stay in the comments for the first hour and answer specifics.
 
 Suggested title: My Claude Code sessions kept forgetting everything, so I gave the repo
 the memory instead. Three plain files.
@@ -63,10 +72,11 @@ Body:
 > in the ledger. Facts sessions proved in the conclusions store. When one file tries
 > to be all three, it turns into a log nobody reads.
 >
-> Blank templates for all three, with the usage rules written in, are in the companion
-> repo I maintain: [REPO LINK]. They came out of running Claude Code daily against
-> that production system since 2025, and they are the files I actually use, with the
-> domain scrubbed out.
+> Blank templates for all three, with the usage rules written in, are in the
+> companion repo I maintain, MIT and free, no signup:
+> https://github.com/The-825/agent-ops-playbook. They came out of running Claude
+> Code daily against that production system since 2025, Claude Code helped build the
+> repo itself, and they are the files I actually use, with the domain scrubbed out.
 >
 > (The repo pairs with a book I am finishing on the analyst-to-architect path, first
 > in a planned series. Pointer in the repo README.)
@@ -77,11 +87,19 @@ Body:
 
 Why here: the sub tolerates builders talking about their own work when they show up
 with substance, and "here is what I built and what broke" is a recognized post shape
-there (verified at drafting time). This crowd knows the difference between an agent
+there. This crowd knows the difference between an agent
 demo and production operations, which is exactly the gap the post covers.
 
-Approach: text post, lesson in the body, repo link once at the end, book as one pointer
-line. Engage in the comments; drive-by links get called out in this sub.
+Posting notes (rules verified 2026-07-21; oldest rules snapshot of the three, so
+re-check the sidebar on posting day):
+
+- Rule 3 is explicit: links go in the comments, not the post. The body below carries
+  no link; the repo rides in the first comment. The sub also only offers text posts.
+- Rule 4 caps self-promotion at roughly one post in ten; do not promote the repo
+  elsewhere in the sub around the same time.
+- Flair: Discussion. The Weekly Project Display thread is a legitimate extra venue
+  for the bare repo link, not a replacement for this post.
+- Engage in the comments; drive-by links get called out in this sub.
 
 Suggested title: Letting my coding agents merge their own PRs without burning
 production: what the naive automerge gets wrong
@@ -125,13 +143,17 @@ Body:
 > on green alone. A missing labels array counts as unlabeled, which counts as no.
 >
 > The workflow file, plus a doc walking six of these failure modes with the incident
-> behind each one, is in the public playbook repo I keep. MIT, copy freely:
-> [REPO LINK]. The shipped template defaults to the hands-free version and documents
-> the label gate as the trade-off it is.
+> behind each one, is in the public playbook repo I keep. MIT, copy freely. The
+> shipped template defaults to the hands-free version and documents the label gate
+> as the trade-off it is. Repo link in the first comment, per the sub's rules.
+
+First comment (post immediately after publishing):
+
+> Repo: https://github.com/The-825/agent-ops-playbook
 >
-> (Context, since people ask: the repo is the companion to a book I am finishing on
+> Context, since people ask: the repo is the companion to a book I am finishing on
 > going from analyst to architect, first in a planned series. Details in the repo
-> README.)
+> README.
 
 ---
 
@@ -141,10 +163,18 @@ Why here: the repo's audience in one place, working data people who are being ha
 agents whether they asked for them or not. The sub is strict about vendor content and
 blog spam, so the value has to live entirely in the post.
 
-Approach: text post, no link in the body. The repo link goes in a first comment with a
-one-line disclosure, posted immediately after publishing. If the sidebar or a mod
-points promotion at a designated thread, use that instead. The book stays out of the
-post entirely; it rides in the comment.
+Posting notes (rules verified 2026-07-21):
+
+- Self-promotion is capped at once a month per account (rule 4), and this post is
+  that month's slot. No other repo or book promotion in the sub, posts or comments,
+  for a month either side.
+- Rule 5 requires disclosing your relationship to anything you promote; the first
+  comment leads with the disclosure. Flair the post Personal Project Showcase or
+  Open Source, and add the Brand Affiliate flag if the flair picker offers it.
+- Rule 9 bans AI-generated posts outright, permanent ban. Read the body aloud and
+  retype anything that does not sound like you before posting.
+- No link in the body. The repo link goes in the first comment immediately after
+  publishing. The book stays out of the post entirely; it rides in the comment.
 
 Suggested title: AI agents write most of my PRs now. The CI floor that keeps them from
 wrecking the warehouse.
@@ -193,6 +223,6 @@ First comment (post immediately after publishing):
 
 > Disclosure: the runnable versions of all of the above (the guards with their
 > fixtures, the migration runner, the CI wiring) live in a public MIT repo I maintain,
-> domain scrubbed: [REPO LINK]. It doubles as the companion to a book I am finishing
+> domain scrubbed: https://github.com/The-825/agent-ops-playbook. It doubles as the companion to a book I am finishing
 > on the analyst-to-architect path, first in a planned series; pointer in the README
 > if you want it.

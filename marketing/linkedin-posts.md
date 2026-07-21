@@ -1,12 +1,18 @@
 # LinkedIn drafts
 
-Three short lesson posts, 100 to 200 words each. Fill `[REPO LINK]` at posting time. If
-reach visibly suffers with a link in the body, move the link to a first comment; each
-post stands without it.
+Three short lesson posts, 100 to 200 words each, final text below. Each post stands
+without its link; if reach visibly suffers with the link in the body, cut it from the
+body and paste it as the first comment instead (the line to move is the last one of
+each post).
 
-Cadence suggestion: one post a week for three consecutive weeks, mid-week morning, in
-the order below; whichever lands hardest tells me which newsletter post to publish
-next.
+## Cadence plan
+
+- One post a week for three consecutive weeks, in the order below.
+- Mid-week, Tuesday to Thursday, between 7 and 9am Pacific.
+- Post 1 goes out on launch day (LAUNCH_RUNBOOK.md slots it into the hour). Posts 2
+  and 3 follow at one-week intervals in the same window.
+- Watch which post lands hardest; that picks the next newsletter topic. Reply to
+  every substantive comment the same day; the first two hours matter most for reach.
 
 ---
 
@@ -26,7 +32,7 @@ next.
 > was supposed to watch.
 >
 > The six guards I run, with their fixtures and self-tests, are in the public playbook
-> repo: [REPO LINK]
+> repo: https://github.com/The-825/agent-ops-playbook
 >
 > #ContinuousIntegration #AIAgents
 
@@ -49,7 +55,7 @@ next.
 >
 > It works for human handoffs too. That part should probably have been obvious.
 >
-> Template with the usage rules written in: [REPO LINK]
+> Template with the usage rules written in: https://github.com/The-825/agent-ops-playbook
 >
 > #AIAgents #DeveloperExperience
 
@@ -71,6 +77,6 @@ next.
 >
 > The naive version of this workflow has at least six failure modes, and I hit them in
 > production before the current version existed. The workflow, plus the write-up of
-> all six: [REPO LINK]
+> all six: https://github.com/The-825/agent-ops-playbook
 >
 > #AIAgents #SoftwareEngineering
