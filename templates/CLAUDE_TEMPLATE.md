@@ -6,6 +6,8 @@ Anything that lives only in chat history gets re-derived, differently, every ses
 
 ## The rules-spine guide
 
+This is the short version; the full essay, with the failure each section prevents and an afternoon-sized starter for each, is [docs/rules-spine.md](../docs/rules-spine.md).
+
 What each section is for, so you fill it with intent instead of copying blind:
 
 - **Who you work with.** The owner, their role, and the hard boundaries the agent must never cross (contexts it must not mix, data it must not expose). Boundaries stated here survive every session.
