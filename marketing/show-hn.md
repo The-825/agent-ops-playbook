@@ -46,7 +46,7 @@ Rules that bind, from the Show HN page and the site guidelines:
 > for the memory layer: a session handoff file, a decision ledger, and a
 > machine-readable settled-facts store.
 >
-> MIT, no signup, no product. It pairs with a book I am finishing on the
+> MIT, no signup, no product. It pairs with a book I just published on the
 > analyst-to-architect path; the repo stands alone and the book is a pointer in the
 > README.
 >

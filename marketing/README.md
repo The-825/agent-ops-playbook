@@ -8,11 +8,13 @@ moment he pastes it into a platform.
 ## Links and placeholders
 
 - The repo link is filled in every draft: https://github.com/The-825/agent-ops-playbook
-- `[BOOK LINK]` stays a placeholder: the book is not launched yet, so no public listing
-  exists. Fill it the day the listing goes live (the same trigger as the README link,
-  ROADMAP item 3). Until then every draft points at the book with a single pointer
-  line. If a draft ever carries `[BOOK LINK]` before the listing exists, cut that line
-  rather than point at nothing.
+- The book is on KDP; the Amazon listing link is pending the ASIN. Drafts that need
+  the listing URL (the launch/ announcement pack) carry
+  https://www.amazon.com/dp/ASIN-PENDING with a SWAP-ON-ASIN marker. Swap those, and
+  the README link (ROADMAP item 3), the moment the ASIN exists. Nothing that still
+  carries an ASIN-PENDING link gets posted.
+- The evergreen drafts point at the book with a single pointer line and no URL; they
+  do not wait on the ASIN.
 
 ## Files
 
@@ -40,8 +42,8 @@ moment he pastes it into a platform.
   Never salesy, never hype.
 - Value first. The reader gets the full lesson without clicking anything.
 - The repo is linked once per piece. The book gets at most one pointer line: the title,
-  "first in a planned series", coming soon. Never summarize book content, never cite
-  chapters, never name future titles in the series.
+  "first in a planned series", and where the link lives. Never summarize book content,
+  never cite chapters, never name future titles in the series.
 - No pricing, no dates, no launch logistics, anywhere.
 - Anecdotes stay at the level of "a production repo I run" / "a system that handles
   regulated PII". No employer detail, no institution names, no client or student

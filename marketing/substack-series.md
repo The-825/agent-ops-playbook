@@ -119,9 +119,9 @@ Title: The day I stopped being the only person in my repo
 > fixtures, the merge workflow and its gotchas doc, lives in a public MIT repo,
 > scrubbed of domain and ready to copy: https://github.com/The-825/agent-ops-playbook
 >
-> The repo is the companion to a book I am finishing, From Archivist to Architect, a
-> field guide for data analysts becoming architects, first in a planned series. It is
-> coming soon; the repo README will carry the link.
+> The repo is the companion to my book, From Archivist to Architect, a field guide
+> for data analysts becoming architects, first in a planned series. It is just out;
+> the repo README carries the link.
 
 ## Post 1 publishing checklist
 

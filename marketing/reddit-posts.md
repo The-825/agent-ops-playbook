@@ -78,7 +78,7 @@ Body:
 > Code daily against that production system since 2025, Claude Code helped build the
 > repo itself, and they are the files I actually use, with the domain scrubbed out.
 >
-> (The repo pairs with a book I am finishing on the analyst-to-architect path, first
+> (The repo pairs with a book I just published on the analyst-to-architect path, first
 > in a planned series. Pointer in the repo README.)
 
 ---
@@ -151,7 +151,7 @@ First comment (post immediately after publishing):
 
 > Repo: https://github.com/The-825/agent-ops-playbook
 >
-> Context, since people ask: the repo is the companion to a book I am finishing on
+> Context, since people ask: the repo is the companion to a book I just published on
 > going from analyst to architect, first in a planned series. Details in the repo
 > README.
 
@@ -223,6 +223,6 @@ First comment (post immediately after publishing):
 
 > Disclosure: the runnable versions of all of the above (the guards with their
 > fixtures, the migration runner, the CI wiring) live in a public MIT repo I maintain,
-> domain scrubbed: https://github.com/The-825/agent-ops-playbook. It doubles as the companion to a book I am finishing
+> domain scrubbed: https://github.com/The-825/agent-ops-playbook. It doubles as the companion to a book I just published
 > on the analyst-to-architect path, first in a planned series; pointer in the README
 > if you want it.
