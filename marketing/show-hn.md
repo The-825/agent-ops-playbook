@@ -31,7 +31,7 @@ Rules that bind, from the Show HN page and the site guidelines:
 
 ## First comment (substance to retype, not text to paste)
 
-> For the last two years, most of the PRs on the production system I run (regulated
+> Since 2025, most of the PRs on the production system I run (regulated
 > PII, real users, one human: me) have been opened by AI coding agents, several
 > sessions a day. The repo is the operating layer that keeps that from going wrong.
 >

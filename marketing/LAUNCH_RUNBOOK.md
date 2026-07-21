@@ -66,7 +66,7 @@ files and incidents over adjectives, no em-dashes, nothing that sounds generated
 - The skeptic ("overkill for one person"): agree with the premise, correct the
   frame. Most PRs are opened by agents, so the discipline is for the staff, not the
   headcount. Every rule maps to an incident.
-- "Show numbers": give the honest scale markers (two years, several sessions a day,
+- "Show numbers": give the honest scale markers (since 2025, several sessions a day,
   a production system with regulated PII, one human) and say plainly that you do
   not publish invented metrics.
 - "AI wrote this": yes, agents helped build the repo; that is what the repo is
