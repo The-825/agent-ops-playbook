@@ -35,10 +35,11 @@ Source: Jovan in-session, 2026-07-15.
 
 ## D-3 · 2026-07-18 · Repo split: public companion vs private book repo
 
-Ruling: Repo split. 8two5/agent-ops-playbook becomes the public companion holding only
+Ruling: Repo split. 8two5/agent-ops-playbook [repo now lives at The-825, 2026-07-18; see
+D-7] becomes the public companion holding only
 shareable artifacts (skills, templates, checklists, playbook pages); the manuscript, KDP
 metadata, and launch planning move to a private repo, proposed
-8two5/archivist-to-architect-book.
+8two5/archivist-to-architect-book [repo now lives at The-825, 2026-07-18; see D-7].
 Why: KDP Select exclusivity and sales mean the book content never sits public.
 Source: Jovan's "yes split" approval, session 2026-07-18.
 
@@ -59,3 +60,12 @@ Source: Jovan ruling, 2026-07-21, in session.
 Ruling: Figure-bearing anonymized production callouts stay in (the context-diet line counts, the staging cost-neutral note, and the labeled-callout class generally). Callouts stay labeled, name no repo, and carry no identifying detail.
 Why: The measured numbers are the credibility of the pattern; anonymization already strips what matters.
 Source: Jovan ruling, 2026-07-21, in session.
+
+## D-7 · 2026-07-21 · Org home of the public repo
+
+Ruling: The public companion repo lives at The-825/agent-ops-playbook. The former
+8two5/agent-ops-playbook path redirects; ledger entries citing 8two5 are historical and
+stay verbatim.
+Why: The repo was transferred to The-825 on 2026-07-18; recording the current home here
+beats silently rewriting older entries.
+Source: repo transfer 2026-07-18; captured during the 2026-07-21 full-throttle pass.
