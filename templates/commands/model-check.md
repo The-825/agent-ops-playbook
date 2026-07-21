@@ -25,7 +25,7 @@ Print the shape, the recommended tier from this table, and one sentence of reaso
 | SHIP | daily-driver tier | `<default-model>` |
 | COMPLEX | deepest tier you pay for | `<deep-model>` |
 
-Example ladder, for calibration only: one production setup ran Haiku for lookups, Sonnet for shipping, and Opus for complex work. Treat that as the shape of a ladder, not a prescription; model lineups and prices change, so fill the column from your provider's current offerings.
+Example ladder, for calibration only: one production setup ran Haiku for lookups, Sonnet for shipping, and Opus for complex work. Treat that as the shape of a ladder, not a prescription; model lineups and prices change, so fill the column from your provider's current offerings. (The named ladder stands by design: decisions ledger entry D-5 sanctions model names inside labeled, calibration-only examples like this table; the no-model-identifiers rule governs committed artifacts.)
 
 ## Step 3: Cite the counter-rule
 

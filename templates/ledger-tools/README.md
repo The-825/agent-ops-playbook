@@ -23,7 +23,7 @@ python3 templates/ledger-tools/conclusions_audit.py templates/ledger-tools/sampl
 python3 templates/ledger-tools/conclusions_audit.py --selftest
 ```
 
-The first command audits the sample fixture against this repo's tree and reports one STALE entry, one AGING entry, one skipped special path, and one dangling `obsoleted_by` pointer, by design. The second runs the auditor's offline fixture tests.
+The first command audits the sample fixture against this repo's tree. By design it reports the retired-path entry as STALE, the never-reverified entry as AGING (other sample entries age into AGING too once their pinned dates fall outside the re-verification window), one skipped special path, and one dangling `obsoleted_by` pointer. The second runs the auditor's offline fixture tests.
 
 ## Adopting
 
