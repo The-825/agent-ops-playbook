@@ -46,9 +46,9 @@ Rules that bind, from the Show HN page and the site guidelines:
 > for the memory layer: a session handoff file, a decision ledger, and a
 > machine-readable settled-facts store.
 >
-> MIT, no signup, no product. It pairs with a book I am finishing on the
-> analyst-to-architect path; the repo stands alone and the book is a pointer in the
-> README.
+> MIT, no signup, no product. It pairs with my book on the analyst-to-architect
+> path, From Archivist to Architect, out now; the repo stands alone and the book is
+> a pointer in the README.
 >
 > One honest disclosure: agents helped build the repo itself. Nearly every rule in
 > it exists because an agent broke something first. The automerge gotchas doc is
