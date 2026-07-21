@@ -117,8 +117,38 @@ Title: The day I stopped being the only person in my repo
 >
 > Every artifact this series mentions, the templates, the guards with their must-fail
 > fixtures, the merge workflow and its gotchas doc, lives in a public MIT repo,
-> scrubbed of domain and ready to copy: [REPO LINK]
+> scrubbed of domain and ready to copy: https://github.com/The-825/agent-ops-playbook
 >
 > The repo is the companion to a book I am finishing, From Archivist to Architect, a
 > field guide for data analysts becoming architects, first in a planned series. It is
 > coming soon; the repo README will carry the link.
+
+## Post 1 publishing checklist
+
+One-time publication setup, before the first post:
+
+1. Publication name: Fleet of One. One-line description: field notes from running a
+   fleet of AI coding agents as one operator, on production systems that have to
+   hold up. Both under Settings · Basics.
+2. Write the About page: two or three paragraphs, same ground as the one-liner plus
+   who it is for (working data people and solo builders operating agents).
+3. Customize the free-subscriber welcome email (Settings · Emails): two sentences,
+   what the series is and what arrives next.
+4. Optional: claim a subdomain with your name or the series name while it is free.
+
+Per-post steps for post 1:
+
+1. Title: The day I stopped being the only person in my repo
+2. Subtitle: Fleet of One, part 1. What changes when AI agents write most of the
+   code and you become the institution.
+3. Paste the post body from this file. Read it aloud once, end to end, before
+   publishing (the binding rule in marketing/README.md).
+4. Tags, in the draft's settings: AI, AI Agents, Software Engineering, Data
+   Engineering. Four is plenty.
+5. Social preview, same settings panel: a plain 1200x630 title card if one exists;
+   otherwise skip it, the default text card is fine for post 1.
+6. Publish now rather than schedule on launch day; the runbook sequences the hour.
+7. Right after publishing, restack the post to Notes with one added line in your own
+   words. Restacks reach Home feeds and are not emailed, so there is no double-send.
+8. The other channels carry the repo link, not the Substack link. If a commenter
+   wants the longer story, the Substack link goes in a reply, never in the post.
