@@ -20,13 +20,22 @@ ships the guards, gates, and templates.
 
 - **`templates/`**: copy-and-adapt starting points for the working files: the agent
   rules file, the session handoff file, the append-only decisions ledger, the
-  conclusions store, and a one-page ADR format, plus the rebuild-method pair:
+  conclusions store, a one-page ADR format, the phased rebuild blueprint, the shared
+  agent-prompt preamble, the incident postmortem format, and the anti-rot
+  mechanical-facts pattern, plus the rebuild-method pair and three tool subdirectories:
   - `DECISIONS_TEMPLATE.md`: the decisions ledger, plus the rebuild variant where
     every day-one rule is paired with the specific past failure it prevents, so abstract
     rules earn their place.
   - `PARITY_TEMPLATE.md`: the zero-regression parity contract. Every old-surface
     capability is a tracked row, bucketed and checked with evidence; nothing ships until
     its row is checked.
+  - `commands/`: nineteen copy-paste slash-command definitions for Claude Code, from
+    `/sprint` and `/ship` to `/land` and `/close-out`, each a markdown file with
+    frontmatter.
+  - `test-harness/`: the in-process test harness skeleton: boot the real app in the
+    test process, fake only the edges, prove route behavior on every PR in seconds.
+  - `ledger-tools/`: keeping a long-lived conclusions ledger trustworthy: provenance
+    tiers, a staleness auditor, the capture nudge, and union-merge hygiene.
 - **`ci-kit/`**: the runnable enforcement kit. Copy it into your repo.
   - `guards/`: six parameterized lint guards (no inline style/script, env reads only in the
     config registry, no raw fetch, no hardcoded SQL LIMIT, no raw CREATE VIEW, no PII in
@@ -39,10 +48,19 @@ ships the guards, gates, and templates.
     guards do not short-circuit, so an author sees all violations at once.
   - `migrations/`: the migration runner, a tool instead of a loose folder. Refuses duplicate
     numbers and out-of-order apply before any SQL reaches a database; tracks applied-per-tenant
-    in a JSON ledger. Ledger management only by design; the apply layer is separable.
+    in a JSON ledger. Ledger management only by design; the apply layer is separable. Its
+    `policy_checks.py` adds the merge-time content lints (forward-only, risky defaults ship
+    OFF, the claim-first number ledger) the automerge gate runs on migration PRs.
   - `workflows/`: the CI floor as one workflow with two required-check jobs (`checks.yml`), a
-    fail-closed automerge for agent PRs (`automerge.yml`), and `AUTOMERGE_GOTCHAS.md`, the six
-    non-obvious failure modes a naive automerge hits, each one paid for in production.
+    fail-closed automerge for agent PRs (`automerge.yml`), and `AUTOMERGE_GOTCHAS.md`, the ten
+    non-obvious failure modes a naive automerge hits, each one paid for in production. Around
+    that gate: `decision_script.py`, the second-generation merge decision as unit-tested pure
+    functions; the merge-lane companion workflows (batch labeler, comment command, branch
+    updater; documented in `MERGE_LANE_COMPANIONS.md`); and `staging-reset.yml`, the
+    fail-closed reset button for the staging-first promotion flow.
+  - `pull_request_template.md`: the judgment-only PR body template: Summary / Versions /
+    Test plan / What's NOT in scope, prose answers for the calls robots cannot check,
+    deliberately no checkboxes.
 - **`skills/`**: paste-able rule sets for your own agent rules file: session efficiency,
   data-truth rules, feature-flag lifecycle, regression layering, forward-only migrations.
 - **`checklists/`**: the two-minute operational checklists: PR discipline, pre-push
@@ -50,10 +68,10 @@ ships the guards, gates, and templates.
 - **`playbook/`**: the connective essays: the agent-ops operating model and the
   doc-sync agent pattern.
 - **`docs/`**: the method guides behind the templates: the four founding docs, day-one
-  mandates, the rules spine, and same-turn decision capture.
+  mandates, the rules spine, same-turn decision capture, the context budget, the model
+  playbook, multi-agent hygiene, and the staging-first promotion model.
 
-Upcoming waves add the rest: model-ops docs and the hooks/settings bundle for the agent
-harness itself.
+Upcoming waves add the rest: the hooks/settings bundle for the agent harness itself.
 
 ## Who this is for
 

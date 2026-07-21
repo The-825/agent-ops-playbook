@@ -2,7 +2,7 @@
 
 > Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
-Thirteen copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
+Nineteen copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
 
 Note: this location is provisional pending a repo-layout decision on how command artifacts are packaged; if they move, it is one `git mv` and the files themselves do not change.
 
@@ -28,10 +28,16 @@ Frontmatter fields: `description` (shown in the command picker), `argument-hint`
 | [warp.md](warp.md) | Answers "what do we know about X?" from the conclusions store, the repo index, and recent git history, without re-deriving from source. Run before touching an area you have not worked in recently. |
 | [pending.md](pending.md) | Sweeps the repo for every deferred idea and follow-up, and reports each with its current status (delivered, ripe, blocked, invalidated, recurring). Run periodically so deferred work resurfaces instead of dying. |
 | [scout.md](scout.md) | Evaluates an external URL against your repo with a have / borrow / adopt / skip verdict per concept, and persists a dated report. Run when someone sends you a tool or repo worth a look. |
+| [scout-discover.md](scout-discover.md) | The autonomous variant of `/scout`: generates candidates from the live ecosystem with no URL given, dedupes against prior reports, deep-evaluates the top few, and ships dated reports plus a ranked digest. Run periodically so borrowable ideas find you. |
 | [optimize.md](optimize.md) | Five-phase performance review (baseline, frontend, transport, backend runtime, regression guards) with evidence-only findings. Run a few times a year or after a slow-feeling stretch. |
 | [session-cost.md](session-cost.md) | Prints a per-model token and estimated-cost table for a saved session transcript, via a small stdlib-only helper script included in the file. Run when you want to know what a session cost. |
 | [verify-deploy.md](verify-deploy.md) | Confirms a merge actually rolled out by checking the deploy workflow's runs and the health endpoint's version contract. Run after a merge you care about, mindful of batched deploy windows. |
+| [land.md](land.md) | Shepherds one or more open PRs to merged: checks, conflicts resolved on the feature branch, and the correct automerge path. Never merges by hand and never applies the approval label. Run when a green PR sits unmerged or a wave needs walking home. |
+| [close-out.md](close-out.md) | End-of-session close-out: every PR accounted for, feature-toggle state noted, every ruling captured, ledgers ticked, then a checkpoint refresh of the handoff file. Run before ending any session that produced work. |
+| [incident.md](incident.md) | Incident triage with rollback playbooks, cheapest reversal first: flag flip, config revert, bad-deploy revert, data restore, user comms. Run when production is wrong and the clock is running. |
+| [prompt-master.md](prompt-master.md) | Silently restructures a messy, voice-transcribed, or unstructured task prompt into a clean task spec, then executes the restructured version. Run on brain-dump prompts instead of asking for a spec. |
+| [transcript-triage.md](transcript-triage.md) | Triages a pasted meeting transcript: extracts the other party's questions and commitments, answers them grounded in live code and data, and converts their asks into the work plan. Run after any meeting that produced asks. |
 
 ## Safety posture
 
-These commands are deliberately one-sided about write authority. `/sprint` creates a local branch and stops. `/ship` opens the PR and stops: it never merges, never enables auto-merge, and never applies an approval or merge-gate label, because authorizing a merge is the operator's act. `/status`, `/warp`, `/pending`, `/verify-deploy`, and `/model-check` read and report only. Keep that boundary when you adapt them; a command that can both open and approve its own PR removes the one human checkpoint in an agent-driven flow.
+These commands are deliberately one-sided about write authority. `/sprint` creates a local branch and stops. `/ship` opens the PR and stops: it never merges, never enables auto-merge, and never applies an approval or merge-gate label, because authorizing a merge is the operator's act. `/land` shepherds gated PRs the same way: it reports green-and-waiting, and applying the label stays the operator's move. `/status`, `/warp`, `/pending`, `/verify-deploy`, and `/model-check` read and report only. Keep that boundary when you adapt them; a command that can both open and approve its own PR removes the one human checkpoint in an agent-driven flow.

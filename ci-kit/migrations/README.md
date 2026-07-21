@@ -1,6 +1,6 @@
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
-
 # Migrations kit: numbering integrity, apply ledger, merge-time policy
+
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
 Two tools guard the same folder at two different layers:
 

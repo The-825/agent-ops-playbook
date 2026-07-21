@@ -1,6 +1,6 @@
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
-
 # Merge-lane companions: operator conveniences around the approval label
+
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
 The automerge template in this directory merges agent PRs on green checks alone. The
 optional hardening described in `AUTOMERGE_GOTCHAS.md` ("The operator-label gate") adds a
