@@ -47,3 +47,15 @@ Source: Jovan's "yes split" approval, session 2026-07-18.
 Ruling: This repo is only a companion to From Archivist to Architect. No book prose, chapters, excerpts, or paraphrased chapter content ships here. The public surface is the working code: templates, CI kit, command skills, workflows, and pattern docs written in this repo's own words. The book is referenced as a pointer, never summarized.
 Why: Freely public book content risks Amazon KDP demonetization. The repo sells the practice, the book sells the story.
 Source: Jovan ruling, 2026-07-21, relayed via the coordinator session.
+
+## D-5 · 2026-07-21 · Labeled model examples stand
+
+Ruling: Concrete model names may appear in public playbook content when they sit inside an explicitly labeled, calibration-only example (the model-playbook ladder, the model-check fill-in table). The no-model-identifiers rule governs committed artifacts such as commit messages and machine-stamped files, not labeled teaching examples.
+Why: An example ladder with real names is what makes the tier frame usable; the label plus fill-in placeholders keep it replaceable.
+Source: Jovan ruling, 2026-07-21, in session.
+
+## D-6 · 2026-07-21 · Anonymized war-story numbers stand
+
+Ruling: Figure-bearing anonymized production callouts stay in (the context-diet line counts, the staging cost-neutral note, and the labeled-callout class generally). Callouts stay labeled, name no repo, and carry no identifying detail.
+Why: The measured numbers are the credibility of the pattern; anonymization already strips what matters.
+Source: Jovan ruling, 2026-07-21, in session.

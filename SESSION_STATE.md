@@ -5,9 +5,8 @@ up mid-flight. Keep it current, keep it short.
 
 ## Active branch
 
-`claude/post-merge-continuity`: the post-merge continuity sweep, open as PR #23. Index
-rows the wave PRs deferred, stale counts (the gotcha count is ten now), pointer-line
-normalization, the first KI ledger entries, and this refresh.
+`claude/style-rulings`: capture the two style rulings as D-5 and D-6 and mark the
+matching handoff lines settled. The sole open PR.
 
 ## Merged so far
 
@@ -26,12 +25,15 @@ normalization, the first KI ledger entries, and this refresh.
   handoff) and PR #16 (mechanical-facts template + model playbook). Nothing from the
   build waves remains open. The add/add overlap on docs/model-playbook.md was resolved
   on the other branch before merge, so main carries PR #16's version of that doc.
+- PR #23, the post-merge continuity sweep, merged 2026-07-21: squash c831f37, greenlight
+  label applied on Jovan's gl instruction, merged directly (no live automerge in this
+  repo). The tree is self-consistent: index tables current, the gotcha count reads ten
+  everywhere, the book pointer line sits below the H1 in every file that carries it.
 
 ## In-flight work
 
-- PR #23, the continuity sweep from this branch. Once it merges, the tree is
-  self-consistent: index tables current, the gotcha count reads ten everywhere, the book
-  pointer line sits below the H1 in every file that carries it.
+- This branch's PR (`claude/style-rulings`): D-5 and D-6 appended to the decisions
+  ledger plus this handoff touch-up. Nothing else is in flight.
 
 ## Next steps
 
@@ -45,15 +47,14 @@ normalization, the first KI ledger entries, and this refresh.
 
 ## Pending decisions (need Jovan)
 
-- Style rulings: does the labeled-example carve-out for model names in
-  docs/model-playbook.md stand, and do the anonymized war-story numbers (the context-diet
-  line counts in docs/context-budget.md, the staging cost note) stay or come out?
+- Style rulings: settled 2026-07-21. The labeled model examples stand (D-5) and the
+  anonymized war-story numbers stand (D-6); see planning/DECISIONS.md.
 - Publication decision points 1-5, shipped with de-facto answers that still want an
   explicit confirm: automerge variants (the maturity ladder in AUTOMERGE_GOTCHAS.md
   keeps the choice open per repo), skills layout (commands shipped as files under
   templates/commands/; that README still calls the location provisional), CI-kit split
-  (single repo), war stories vs blank templates (anonymized labeled callouts in use),
-  operator-habits profile (not published).
+  (single repo), war stories vs blank templates (anonymized labeled callouts in use,
+  confirmed at D-6), operator-habits profile (not published).
 
 ## Where the full record lives
 
