@@ -29,16 +29,19 @@ Brand context lives in the BetterMe repo: `business-825-v3.md` (company profile)
 ## WHAT THIS REPO IS
 
 The public companion repo for **From Archivist to Architect** (Book 1 of the Architect's
-Blueprint series). Readers land here from the book. The mission: free, shareable artifacts
-keyed to the book's chapters, i.e. the skills, templates, checklists, and playbook pages the
-book teaches, ready to use. The funnel: book -> repo -> 825 Consulting.
+Blueprint series). Readers land here from the book. The mission: the working operating
+machinery, ready to copy: templates, the CI kit, command skills, workflows, and pattern
+docs, all written in this repo's own words. No book prose, chapters, excerpts, or
+paraphrased chapter content ships here; the book is referenced as a pointer, never
+summarized (D-4). The funnel: book -> repo -> 825 Consulting.
 
 **Audience:** analysts leveling up to data and solution architects. Professional but
 approachable. Not academic, not dumbed down.
 
-What lives here: `skills/`, `templates/`, `checklists/`, playbook pages, and the planning
-docs for this repo itself. What never lives here: the manuscript, KDP metadata, launch
-planning, sales copy drafts, or anything else that belongs to the private book repo.
+What lives here: `ci-kit/`, `docs/`, `playbook/`, `skills/`, `templates/`, `checklists/`,
+`marketing/` drafts, and the planning docs for this repo itself. What never lives here:
+book content in any form, the manuscript, KDP metadata, launch planning, sales copy
+drafts, or anything else that belongs to the private book repo.
 
 ---
 
@@ -109,9 +112,9 @@ Never silently rewrite an entry.
 
 After any change to companion content or positioning, sweep the public surfaces that cite
 the changed thing for drift before you finish: the README, the companion content
-(`skills/`, `templates/`, `checklists/`, playbook pages), and the series positioning. A
-renamed artifact, a restructured directory, or a reworded pitch must match everywhere it
-appears.
+(`skills/`, `templates/`, `checklists/`, `docs/`, `ci-kit/`, `playbook/`, `marketing/`),
+and the series positioning. A renamed artifact, a restructured directory, or a reworded
+pitch must match everywhere it appears.
 
 Fix only the impacted files, never touch consistent ones. If everything is consistent,
 report "no drift" and change nothing. Drift found but out of scope for the current PR
@@ -127,12 +130,12 @@ fix reference (PR or commit). Never silently drop an entry.
 
 ### Active
 
-- **KI #1** (2026-07-21): CLAUDE.md's own repo map and mission wording predate the wave 2 and 3 merges and the D-4 companion-only ruling. Evidence: the REPO MAP block has no rows for `ci-kit/`, `docs/`, or `playbook/`; the `skills/` / `templates/` / `checklists/` rows still say "keyed to book chapters"; and WHAT THIS REPO IS still frames the mission as artifacts "keyed to the book's chapters" and omits `ci-kit/` and `docs/` from "what lives here". Found by the 2026-07-21 post-merge continuity sweep, which scoped itself to the reader-facing surfaces and left this file to its own PR. Status: Active.
-- **KI #2** (2026-07-21): CI blind spot: `.github/workflows/ci.yml` never runs the decision-gate test suite. It discovers `ci-kit/guards/tests` and `ci-kit/migrations/tests` but not `ci-kit/workflows/tests`, so the 36 tests behind `decision_script.py` (merged in the second-generation gate PR) pass only when someone runs them by hand; a regression there would merge green. All 36 pass locally as of 2026-07-21. Fix is a one-line `ci:` change, kept out of the continuity-sweep docs PR by the one-concern rule. Status: Active.
+(none)
 
 ### Resolved
 
-(none yet)
+- **KI #1** (2026-07-21, resolved 2026-07-21): CLAUDE.md's own repo map and mission wording predate the wave 2 and 3 merges and the D-4 companion-only ruling. Evidence: the REPO MAP block has no rows for `ci-kit/`, `docs/`, or `playbook/`; the `skills/` / `templates/` / `checklists/` rows still say "keyed to book chapters"; and WHAT THIS REPO IS still frames the mission as artifacts "keyed to the book's chapters" and omits `ci-kit/` and `docs/` from "what lives here". Found by the 2026-07-21 post-merge continuity sweep, which scoped itself to the reader-facing surfaces and left this file to its own PR. Resolved 2026-07-21: mission reframed to the D-4 pointer-only wording and the repo map brought current with the post-wave-3 tree. Fixed PR #25.
+- **KI #2** (2026-07-21, resolved 2026-07-21): CI blind spot: `.github/workflows/ci.yml` never runs the decision-gate test suite. It discovers `ci-kit/guards/tests` and `ci-kit/migrations/tests` but not `ci-kit/workflows/tests`, so the 36 tests behind `decision_script.py` (merged in the second-generation gate PR) pass only when someone runs them by hand; a regression there would merge green. All 36 pass locally as of 2026-07-21. Fix is a one-line `ci:` change, kept out of the continuity-sweep docs PR by the one-concern rule. Resolved 2026-07-21: `Decision-gate tests` step added to the Kit self-tests job, all 36 discovered and green. Fixed PR #25.
 
 ---
 
@@ -176,9 +179,18 @@ SESSION_STATE.md             Living handoff (refresh on "checkpoint")
 planning/
   ROADMAP.md                 Companion-repo roadmap
   DECISIONS.md               The decisions ledger (format defined above)
-skills/                      Reusable AI skill definitions, keyed to book chapters
-templates/                   Copy-and-adapt templates, keyed to book chapters
-checklists/                  Operational checklists, keyed to book chapters
+ci-kit/                      The runnable enforcement kit; copy it into your repo
+  guards/                    Parameterized lint guards + their self-test fixtures
+  migrations/                Migration runner + policy checks, with tests
+  workflows/                 Workflow templates (automerge gate + companions) + the decision script and its tests
+docs/                        Pattern docs, written in this repo's own words
+playbook/                    The agent-ops operating model pages
+skills/                      Paste-able AI skill definitions
+templates/                   Copy-and-adapt working-file templates
+  commands/                  Slash-command definitions for Claude Code
+  test-harness/              In-process test harness skeleton
+  ledger-tools/              Conclusions-ledger hygiene tools
+checklists/                  Operational checklists
 marketing/                   Draft posts Jovan publishes himself; nothing auto-posts
 ```
 
