@@ -5,9 +5,9 @@ up mid-flight. Keep it current, keep it short.
 
 ## Active branch
 
-`claude/post-merge-continuity`: the post-merge continuity sweep. Index rows the wave PRs
-deferred, stale counts (the gotcha count is ten now), pointer-line normalization, the
-first KI ledger entry, and this refresh.
+`claude/post-merge-continuity`: the post-merge continuity sweep, open as PR #23. Index
+rows the wave PRs deferred, stale counts (the gotcha count is ten now), pointer-line
+normalization, the first KI ledger entries, and this refresh.
 
 ## Merged so far
 
@@ -29,9 +29,9 @@ first KI ledger entry, and this refresh.
 
 ## In-flight work
 
-- The continuity sweep PR from this branch. Once it merges, the tree is self-consistent:
-  index tables current, the gotcha count reads ten everywhere, the book pointer line sits
-  below the H1 in every file that carries it.
+- PR #23, the continuity sweep from this branch. Once it merges, the tree is
+  self-consistent: index tables current, the gotcha count reads ten everywhere, the book
+  pointer line sits below the H1 in every file that carries it.
 
 ## Next steps
 
