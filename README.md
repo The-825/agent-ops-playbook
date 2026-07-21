@@ -24,18 +24,30 @@ brake in the first hour. The CI kit comes after.
 ## The book
 
 This repo is the code companion to **From Archivist to Architect**, Book 1 of The
-Architect's Blueprint series, by Jovan Smith, 825 Consulting. Coming soon. The book
-tells the story; this repo is the practice.
+Architect's Blueprint series, by Jovan Smith, 825 Consulting. The book is out,
+published July 21, 2026. It tells the story; this repo is the practice.
 
-> **[Amazon link goes here at launch]** <!-- PLACEHOLDER: fill with the Amazon listing URL at launch -->
+> On Amazon: **[SWAP-ON-ASIN]** <!-- swap this placeholder for the live Amazon listing URL once the ASIN exists -->
+
+## Three ways in
+
+- **I read the book.** Start with the memory starter:
+  [CLAUDE](templates/CLAUDE_TEMPLATE.md),
+  [SESSION_STATE](templates/SESSION_STATE_TEMPLATE.md), and
+  [DECISIONS](templates/DECISIONS_TEMPLATE.md) in `templates/`, then the automerge
+  gate in [`ci-kit/workflows/`](ci-kit/workflows/).
+- **I want the templates.** [`templates/`](templates/) plus
+  [`checklists/`](checklists/): copy the file, fill the placeholders, adapt.
+- **I run agents on a real repo.** [`ci-kit/`](ci-kit/) first (guards, migrations,
+  workflows), then [`docs/`](docs/) for the reasoning behind each piece.
 
 ## The map
 
 One line per directory; the sections and READMEs below each one carry the depth.
 
 - [`templates/`](templates/): copy-and-adapt working files (agent rules file, session
-  handoff, decision ledgers, rebuild blueprint, parity contract) plus slash commands, a
-  test harness, and ledger tools
+  handoff, decision and authority ledgers, rebuild blueprint, parity contract) plus
+  slash commands, a test harness, and ledger tools
 - [`ci-kit/`](ci-kit/): the runnable enforcement kit: self-tested lint guards, a
   migration runner with policy checks, and CI workflow templates around a fail-closed
   automerge gate
@@ -111,10 +123,12 @@ And when you are starting a disciplined rebuild:
 
 The kit is meant to be copied into your repo and wired to CI the same day.
 
-- `guards/`: six parameterized lint guards (no inline style/script, env reads only in the
+- `guards/`: seven parameterized lint guards, each stdlib-only, under two seconds, and its
+  own testable unit. Six are path scanners (no inline style/script, env reads only in the
   config registry, no raw fetch, no hardcoded SQL LIMIT, no raw CREATE VIEW, no PII in
-  fixtures). Each is stdlib-only, runs in under two seconds, and doubles as its own testable
-  unit: no args scans the repo (CI mode), an explicit path skips exclusions (self-test mode).
+  fixtures): no args scans the repo (CI mode), an explicit path skips exclusions (self-test
+  mode). The seventh checks that authority-ledger citations in a PR body resolve to real,
+  unexpired grants, and that the ledger itself stays parseable.
 - `guards/tests/`: the "prove they bite" self-tests. Every guard is run against a
   deliberately-bad fixture (must fail) and a clean fixture (must pass). A guard that never
   fails is worse than no guard.
@@ -122,14 +136,16 @@ The kit is meant to be copied into your repo and wired to CI the same day.
   guards do not short-circuit, so an author sees all violations at once.
 - `migrations/`: the migration runner, a tool instead of a loose folder. Refuses duplicate
   numbers and out-of-order apply before any SQL reaches a database; tracks applied-per-tenant
-  in a JSON ledger. Its `policy_checks.py` adds the merge-time content lints (forward-only,
-  risky defaults ship OFF, the claim-first number ledger) the automerge gate runs on
-  migration PRs.
+  in a JSON ledger. Ledger management only by design; the apply layer is separable. Its
+  `policy_checks.py` adds the merge-time content lints (forward-only, risky defaults ship
+  OFF, the claim-first number ledger) the automerge gate runs on migration PRs.
 - `workflows/`: the CI floor as one workflow with two required-check jobs (`checks.yml`), a
   fail-closed automerge for agent PRs (`automerge.yml`), and `AUTOMERGE_GOTCHAS.md`, the ten
   non-obvious failure modes a naive automerge hits, each one paid for in production. Around
   that gate: `decision_script.py`, the second-generation merge decision as unit-tested pure
-  functions, plus the merge-lane companion workflows and the staging-first reset button.
+  functions, plus the merge-lane companion workflows, mapped in
+  [`MERGE_LANE_COMPANIONS.md`](ci-kit/workflows/MERGE_LANE_COMPANIONS.md), and the
+  staging-first reset button.
 - `pull_request_template.md`: the judgment-only PR body template: Summary / Versions /
   Test plan / What's NOT in scope, prose answers for the calls robots cannot check,
   deliberately no checkboxes.
@@ -137,9 +153,9 @@ The kit is meant to be copied into your repo and wired to CI the same day.
 ## Inside `templates/`
 
 Copy the file, fill the placeholders, commit it to your own repo. The full set covers the
-agent rules file, the session handoff, the conclusions store, a one-page ADR format, the
-shared agent-prompt preamble, the incident postmortem, and the anti-rot mechanical-facts
-pattern; see [templates/README.md](templates/README.md). Highlights:
+agent rules file, the session handoff, the conclusions store, the authority ledger, a
+one-page ADR format, the shared agent-prompt preamble, the incident postmortem, and the
+anti-rot mechanical-facts pattern; see [templates/README.md](templates/README.md). Highlights:
 
 - `DECISIONS_TEMPLATE.md`: the append-only decisions ledger, plus the rebuild variant where
   every day-one rule is paired with the specific past failure it prevents, so abstract
@@ -173,4 +189,5 @@ actually use, cleaned up so you can use it too.
 ## Using this repo
 
 Everything here is MIT licensed. See [LICENSE](LICENSE). Take it, adapt it, ship it. If
-something is unclear or broken, open an issue.
+something is unclear or broken, open an issue; if you want to send a fix,
+[CONTRIBUTING.md](CONTRIBUTING.md) is the short read.
