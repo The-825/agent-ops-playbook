@@ -29,16 +29,19 @@ Brand context lives in the BetterMe repo: `business-825-v3.md` (company profile)
 ## WHAT THIS REPO IS
 
 The public companion repo for **From Archivist to Architect** (Book 1 of the Architect's
-Blueprint series). Readers land here from the book. The mission: free, shareable artifacts
-keyed to the book's chapters, i.e. the skills, templates, checklists, and playbook pages the
-book teaches, ready to use. The funnel: book -> repo -> 825 Consulting.
+Blueprint series). Readers land here from the book. The mission: the working operating
+machinery, ready to copy: templates, the CI kit, command skills, workflows, and pattern
+docs, all written in this repo's own words. No book prose, chapters, excerpts, or
+paraphrased chapter content ships here; the book is referenced as a pointer, never
+summarized (D-4). The funnel: book -> repo -> 825 Consulting.
 
 **Audience:** analysts leveling up to data and solution architects. Professional but
 approachable. Not academic, not dumbed down.
 
-What lives here: `skills/`, `templates/`, `checklists/`, playbook pages, and the planning
-docs for this repo itself. What never lives here: the manuscript, KDP metadata, launch
-planning, sales copy drafts, or anything else that belongs to the private book repo.
+What lives here: `ci-kit/`, `docs/`, `playbook/`, `skills/`, `templates/`, `checklists/`,
+`marketing/` drafts, and the planning docs for this repo itself. What never lives here:
+book content in any form, the manuscript, KDP metadata, launch planning, sales copy
+drafts, or anything else that belongs to the private book repo.
 
 ---
 
@@ -176,9 +179,18 @@ SESSION_STATE.md             Living handoff (refresh on "checkpoint")
 planning/
   ROADMAP.md                 Companion-repo roadmap
   DECISIONS.md               The decisions ledger (format defined above)
-skills/                      Reusable AI skill definitions, keyed to book chapters
-templates/                   Copy-and-adapt templates, keyed to book chapters
-checklists/                  Operational checklists, keyed to book chapters
+ci-kit/                      The runnable enforcement kit; copy it into your repo
+  guards/                    Parameterized lint guards + their self-test fixtures
+  migrations/                Migration runner + policy checks, with tests
+  workflows/                 Workflow templates (automerge gate + companions) + the decision script and its tests
+docs/                        Pattern docs, written in this repo's own words
+playbook/                    The agent-ops operating model pages
+skills/                      Paste-able AI skill definitions
+templates/                   Copy-and-adapt working-file templates
+  commands/                  Slash-command definitions for Claude Code
+  test-harness/              In-process test harness skeleton
+  ledger-tools/              Conclusions-ledger hygiene tools
+checklists/                  Operational checklists
 marketing/                   Draft posts Jovan publishes himself; nothing auto-posts
 ```
 
