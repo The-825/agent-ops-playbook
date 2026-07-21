@@ -1,91 +1,73 @@
-# The model playbook: per-tier operating rules
+# Model Playbook
 
 > Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
-One repo, one set of binding rules, several tiers of model running sessions against them. A deep model can infer its way to the right file and the right caveat; a cheaper model gets the same accuracy at lower cost only if the repo substitutes deterministic routing for open-ended inference. That substitution is the whole design brief of this playbook: the boot protocol supplies the routing, the guardrails pin the facts, and the per-tier counter-rules name each tier's characteristic failure and its counter.
+Treating every model tier as interchangeable fails in both directions. Cheap models silently apply prototype discipline to production repos (guessed figures, skipped verification, confident paraphrases that drop the one nuance that mattered), while strong models burn budget re-deriving lookups the repo already answers in a file. This playbook is the fix: a boot protocol every session follows, a pre-flight guardrails table, counter-rules per tier, and an operator cheat sheet for matching the task to the model. It is vendor-neutral on purpose; lineups change faster than the pattern does, so it speaks in tiers (strongest, middle, cheapest) and you map your provider's current models onto them.
 
-Write the playbook as a file in the repo, and have every session read it once at start. It is the one doc where the reader's identity changes the instructions.
+## The core idea
 
-## Tiers, not model names
+Model tiers trade inference depth for cost. A strongest-tier session can infer its way to the right file, the right caveat, the right query. A cheaper session gets to the same accuracy at a fraction of the cost by substituting deterministic routing for open-ended inference: index files, data dictionaries, and settled-conclusions ledgers that the repo maintains so the model does not have to rediscover them. The playbook only works if those routing docs exist. If your repo has no index or dictionary yet, that is the prerequisite, not this doc.
 
-Frame everything in capability tiers, because model lineups and prices change faster than operating rules do:
+## The boot protocol (index-first routing)
 
-- **Fast tier**: the cheapest model you run. Lookups, status pulls, mechanical single-file edits.
-- **Mid tier**: the daily driver. Bounded feature work, doc edits, well-specified fixes.
-- **Deep tier**: the strongest model you pay for. Undecided approaches, mystery debugging, architecture, multi-PR arcs.
+Every session, any tier, in order:
 
-| Tier | Your model (edit this column) | Typical work |
-|---|---|---|
-| Fast | `<fast-model>` | Lookups, log reads, yes/no checks, CI watching |
-| Mid | `<default-model>` | Feature work, single PRs, doc edits, known-cause fixes |
-| Deep | `<deep-model>` | Debugging with unknown cause, refactors, design, long arcs |
+1. Never re-read what is already in context. The rules file auto-attaches in most agent setups; re-reading it pays hundreds of lines for zero new information.
+2. Resuming mid-stream? Read the session-state handoff file first, before anything else.
+3. Task wider than a lookup? Read the one-page system mental-model doc once. Skip it entirely for pure lookups.
+4. Route every "where is X" and "what computes Y" question through the repo's machine-first index file (the where-is map, route map, thresholds with file and line, invariants, doc router). One index read replaces a whole exploratory grep arc.
+5. Then open only the narrow cited source: grep to locate, read a line range. Reference docs are grep targets, never end-to-end reads.
+6. Use the repo's packaged skills and commands instead of hand-rolling the workflows they already encode.
+7. Distrust any dated snapshot for current numbers. Verify a live value against its canonical source once, then trust it for the rest of the session.
 
-Example ladder, for calibration only: at the time of writing, one production setup mapped the tiers to Haiku (fast), Sonnet (mid), and Opus (deep), with a frontier model above the ladder for judgment-heavy synthesis. Treat that as the shape of a ladder, not a prescription; fill the column from your provider's current lineup, and update it when the lineup moves.
+## Pre-flight accuracy guardrails
 
-## Boot protocol, all tiers
+These are the error modes that cost real rework, each reduced to a one-line rule. Cheaper tiers hit them more often, so the table is mandatory pre-flight reading for those sessions and cheap insurance for the rest.
 
-Each step exists to prevent a specific waste pattern.
+| Error mode | Rule | Where the answer lives |
+| ---------- | ---- | ---------------------- |
+| Hand-rolled aggregation diverges from the official number | Reported figures come from the canonical endpoint, never a fresh query off the raw tables | The route logic and the views it reads |
+| "This field is sparse" when blank means No | Blank is not missing; check field semantics before calling anything a gap | The data dictionary |
+| Signup counted as activation | A form submission is intent, not behavior; reconcile through the behavioral verifier | The reconciliation query the repo already ships |
+| Status filter drops null-status rows | Use the canonical active filter verbatim; never compare against a literal that null rows fail | The rules file |
+| Platform quirks burn an hour each | Region-scoped metadata queries, permission-split access paths, and their kin are documented once | The index's gotchas section |
+| Git flow improvisation | Push, never merge by hand; feature-slug branches only | The rules file |
 
-1. **Never re-read the auto-attached rules file.** The harness loads it at session start; a second read pays its full length for zero new information.
-2. **Resuming mid-workstream? Read the session handoff file first.** Active branch, in-flight work, pending decisions. It is short on purpose ([templates/SESSION_STATE_TEMPLATE.md](../templates/SESSION_STATE_TEMPLATE.md)).
-3. **Route, do not explore.** Follow the kernel-to-catalog-to-stamp shape from [context-budget.md](context-budget.md): the rules kernel names the destination class, the catalog names the file and anchor, the target file's stamp confirms the hop. For fast- and mid-tier sessions this is the *entire* boot read set: kernel plus catalog route, nothing else until a route demands it. Deep-tier sessions add one read of the full-system mental-model doc when the task genuinely spans systems, and skip it for everything narrower. The deep tier can afford to reconstruct the big picture from scattered reads; buying it pre-assembled is still cheaper.
-4. **Open only the narrow cited source.** Grep to locate, then read the specific line range. Reference docs are grep targets, not cover-to-cover reads, on every tier.
-5. **Use the committed commands for recurring workflows** (cut a branch, ship a PR, run the continuity sweep). Each one encodes conventions a session would otherwise re-derive at full price.
-6. **Verify against the live system before authoring changes to it.** A thirty-second schema or endpoint check before writing a migration or citing a figure. Assumed-absent things that existed have cost real rework on every tier.
+Maintain the table the same way you maintain any doc: when a new error mode costs a session real time, it gets a row here and an entry in the index's gotchas, in the same PR as the fix.
 
-## Accuracy guardrails, all tiers
+## Strong and cheap models fail differently
 
-The guardrails bind every tier equally. Cheaper tiers hit them more often; that changes the frequency of the check, never the rule.
+This is the transferable insight. The counter-rules differ per tier because the failure modes do.
 
-1. **Every reported figure names its canonical source.** Mirror the query the production surface runs; never hand-roll an aggregation off raw tables. If you cannot name the source, you have not looked it up. (The full rule set: [skills/data-truth-rules.md](../skills/data-truth-rules.md).)
-2. **Blank is not missing.** Check the data dictionary or run a value-distribution query before calling any field sparse. In many schemas a blank is a meaningful value, not a gap.
-3. **Domain semantics are quoted, not paraphrased.** Status vocabularies, category definitions, threshold values: quote the canonical doc verbatim. A confident paraphrase that drops one nuance is the costliest class of error, because it reads as correct.
-4. **Two failed lookups means stop and say so.** "Not found; I need a pointer to the source" beats a synthesized answer every time. The operator resolves a pointer in seconds; unwinding a fabricated one costs a session.
-5. **Verify before write.** Parse checks before push, schema checks before SQL, a live read before changing any displayed number. The cheapest regression layer that covers the change, every time ([checklists/pre-push.md](../checklists/pre-push.md)).
-6. **Push, never merge.** The merge gate owns merges; sessions open PRs on feature branches and stop there ([checklists/pr-discipline.md](../checklists/pr-discipline.md)).
+**Strongest tier** fails by excess. It reads broadly "to be safe," re-verifies what the index already pins, narrates its plan between tool calls, and lets scope creep in on long arcs. Counter-rules: grep-first narrow reads, one agent per research question, verify once then trust, no prefaces before tool calls, a pre-push check that the diff matches the stated scope, and plan mode reserved for genuinely multi-file work.
 
-## Per-tier counter-rules
+**Middle tier** (the daily driver) fails by plausible guessing, not over-exploration. Counter-rules: never assert a figure without naming its source; quote domain semantics verbatim from the dictionary instead of paraphrasing, because a confident paraphrase that drops one nuance is this tier's costliest failure; treat the guardrails table as a mandatory pre-flight; after two failed lookups, stop and ask for a pointer instead of synthesizing one; verify against the live source before every write.
 
-Each tier fails in a characteristic direction. The counter-rules are written against the direction, not against the tier's competence.
+**Cheapest tier** is for status pulls, single-file lookups, log reads, yes-or-no checks, and CI watching. Never schema changes, migrations, multi-file refactors, or anything touching domain-data semantics. Its tripwire is structural: the moment it finds itself editing a second file, that is the signal the task was mis-tiered, and it should stop and say so rather than push on.
 
-### Deep tier: spends too much
+## Match the task to the tier
 
-The deep tier's failure mode is cost, not correctness. It reads broadly to be safe, re-verifies what the repo already pins, and narrates.
+| Task shape | Examples | Tier |
+| ---------- | -------- | ---- |
+| Lookup | status pull, single-file read, log tail, yes-or-no check | Cheapest |
+| Ship | a scoped feature or fix with a known target file and a pattern to mirror | Middle |
+| Complex | multi-file refactors, schema and migration work, debugging with an unknown cause, anything touching data semantics | Strongest |
 
-- **Grep first, read narrow, one research agent per question.** Parallel agents on overlapping questions duplicate tokens for no added coverage.
-- **Verify a live value once, then trust it for the session.** Thresholds and invariants the index files already pin do not need re-derivation.
-- **No narration.** Run the tool instead of announcing it. Two-sentence turn summaries. One-sentence corrections.
-- **Hold scope in long arcs.** Before every push: re-read the diff, run the cheapest covering check, confirm the diff matches the PR's stated scope and nothing more.
-- **Plan first for multi-file work; skip the ceremony for two-file edits.**
+Start cheaper and escalate on a wall; that is almost always the right default. The exception is work you already know is complex-shaped, where starting cheap just prepays the escalation.
 
-### Mid tier: guesses too plausibly
+## The escalation valve
 
-The mid tier's failure mode is the confident answer assembled from pattern instead of lookup. Its counter-rules are all forms of "show your source."
+A cheaper session must be allowed, and expected, to hand up. The trigger is concrete: if a debugging arc is still guessing after about thirty minutes on a fix that looked five-minute-shaped, the session recommends restarting the turn on the stronger tier. That costs one restart. Letting the cheap session keep digging costs more dead-end turns plus the cleanup. Before any mid-arc model switch, refresh the session-state handoff file first, so the next model boots from written state instead of a lossy summary.
 
-- **Never assert a figure without naming the endpoint or view it came from.** Unable to name it? Run the routing lookup first.
-- **The repo's gotcha list is a mandatory pre-flight** before schema, git, or data-diagnosis work. Every entry is a trap a prior session actually fell into.
-- **Quote, do not reconstruct, domain semantics** (guardrail 3 binds hardest here).
-- **The escalation valve is a rule, not an admission.** A debugging arc still guessing after thirty minutes on what looked like a five-minute fix says so explicitly and recommends restarting the task on the deep tier. More dead-end turns on the mid tier cost more than the escalation.
+## Operator cheat sheet
 
-### Fast tier: must not decide alone
+The habits on the human side of the session, roughly in order of money saved:
 
-The fast tier is bounded by an allow-list, because its failure mode is doing plausible-looking damage quickly.
+- Batch related asks into one message. Every separate turn re-attaches the rules file.
+- Reference by path and line ("the watermark logic in sync.py around line 90"), not "that file we talked about."
+- Front-load any operational fact that changes the data model ("that vendor was suspended in March"). It exists nowhere else, and the model cannot infer it.
+- When correcting a number, name the canonical source in the same breath, so the correction sticks as a rule rather than a one-off.
+- Shape the prompt to the tier. Middle tier: give the target file, the pattern to mirror, and the acceptance criterion up front; explicit beats inferable. Strongest tier: give the goal, the constraints, and what is out of scope, then let it plan.
+- Mark resolved topics ("done with the sync issue") so stale context can be dropped from consideration.
 
-- **Allowed:** status pulls, single-file lookups, log reads, yes/no checks, watching CI.
-- **Never:** schema changes, migrations, deletions, auth-touching code, multi-file edits, debugging real failures, authoring anything that states figures about regulated data.
-- **The tell:** a fast-tier session editing its second file is the signal to stop and escalate. Not finish the edit, stop.
-- **Escalation is the success path.** A fast-tier session that says "this is above my lane" has done its job. A wrong confident answer has not.
-
-## Switching tiers mid-arc
-
-Start cheaper, escalate on a wall. Before switching, refresh the session handoff file so the next tier boots from written state instead of re-deriving (or compacting away) the conversation. Switch at task boundaries, never mid-debug: the context the old session holds does not transfer, and rebuilding it mid-problem costs more than the tier arbitrage saves. The on-demand classifier that recommends a tier from a task description ships as a command in this kit ([templates/commands/model-check.md](../templates/commands/model-check.md)).
-
-## Operator side: the first message is tier-tuned
-
-- **To the mid tier:** name the target file, the pattern to mirror ("like the existing one in X"), and the acceptance criterion in message one. State edge cases and scope up front; each clarifying round is a full turn.
-- **To the deep tier:** give the goal, the constraints, and what is explicitly out of scope, then let it plan. Do not over-specify the how.
-- **To every tier:** batch related asks into one message, reference code by path and line, front-load any operational nuance that changes the data model, and when correcting a number, name the canonical source so the fix hits the root.
-
-## Maintenance
-
-Update the playbook when the model lineup changes, and when a new recurring error mode gets documented: the new mode goes in the guardrails table and in the repo's gotcha list, in the same PR. A playbook that lags the lineup misroutes every session that trusts it.
+Ownership note: this playbook is a living doc on the same continuity sweep as the rest of your operating docs. When the model lineup changes or a new recurring error mode shows up, update the tier mapping and the guardrails table in the same pass. A playbook that lags the lineup by six months is just another stale doc teaching sessions to ignore it.

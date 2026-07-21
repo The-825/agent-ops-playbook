@@ -21,7 +21,8 @@ Ruling: The eBook lives in this repo under manuscript/, marketing/, kdp-metadata
 assets/, and planning/. kdp-metadata/ is the source of truth over the KDP dashboard.
 Why: One versioned home for everything the listing depends on; dashboard-only edits
 drift and get lost.
-Source: Workstream setup PR (claude/ebook-claude-md).
+Source: Workstream setup PR, 2026-07-15 (the eBook workstream has since moved to the
+private book repo, see D-3).
 
 ## D-2 · 2026-07-15 · Book title
 
@@ -40,3 +41,9 @@ metadata, and launch planning move to a private repo, proposed
 8two5/archivist-to-architect-book.
 Why: KDP Select exclusivity and sales mean the book content never sits public.
 Source: Jovan's "yes split" approval, session 2026-07-18.
+
+## D-4 · 2026-07-21 · Repo scope: code-only companion to the book
+
+Ruling: This repo is only a companion to From Archivist to Architect. No book prose, chapters, excerpts, or paraphrased chapter content ships here. The public surface is the working code: templates, CI kit, command skills, workflows, and pattern docs written in this repo's own words. The book is referenced as a pointer, never summarized.
+Why: Freely public book content risks Amazon KDP demonetization. The repo sells the practice, the book sells the story.
+Source: Jovan ruling, 2026-07-21, relayed via the coordinator session.

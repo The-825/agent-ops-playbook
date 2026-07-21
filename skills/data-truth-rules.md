@@ -1,6 +1,6 @@
 # Data truth rules
 
-*From the book: the data-truth thread running through Chapters 1, 3, and 5.*
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
 The most dangerous number in any report is the one that quietly disagrees with the dashboard leadership already reads. Hand-rolled counts, misread blanks, and form data trusted over behavior all produce figures that look right and are wrong. These four rules are the standing defense. Paste them into your agent rules file or your team's analytics handbook.
 
