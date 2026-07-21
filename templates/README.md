@@ -1,5 +1,7 @@
 # Templates
 
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 10 (The Force Multiplier: Building with AI Agents).
+
 Copy-paste starting points for the working files an agent-assisted repo needs. To adopt one: copy the file, fill the angle-bracket placeholders, delete what does not apply, and commit it to your repo root or docs directory. Each template's intro explains the failure it prevents, so read that before deciding whether you need it.
 
 | File | What it is |

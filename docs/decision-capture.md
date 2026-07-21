@@ -1,6 +1,6 @@
 # Decision capture: persist a ruling the same turn it lands
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.6 (The Ledger and the Live Check).
 
 The rule: when the operator issues a durable ruling, the session appends it to the decisions ledger in the same turn, before moving on to the work the ruling unblocks. Not at the end of the session, not in a wrap-up pass, not "once the feature is in". The turn the ruling lands is the turn it gets written down.
 
