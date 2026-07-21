@@ -1,27 +1,64 @@
 # agent-ops-playbook
 
-The hands-on companion repo for **From Archivist to Architect**, Book 1 of the
-Architect's Blueprint series.
+Run one coding agent against a repo that matters and you can read every diff yourself.
+Run several a day, solo, and the operating problems show up fast: a merge lands that no
+human reviewed, the docs quietly fall behind the code, a decision gets made in one
+session and is invisible to the next, and every new session starts blind because the
+context lived in the last one's window.
 
-The book is for analysts who are done being the person who just pulls the data. It walks
-the path from report-writer to data and solution architect: how to design systems instead
-of one-off queries, how to put AI agents to work on real operations, and how to build the
-habits that make the work hold up after you ship it.
-
-This repo is where the book's ideas become files you can actually use. No theory rehash,
-no summaries of chapters you already read. Just the working artifacts, extracted from two
-years of running Claude Code against a production system that handles regulated PII for
-real users. Patterns, not product: the runnable CI enforcement kit, the templates, and
-the hard-won gotchas, with every domain identifier removed.
+This repo is the operating machinery for that problem, extracted from two years of
+running Claude Code against a production system that handles regulated PII for real
+users, with every domain identifier removed. Patterns, not product: working templates,
+a CI kit with self-tested guards, paste-able skills, and pattern docs, all written in
+this repo's own words.
 
 The premise behind all of it: a rule that lives only in a doc gets violated silently; a
 rule with a guard, a gate, or a template becomes structurally hard to break. This repo
 ships the guards, gates, and templates.
 
+## What ships here
+
+- **`templates/`**: copy-and-adapt starting points for the working files: the agent
+  rules file, the session handoff file, the append-only decisions ledger, the
+  conclusions store, and a one-page ADR format, plus the rebuild-method pair:
+  - `DECISIONS_TEMPLATE.md`: the decisions ledger, plus the rebuild variant where
+    every day-one rule is paired with the specific past failure it prevents, so abstract
+    rules earn their place.
+  - `PARITY_TEMPLATE.md`: the zero-regression parity contract. Every old-surface
+    capability is a tracked row, bucketed and checked with evidence; nothing ships until
+    its row is checked.
+- **`ci-kit/`**: the runnable enforcement kit. Copy it into your repo.
+  - `guards/`: six parameterized lint guards (no inline style/script, env reads only in the
+    config registry, no raw fetch, no hardcoded SQL LIMIT, no raw CREATE VIEW, no PII in
+    fixtures). Each is stdlib-only, runs in under two seconds, and doubles as its own testable
+    unit: no args scans the repo (CI mode), an explicit path skips exclusions (self-test mode).
+  - `guards/tests/`: the "prove they bite" self-tests. Every guard is run against a
+    deliberately-bad fixture (must fail) and a clean fixture (must pass). A guard that never
+    fails is worse than no guard.
+  - `run_guards.sh`: the aggregate gate CI calls. The guard registry lives in one array, and
+    guards do not short-circuit, so an author sees all violations at once.
+  - `migrations/`: the migration runner, a tool instead of a loose folder. Refuses duplicate
+    numbers and out-of-order apply before any SQL reaches a database; tracks applied-per-tenant
+    in a JSON ledger. Ledger management only by design; the apply layer is separable.
+  - `workflows/`: the CI floor as one workflow with two required-check jobs (`checks.yml`), a
+    fail-closed automerge for agent PRs (`automerge.yml`), and `AUTOMERGE_GOTCHAS.md`, the six
+    non-obvious failure modes a naive automerge hits, each one paid for in production.
+- **`skills/`**: paste-able rule sets for your own agent rules file: session efficiency,
+  data-truth rules, feature-flag lifecycle, regression layering, forward-only migrations.
+- **`checklists/`**: the two-minute operational checklists: PR discipline, pre-push
+  verification, the continuity sweep.
+- **`playbook/`**: the connective essays: the agent-ops operating model and the
+  doc-sync agent pattern.
+- **`docs/`**: the method guides behind the templates: the four founding docs, day-one
+  mandates, the rules spine, and same-turn decision capture.
+
+Upcoming waves add the rest: model-ops docs and the hooks/settings bundle for the agent
+harness itself.
+
 ## Who this is for
 
-- Analysts leveling up to data and solution architects, following the book chapter by
-  chapter.
+- Analysts leveling up to data and solution architects who want the working files, not
+  another essay about them.
 - Teams running coding agents (Claude Code or similar) against a codebase that matters,
   where "the agent moved fast" is not an acceptable root cause.
 - Anyone rebuilding a legacy system and determined not to rebuild its debt along with it.
@@ -39,50 +76,23 @@ ships the guards, gates, and templates.
    guards, then runtime tests, then data assertions, then unit tests. Each layer runs cheaply
    on every PR forever.
 
-## Map of the repo
+## Start in one afternoon
 
-Book-keyed artifact folders (content lands as chapters finish):
+The highest-return first hour is not the CI kit. It is three small pieces that give agent
+work a memory and a brake:
 
-- **`skills/`** · reusable AI skill definitions you can drop into your own agent setup
-- **`templates/`** · copy-and-adapt templates for the documents and workflows the book covers
-- **`checklists/`** · the operational checklists, ready to run
+1. **An issue ledger.** Number every known issue (`KI #1`, `KI #2`, ...) in one file with
+   the date found, the evidence, and the status; move fixed entries to Resolved with the
+   fix reference, and never silently drop one. The starter section lives inside
+   `templates/CLAUDE_TEMPLATE.md`.
+2. **A session handoff file.** Copy `templates/SESSION_STATE_TEMPLATE.md` and refresh it
+   on a trigger word, so the next session picks up mid-flight instead of starting blind.
+3. **A label-gated merge.** Adopt `ci-kit/workflows/automerge.yml` with the
+   operator-label gate described in `AUTOMERGE_GOTCHAS.md`: an agent PR merges only when
+   every required check is green AND a human has applied the approval label. Nothing
+   lands unreviewed while you sleep.
 
-Everything is keyed to the book's chapters, so when a chapter says "the template for this
-is in the repo," this is the repo.
-
-What has landed so far:
-
-- **`ci-kit/`**: the runnable enforcement kit. Copy it into your repo.
-  - `guards/`: six parameterized lint guards (no inline style/script, env reads only in the
-    config registry, no raw fetch, no hardcoded SQL LIMIT, no raw CREATE VIEW, no PII in
-    fixtures). Each is stdlib-only, runs in under two seconds, and doubles as its own testable
-    unit: no args scans the repo (CI mode), an explicit path skips exclusions (self-test mode).
-  - `guards/tests/`: the "prove they bite" self-tests. Every guard is run against a
-    deliberately-bad fixture (must fail) and a clean fixture (must pass). A guard that never
-    fails is worse than no guard.
-  - `run_guards.sh`: the aggregate gate CI calls. The guard registry lives in one array, and
-    guards do not short-circuit, so an author sees all violations at once.
-  - `migrations/`: the migration runner, a tool instead of a loose folder. Refuses duplicate
-    numbers and out-of-order apply before any SQL reaches a database; tracks applied-per-tenant
-    in a JSON ledger. Ledger management only by design; the apply layer is separable.
-  - `workflows/`: the CI floor as one workflow with two required-check jobs (`checks.yml`), a
-    fail-closed automerge for agent PRs (`automerge.yml`), and `AUTOMERGE_GOTCHAS.md`, the six
-    non-obvious failure modes a naive automerge hits, each one paid for in production.
-- **`templates/`** also carries the rebuild-method pair:
-  - `templates/DECISIONS_TEMPLATE.md`: the decisions ledger, plus the rebuild variant where
-    every day-one rule is paired with the specific past failure it prevents, so abstract
-    rules earn their place.
-  - `templates/PARITY_TEMPLATE.md`: the zero-regression parity contract. Every old-surface
-    capability is a tracked row, bucketed and checked with evidence; nothing ships until its
-    row is checked.
-
-Upcoming waves will add the rest of the playbook: the founding-doc templates (operating rules,
-phased build order), session-memory and handoff templates, the in-process test harness
-skeleton, model-ops docs, and the skills/hooks/settings bundle for the agent harness itself.
-
-## Quick starts
-
-**Adopt the CI kit in an afternoon.**
+Then adopt the full CI kit:
 
 1. Copy `ci-kit/` into your repo.
 2. Edit the configuration block at the top of each guard (scanned paths, config-registry
@@ -90,9 +100,8 @@ skeleton, model-ops docs, and the skills/hooks/settings bundle for the agent har
 3. Copy `ci-kit/workflows/checks.yml` to `.github/workflows/` and point its steps at your
    trees.
 4. Run `bash ci-kit/run_guards.sh` locally until clean, then let the workflow gate every PR.
-5. Optional: adopt `automerge.yml` for agent PRs, but read `AUTOMERGE_GOTCHAS.md` first.
 
-**Start a disciplined rebuild.**
+And when you are starting a disciplined rebuild:
 
 1. Copy `templates/DECISIONS_TEMPLATE.md` and fill the right column of the rebuild tables
    from your own retrospective. If you cannot name the failure a decision prevents, cut the
@@ -102,18 +111,23 @@ skeleton, model-ops docs, and the skills/hooks/settings bundle for the agent har
 3. Lay the floor first: guards, tests, migration runner, CI gates. Features come after, and
    compose the patterns.
 
-## Get the book
+## The book
+
+This repo is the code companion to **From Archivist to Architect**, Book 1 of The
+Architect's Blueprint series, by Jovan Smith, 825 Consulting. Coming soon. The book tells
+the story; this repo is the practice.
 
 > **[Amazon link goes here at launch]** <!-- PLACEHOLDER: fill with the Amazon listing URL at launch -->
 
 ## What was deliberately left out
 
-No domain content and no filled instances. The private repos this kit was extracted from
-contain schemas, reports, regulated-domain record handling, staff references, and operational state; none
-of that ships, in whole or in scrubbed part. Templates here are authored fresh from the
-documented skeletons rather than scrubbed from filled instances, because scrubbing risks
-residue and fresh authoring does not. Where an incident makes a rule land, it appears as an
-anonymized war story in a clearly labeled callout.
+No book content, no domain content, no filled instances. The private repos this kit was
+extracted from contain schemas, reports, regulated-domain record handling, staff
+references, and operational state; none of that ships, in whole or in scrubbed part.
+Templates here are authored fresh from the documented skeletons rather than scrubbed from
+filled instances, because scrubbing risks residue and fresh authoring does not. Where an
+incident makes a rule land, it appears as an anonymized war story in a clearly labeled
+callout.
 
 ## Who made this
 
