@@ -1,10 +1,12 @@
 # CLAUDE.md starter template
 
-*From the book: Chapter 10, the building-with-AI-agents chapter.*
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
 Anything that lives only in chat history gets re-derived, differently, every session. An agent without a rules file will break your conventions, not out of malice, but because nothing pinned them down. This file is the spine of agent-assisted work: the single source of behavioral truth in the repo, read top to bottom before anything is touched, and the file every other doc defers to on rules. Copy the template below into your repo root as `CLAUDE.md` (or `AGENTS.md`), fill the placeholders, and delete what does not apply.
 
 ## The rules-spine guide
+
+This is the short version; the full essay, with the failure each section prevents and an afternoon-sized starter for each, is [docs/rules-spine.md](../docs/rules-spine.md).
 
 What each section is for, so you fill it with intent instead of copying blind:
 

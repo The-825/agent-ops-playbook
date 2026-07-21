@@ -1,16 +1,28 @@
 # Parity inventory template
 
-*From the book: Chapter 1, The Data Debt Audit.*
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
 
 Rebuilds fail by silently dropping the feature nobody remembered. Not the big pages, the small stuff: the endpoint one report depends on, the Sunday job that renews a webhook, the permission rule that hides admin tools from regular users. The parity inventory is the zero-regression contract for any rebuild or migration: every capability of the old system appears here as a row, and parity is declared only when every row is checked with evidence. No row, no capability; unchecked row, not done.
 
 ## How to use this inventory
 
-1. **Inventory first, build second.** Before writing any new code, walk the old system and fill every bucket below. Crawl the route table, the scheduler config, the cron entries, the permission checks, the report list. The rows you fail to write are the regressions you will ship.
-2. **One row per capability.** Purpose in a few words, where it lives in the old system, which build phase it lands in, and a status.
-3. **Status legend:** `☐ not started` / `◐ in progress` / `☑ done`. A row moves to `☑ done` only when the capability is rebuilt AND its named evidence exists (a passing test, a verified output, a recorded operator sign-off). Note the evidence in the Status cell.
+1. **Inventory first, build second.** Before writing any new code, walk the old system and fill every bucket below. Crawl the route table, the scheduler config, the cron entries, the permission checks, the report list. The rows you fail to write are the regressions you will ship. Fill every bucket, even if only to record "none," and expect the file to get long. The length is the point: it is what makes "feature parity, zero regressions" checkable instead of aspirational.
+2. **One row per capability.** Name the item concretely (an endpoint path, a panel, a job name), give its purpose in a few words so the row can be judged without archaeology, note where it lives in the old system, which build phase delivers it, and a status. Every row back-links to a phase in your build-order doc; a row with no phase is unscheduled work hiding in plain sight.
+3. **Status legend:** `☐ not started` / `◐ in progress` / `☑ done`. What `☑ done` requires is defined by the done gate below. Note the evidence in the Status cell (a passing test, a verified output, a recorded operator sign-off).
 4. **Deferred and dropped are statuses, not deletions.** If a capability is intentionally not being rebuilt, mark it `DROPPED` with the reason and who approved it. A silent omission and a recorded drop are entirely different things.
 5. **The rollup at the bottom is the honesty check.** Totals per bucket, so "we're basically done" has to survive arithmetic.
+
+## The done gate
+
+A row moves to `☑ done` only when all of these hold:
+
+1. The capability is rebuilt and working.
+2. Its regression spec passes (the e2e or integration test that covers it).
+3. It appears in the API spec, if it is an endpoint.
+4. It ships flag-gated, default OFF in production.
+5. Your continuity checks pass: the rebuilt surface agrees with the canonical data and with every other surface that shows the same quantity.
+
+"It works on my machine" does not flip a checkbox. The done definition is the whole contract.
 
 ## The inventory
 

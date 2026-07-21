@@ -178,6 +178,7 @@ planning/
 skills/                      Reusable AI skill definitions, keyed to book chapters
 templates/                   Copy-and-adapt templates, keyed to book chapters
 checklists/                  Operational checklists, keyed to book chapters
+marketing/                   Draft posts Jovan publishes himself; nothing auto-posts
 ```
 
 ---

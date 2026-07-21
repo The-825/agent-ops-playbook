@@ -41,3 +41,9 @@ metadata, and launch planning move to a private repo, proposed
 8two5/archivist-to-architect-book.
 Why: KDP Select exclusivity and sales mean the book content never sits public.
 Source: Jovan's "yes split" approval, session 2026-07-18.
+
+## D-4 · 2026-07-21 · Repo scope: code-only companion to the book
+
+Ruling: This repo is only a companion to From Archivist to Architect. No book prose, chapters, excerpts, or paraphrased chapter content ships here. The public surface is the working code: templates, CI kit, command skills, workflows, and pattern docs written in this repo's own words. The book is referenced as a pointer, never summarized.
+Why: Freely public book content risks Amazon KDP demonetization. The repo sells the practice, the book sells the story.
+Source: Jovan ruling, 2026-07-21, relayed via the coordinator session.
