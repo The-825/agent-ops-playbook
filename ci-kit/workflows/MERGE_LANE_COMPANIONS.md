@@ -85,6 +85,10 @@ The honest version of this note belongs in your own workflow headers too. A team
 runs the batch labeler and sees nothing merge will conclude the lane is broken unless the
 file itself says "the label lands now, the merge follows on the next event."
 
+The merge-gate side of this same mechanism is gotcha 7 in `AUTOMERGE_GOTCHAS.md` (labels
+are read from the frozen event payload); this section and that one describe the two ends of
+one behavior.
+
 ## Fail-safe defaults across the set
 
 Every file in the set is written to fail closed and to fail loudly:
