@@ -22,6 +22,8 @@ exists, cut that line rather than point at nothing.
 - `substack-series.md`: the series concept, an eight-post outline, and the full first
   post
 - `linkedin-posts.md`: three short lesson posts and a cadence suggestion
+- `org-profile-README.md`: paste-ready GitHub org profile for The-825 (destination
+  `The-825/.github`, file `profile/README.md`; that repo does not exist yet)
 
 ## Writing rules (binding for every draft here)
 
