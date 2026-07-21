@@ -25,6 +25,14 @@ moment he pastes it into a platform.
 - `linkedin-posts.md`: three short lesson posts and the cadence plan
 - `show-hn.md`: an optional Show HN submission (title plus first comment) and the fit
   warning that matters
+- `launch/linkedin-launch-post.md`: the LinkedIn launch announcement for the book (one
+  post, first person, posted as written)
+- `launch/x-thread.md`: the X launch thread, six posts; post 1 doubles as the
+  standalone single-tweet version
+- `launch/email-announcement.md`: the plain-text launch email announcement to the
+  personal and professional network
+- `org-profile-README.md`: paste-ready GitHub org profile for The-825 (destination
+  `The-825/.github`, file `profile/README.md`; that repo does not exist yet)
 
 ## Writing rules (binding for every draft here)
 
