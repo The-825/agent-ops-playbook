@@ -130,12 +130,12 @@ fix reference (PR or commit). Never silently drop an entry.
 
 ### Active
 
-- **KI #1** (2026-07-21): CLAUDE.md's own repo map and mission wording predate the wave 2 and 3 merges and the D-4 companion-only ruling. Evidence: the REPO MAP block has no rows for `ci-kit/`, `docs/`, or `playbook/`; the `skills/` / `templates/` / `checklists/` rows still say "keyed to book chapters"; and WHAT THIS REPO IS still frames the mission as artifacts "keyed to the book's chapters" and omits `ci-kit/` and `docs/` from "what lives here". Found by the 2026-07-21 post-merge continuity sweep, which scoped itself to the reader-facing surfaces and left this file to its own PR. Status: Active.
-- **KI #2** (2026-07-21): CI blind spot: `.github/workflows/ci.yml` never runs the decision-gate test suite. It discovers `ci-kit/guards/tests` and `ci-kit/migrations/tests` but not `ci-kit/workflows/tests`, so the 36 tests behind `decision_script.py` (merged in the second-generation gate PR) pass only when someone runs them by hand; a regression there would merge green. All 36 pass locally as of 2026-07-21. Fix is a one-line `ci:` change, kept out of the continuity-sweep docs PR by the one-concern rule. Status: Active.
+(none)
 
 ### Resolved
 
-(none yet)
+- **KI #1** (2026-07-21, resolved 2026-07-21): CLAUDE.md's own repo map and mission wording predate the wave 2 and 3 merges and the D-4 companion-only ruling. Evidence: the REPO MAP block has no rows for `ci-kit/`, `docs/`, or `playbook/`; the `skills/` / `templates/` / `checklists/` rows still say "keyed to book chapters"; and WHAT THIS REPO IS still frames the mission as artifacts "keyed to the book's chapters" and omits `ci-kit/` and `docs/` from "what lives here". Found by the 2026-07-21 post-merge continuity sweep, which scoped itself to the reader-facing surfaces and left this file to its own PR. Resolved 2026-07-21: mission reframed to the D-4 pointer-only wording and the repo map brought current with the post-wave-3 tree. Fixed PR #25.
+- **KI #2** (2026-07-21, resolved 2026-07-21): CI blind spot: `.github/workflows/ci.yml` never runs the decision-gate test suite. It discovers `ci-kit/guards/tests` and `ci-kit/migrations/tests` but not `ci-kit/workflows/tests`, so the 36 tests behind `decision_script.py` (merged in the second-generation gate PR) pass only when someone runs them by hand; a regression there would merge green. All 36 pass locally as of 2026-07-21. Fix is a one-line `ci:` change, kept out of the continuity-sweep docs PR by the one-concern rule. Resolved 2026-07-21: `Decision-gate tests` step added to the Kit self-tests job, all 36 discovered and green. Fixed PR #25.
 
 ---
 
