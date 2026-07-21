@@ -1,7 +1,8 @@
 # The rules spine: a guide to writing a binding CLAUDE.md
 
-*Part of the companion kit for From Archivist to Architect. This essay is the long
-version of the short guide embedded in
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+
+*This essay is the long version of the short guide embedded in
 [templates/CLAUDE_TEMPLATE.md](../templates/CLAUDE_TEMPLATE.md); copy that template when
 you are ready to write yours.*
 
