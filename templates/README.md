@@ -12,3 +12,5 @@ Copy-paste starting points for the working files described in From Archivist to 
 | [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | One-page architecture decision records, framed for data platforms, with a filled example | Chapter 2 |
 
 The templates reference each other (the rules file points at the state file, the ledger, and the conclusions store). They work fine alone, but they were designed as a set.
+
+CONCLUSIONS_TEMPLATE.md pairs with [conclusions.jsonl](conclusions.jsonl), a ready-to-copy starter store, and the same-turn capture practice behind the ledger and the store is written up in [docs/decision-capture.md](../docs/decision-capture.md).
