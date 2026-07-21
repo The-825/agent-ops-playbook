@@ -1,10 +1,13 @@
-# Automerge gotchas: six failure modes a naive automerge hits
+# Automerge gotchas: ten failure modes a naive automerge hits
 
 `automerge.yml` squash-merges an agent PR only when every required check is green on the PR
 head SHA, fail-closed. It stands in for GitHub's paid auto-merge feature on Free-plan private
 repos. The workflow looks simple. It is not. Every gotcha below is a real failure mode that was
-hit in production use of this pattern; the shipped file already encodes the fix for each one.
-Read this before adapting the template, and re-read it before "simplifying" it.
+hit in production use of this pattern. Gotchas 1 through 6 are encoded in the shipped
+`automerge.yml`; gotchas 7 through 10 arrived with the second generation of the same gate (the
+operator label, the extracted decision script, the label-free lanes, all described at the end
+of this doc) and bind any variant that grows those parts. Read this before adapting the
+template, and re-read it before "simplifying" it.
 
 The reusable core is a single `requiredChecksGreen(headSha)` gate driven by an explicit
 `REQUIRED_CHECKS` list. Each named check must be completed + success on the head SHA; anything
@@ -59,10 +62,68 @@ Co-locating the jobs makes one `workflow_run` completion cover both. If you must
 workflows, add a `workflow_run` trigger per checks workflow; the head-SHA gate stays correct
 either way, but every checks workflow needs to be able to re-drive the merge.
 
+## Gotcha 7: labels are read from the frozen event payload
+
+If you adopt an operator label (as the gate on rung one of the maturity ladder below, or as
+the override on rung two), the workflow reads the PR's labels from
+`github.event.pull_request.labels`: the payload frozen at the moment the triggering event
+fired. Two consequences. First, a label added after the event fired is invisible to the run
+already in flight. Second, and nastier: label-adds performed through the API with the default
+workflow token emit no workflow-triggering events at all (the same recursion guard behind the
+`GITHUB_TOKEN` merge trap below). So a convenience workflow that applies the label for the
+operator, a batch labeler or a comment-command labeler, does not re-fire the gate. The label
+sits on the PR and is only evaluated on the PR's next event: a new commit, a
+ready-for-review flip, or a human toggling the label in the UI, which fires a real `labeled`
+event. Ship the limitation as documentation on the labeler itself, and teach the unstick
+move: toggle the label off and on by hand.
+
+## Gotcha 8: without pipefail, a crashed gate reads as "waiting" forever
+
+Once the decision logic is its own script, the gate step's natural shape is a pipeline: run
+the script, `tee` the output into the log, `grep` the verdict out of it. The default Actions
+run shell is `bash -e {0}`: errexit on, pipefail OFF. So when the script crashes, the
+pipeline's exit code is the last command's, the verdict parses empty, empty is not "merge",
+and the job ends green having merged nothing. On every event. Forever. The same class hides
+in `grep -c`, which exits 1 on zero matches: a counting grep at the end of a pipeline either
+crashes a healthy step or, with no pipefail, helps swallow an upstream crash into a silent
+never-merge. Fix: `set -o pipefail` at the top of the gate step, and design the script to
+exit 0 for every computed verdict, "wait" included, so pipefail only turns real failures red.
+A waiting PR must read as green; a broken gate must read as red; the default shell gives you
+neither for free.
+
+> **Incident (anonymized).** In the production repo this pattern comes from, the decision
+> script crashed on every event for a stretch and every gate run ended green with
+> merge=false. Green PRs piled up "waiting" with all checks passing until someone read the
+> step log. The crash itself had a trivial cause (gotcha 9); the silence was the real bug.
+
+## Gotcha 9: a base branch that predates the decision script no-ops the gate
+
+Run the BASE branch's copy of the decision script, never the PR's: a PR that edits its own
+merge gate must not influence its own gate run (the default `pull_request` checkout is the
+merge ref, which contains the PR's version of the script). That posture is correct and has a
+startup corner: the gate will eventually evaluate a PR whose base branch does not contain
+the script at all. The PR that introduces the gate. A PR into a long-lived branch cut before
+the gate landed. A freshly reset integration branch. The base checkout has no script, the
+call crashes, and combined with gotcha 8's silence the gate no-ops on every event with no
+red anywhere. Guard explicitly: test that the script exists in the base checkout before
+calling it, and treat missing as a loud wait or a red step, never as merge.
+
+## Gotcha 10: an unlistable changed-file set must fail closed
+
+Protected paths and content-policy lanes only work if the gate can see what changed, and the
+changed-files listing is an API call that can fail. When it does, the only safe answer is
+"wait for the operator's label": if you cannot see what changed, you cannot clear it.
+Defaulting open ("listing failed, assume nothing protected was touched") turns any API
+hiccup into a hole through the one list that must hold. Two smaller edges in the same
+listing: paginate it (the un-paginated files field caps out on large PRs, and a protected
+file at position two hundred is still protected), and count a rename as touching BOTH paths,
+so renaming a file out of a protected directory does not slip it past the gate.
+
 ## Design trade-offs from two generations of this workflow
 
-The shipped file is the second, simplified generation. An earlier, more elaborate production
-variant of the same pattern made three choices worth knowing about before you adopt.
+The shipped file is the simplified distillation. An earlier, more elaborate production
+variant of the same pattern made three choices worth knowing about before you adopt; what
+that variant later grew into is the second-generation gate at the end of this doc.
 
 ### The operator-label gate
 
@@ -103,3 +164,58 @@ merge without waiting for a required scan (a documented hole in that repo). The 
 head-SHA gate shipped here removes both needs: no polling, no filter mirroring, because the
 gate re-evaluates on every checks-workflow completion and verifies actual check runs. Use the
 poll loop only if you genuinely cannot restructure your required checks into one workflow.
+
+## The second generation: extract the decision, then graduate trust
+
+What the production variant grew into once PR volume made one human label per PR the
+bottleneck. Three moves, in order. The files are in this directory: `decision_script.py` is
+the parameterized second-generation gate, `tests/test_decision_script.py` its suite.
+
+### Move 1: extract the merge decision to a tested script
+
+The first generation's decision lives in workflow YAML and inline JavaScript, which means it
+is tested in production, by merging things. The second generation splits the gate in two: the
+workflow gathers inputs (branches, labels, draft state, changed files, check runs, mergeable
+state) and a pure-function script decides. Two phases match two workflow steps: `lane` (may
+this PR merge at all once green: branch lanes, draft guard, label, protected paths, content
+policies) and `checks` (is it green right now: required checks, nothing failing, zero-runs
+fail-closed, mergeable state clean). Three verdicts: `merge`, `wait` (exit green; a waiting
+PR is not a broken PR; the next event re-evaluates), `fail` (a check is red; exit red so the
+failure is visible). Every fail-closed guarantee becomes a unit test instead of a comment.
+
+### Move 2: run the base branch's copy, and protect the machinery
+
+One rule shapes the protected list: **a PR that edits its own merge gate must never
+self-merge.** Two enforcement halves. The workflow checks out the BASE branch and runs THAT
+copy of the decision script, so a PR's edit to the gate cannot influence its own gate run
+(mind gotcha 9). And the gate's moving parts (the automerge workflow, the decision script,
+any labeler workflows, the file that grants CI its token scopes) stay on `PROTECTED_PATHS`
+no matter how far trust graduates, so a change to the gate always waits for the operator.
+
+### Move 3: graduate trust one rung at a time (the maturity ladder)
+
+- **Rung one: label-gated.** Every agent PR waits for the operator's approval label even
+  with green checks; the label is the merge instruction. This is the kit's shipped default
+  (`REQUIRE_LABEL = True` in the script; the operator-label hardening described above for
+  the single-file workflow). Checks prove the change is safe to merge; the label says the
+  operator wants it merged. Start here.
+- **Rung two: label-free with protected paths.** Agent PRs into the main branch self-merge
+  on green; the label gates only `PROTECTED_PATHS` (the machinery, plus high-blast-radius
+  trees with no CI policy lane). The label keeps working everywhere as the explicit override
+  and the unstick mechanism. The operator's reasoning when one production repo took this
+  rung: by the time work reaches a PR, its concepts were already approved in the session
+  that produced it; the label was re-approving nothing. Whether that holds for YOUR repo
+  depends on how much judgment lives between "PR opened" and "PR safe", which is exactly
+  what rung three makes explicit.
+- **Rung three: content-policy lanes.** A path family leaves the protected list only when a
+  content lint replaces the judgment the label was buying. Worked example:
+  `../migrations/policy_checks.py` (forward-only lint, flag seeds default OFF with a
+  quoted-approval escape header, duplicate-number guard). A violation does not fail the PR;
+  it re-attaches the label requirement, and the label stays the override for legitimately
+  destructive work.
+
+Which rung is right is an operator decision, not a destination. A repo with one PR a day
+loses nothing to rung one; a repo merging dozens of agent PRs a day feels rung one as a
+queue. Climb deliberately, one rung at a time, and write the current rung down where your
+agents read it. The fail-closed floor never graduates: drafts, zero check runs, failing
+checks, dirty or unknown mergeable state, and unlistable file sets never merge, on any rung.

@@ -3,7 +3,7 @@
 # =============================================================
 # TEMPLATE. Copy to .github/workflows/ and adapt the constants marked EDIT ME.
 # Read AUTOMERGE_GOTCHAS.md before adopting: the naive version of this
-# workflow has at least six non-obvious failure modes.
+# workflow has at least ten non-obvious failure modes.
 #
 # Squash-merges an agent PR once EVERY required check is green on the PR head
 # SHA. Stands in for GitHub's paid auto-merge feature on Free-plan private
@@ -32,6 +32,11 @@
 # require an operator-applied label before merging, and add a
 # pull_request(labeled) trigger so applying the label to an already-green PR
 # merges it without waiting for another checks run.
+#
+# When this single file stops being enough (an operator label, protected
+# paths, content-policy lanes), graduate to the tested decision script:
+# decision_script.py in this directory, plus AUTOMERGE_GOTCHAS.md "The
+# second generation: extract the decision, then graduate trust".
 name: Auto-merge agent PRs
 
 on:
