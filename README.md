@@ -49,10 +49,11 @@ ships the guards, gates, and templates.
   verification, the continuity sweep.
 - **`playbook/`**: the connective essays: the agent-ops operating model and the
   doc-sync agent pattern.
+- **`docs/`**: the method guides behind the templates: the four founding docs, day-one
+  mandates, the rules spine, and same-turn decision capture.
 
-Upcoming waves add the rest: the founding-doc templates (operating rules, phased build
-order), the in-process test harness skeleton, model-ops docs, and the skills/hooks/settings
-bundle for the agent harness itself.
+Upcoming waves add the rest: model-ops docs and the hooks/settings bundle for the agent
+harness itself.
 
 ## Who this is for
 
