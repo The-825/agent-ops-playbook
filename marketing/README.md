@@ -13,6 +13,12 @@ moment he pastes it into a platform.
   gets swapped for the real link. A draft that carries `[SWAP-ON-ASIN]` either gets
   the real link swapped in at posting time or waits for the ASIN; never post the raw
   slot.
+- The ASIN swap has to catch two token styles, not one. Besides the `[SWAP-ON-ASIN]`
+  slot above, the drafts under `launch/` also carry the URL token
+  `amazon.com/dp/ASIN-PENDING`; in those files both styles sit on the same link line.
+  When the ASIN lands, find every occurrence with
+  `git grep -nE "SWAP-ON-ASIN|ASIN-PENDING"` and replace both, or a draft ships with a
+  dead link.
 
 ## Files
 
