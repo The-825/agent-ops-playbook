@@ -97,11 +97,18 @@ jobs:
                   check_name: name,
                 });
                 const runs = data.check_runs || [];
+                // Judge only the NEWEST run of this check name. Duplicate
+                // workflow events create separate check suites, so a
+                // superseded run's `cancelled` stays attached to the SHA
+                // next to the newer `success`; ids are creation-ordered.
+                const latest = runs.reduce(
+                  (a, r) => (!a || (r.id || 0) > (a.id || 0) ? r : a),
+                  null
+                );
                 const green =
-                  runs.length > 0 &&
-                  runs.every(
-                    (r) => r.status === "completed" && r.conclusion === "success"
-                  );
+                  !!latest &&
+                  latest.status === "completed" &&
+                  latest.conclusion === "success";
                 if (!green) {
                   core.info(`Required check "${name}" not green on ${sha}.`);
                   return false;
