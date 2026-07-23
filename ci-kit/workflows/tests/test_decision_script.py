@@ -187,6 +187,126 @@ class TestContentPolicies(unittest.TestCase):
         self.assertEqual(verdict, "merge")
 
 
+def _grant(gid="G-20260701-01", **over):
+    """A structurally-valid synthetic grant line; override fields per test."""
+    entry = {"id": gid, "date": "2026-07-01", "scope": "synthetic test grant",
+             "wording": None, "source": "synthetic fixture", "expiry": None,
+             "status": "active", "issued_to": "all sessions", "notes": ""}
+    entry.update(over)
+    return entry
+
+
+class TestAuthorityGrants(unittest.TestCase):
+    """Phase 2 of docs/authority-ledger.md: a cited grant clears a WAIT at
+    the two named sites, never a fail, never a protected path."""
+
+    TODAY = __import__("datetime").date(2026, 7, 15)
+    VIOLATING = (("migrations/", lambda scoped, h, b: ["bad statement"]),)
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.base_root = self.tmp.name
+        self.addCleanup(self.tmp.cleanup)
+
+    def _ledger(self, *entries):
+        with open(os.path.join(self.base_root, ds.LEDGER_REL_PATH), "w",
+                  encoding="utf-8") as fh:
+            for e in entries:
+                fh.write(json.dumps(e) + "\n")
+
+    def _lane(self, files, body, **kw):
+        kw.setdefault("head_root", ".")
+        kw.setdefault("base_root", self.base_root)
+        kw.setdefault("content_policies", self.VIOLATING)
+        kw.setdefault("today", self.TODAY)
+        return lane(files, pr_body=body, **kw)
+
+    def test_path_scoped_grant_clears_a_content_policy_wait(self):
+        self._ledger(_grant(grant_type="merge-authority",
+                            applies_to="content-policy",
+                            paths=["migrations/*.sql"]))
+        verdict, reason = self._lane(["migrations/011_x.sql"],
+                                     "Authority: G-20260701-01")
+        self.assertEqual(verdict, "merge")
+        self.assertIn("Merged under Authority: G-20260701-01", reason)
+
+    def test_every_changed_file_must_match_the_globs(self):
+        self._ledger(_grant(grant_type="merge-authority",
+                            applies_to="content-policy",
+                            paths=["migrations/*.sql"]))
+        verdict, _ = self._lane(["migrations/011_x.sql", "src/app.py"],
+                                "Authority: G-20260701-01")
+        self.assertEqual(verdict, "wait")
+
+    def test_non_active_and_expired_grants_never_clear(self):
+        for over in ({"status": "revoked"}, {"status": "expired"},
+                     {"expiry": "2026-07-01"}, {"until": "2026-07-01"}):
+            self._ledger(_grant(grant_type="merge-authority",
+                                applies_to="content-policy",
+                                paths=["migrations/*.sql"], **over))
+            verdict, _ = self._lane(["migrations/011_x.sql"],
+                                    "Authority: G-20260701-01")
+            self.assertEqual(verdict, "wait", over)
+
+    def test_free_text_grant_never_affects_merging(self):
+        self._ledger(_grant())  # no grant_type: documentation only
+        verdict, _ = self._lane(["migrations/011_x.sql"],
+                                "Authority: G-20260701-01")
+        self.assertEqual(verdict, "wait")
+
+    def test_defective_ledger_discards_every_grant(self):
+        good = _grant(grant_type="merge-authority", applies_to="content-policy",
+                      paths=["migrations/*.sql"])
+        self._ledger(good, _grant(gid="G-20260701-01"))  # duplicate id
+        verdict, _ = self._lane(["migrations/011_x.sql"],
+                                "Authority: G-20260701-01")
+        self.assertEqual(verdict, "wait")
+
+    def test_no_base_root_consults_no_grants(self):
+        verdict, _ = self._lane(["migrations/011_x.sql"],
+                                "Authority: G-20260701-01", base_root=None)
+        self.assertEqual(verdict, "wait")
+
+    def test_protected_paths_are_never_grant_overridable(self):
+        entry = _grant(grant_type="merge-authority", applies_to="content-policy",
+                       paths=["*"])
+        self.assertFalse(ds.grant_clears_wait(
+            ds.GRANT_CONTENT_POLICY, entry,
+            [".github/workflows/automerge.yml"], self.TODAY))
+
+    def test_promotion_window_grant_clears_the_promotion_head_wait(self):
+        self._ledger(_grant(grant_type="merge-authority", applies_to="promotion",
+                            until="2026-07-31"))
+        verdict, reason = self._lane(["src/x.py"], "Authority: G-20260701-01",
+                                     head="staging", promotion_heads=("staging",),
+                                     content_policies=())
+        self.assertEqual(verdict, "merge")
+        self.assertIn("promotion window 2026-07-01..2026-07-31", reason)
+
+    def test_promotion_grant_outside_its_window_waits(self):
+        self._ledger(_grant(grant_type="merge-authority", applies_to="promotion",
+                            until="2026-07-31"))
+        verdict, _ = self._lane(["src/x.py"], "Authority: G-20260701-01",
+                                head="staging", promotion_heads=("staging",),
+                                content_policies=(),
+                                today=__import__("datetime").date(2026, 8, 2))
+        self.assertEqual(verdict, "wait")
+
+    def test_promotion_head_without_grant_or_label_waits(self):
+        verdict, reason = self._lane(["src/x.py"], None, head="staging",
+                                     promotion_heads=("staging",),
+                                     content_policies=())
+        self.assertEqual(verdict, "wait")
+        self.assertIn("promotion head", reason)
+
+    def test_label_still_releases_the_promotion_lane(self):
+        verdict, _ = self._lane(["src/x.py"], None, head="staging",
+                                promotion_heads=("staging",),
+                                content_policies=(),
+                                labels=[ds.APPROVAL_LABEL])
+        self.assertEqual(verdict, "merge")
+
+
 class TestChecksDecision(unittest.TestCase):
     """Phase two: check runs and mergeable state, fail-closed."""
 
@@ -206,6 +326,32 @@ class TestChecksDecision(unittest.TestCase):
                            "status": "completed", "conclusion": "failure"}]
         verdict, _ = ds.checks_decision(checks, "CLEAN")
         self.assertEqual(verdict, "merge")
+
+    def test_superseded_cancelled_run_does_not_poison_the_sha(self):
+        # Duplicate workflow events: the same check name carries an old
+        # cancelled run and a newer success. Only the newest run counts.
+        checks = [dict(c, id=100 + i) for i, c in enumerate(GREEN)] + [
+            {"id": 50, "name": "Static checks", "status": "completed",
+             "conclusion": "cancelled"},
+        ]
+        verdict, _ = ds.checks_decision(checks, "CLEAN")
+        self.assertEqual(verdict, "merge")
+
+    def test_newer_failure_still_fails_after_dedup(self):
+        checks = [{"id": 50, "name": "Static checks", "status": "completed",
+                   "conclusion": "success"},
+                  {"id": 90, "name": "Static checks", "status": "completed",
+                   "conclusion": "failure"}]
+        verdict, _ = ds.checks_decision(checks, "CLEAN")
+        self.assertEqual(verdict, "fail")
+
+    def test_runs_without_ids_keep_fail_closed_behavior(self):
+        # No ids means no ordering; both runs stay and the cancelled one
+        # still blocks, exactly the pre-dedup read.
+        checks = GREEN + [{"name": "Static checks", "status": "completed",
+                           "conclusion": "cancelled"}]
+        verdict, _ = ds.checks_decision(checks, "CLEAN")
+        self.assertEqual(verdict, "fail")
 
     def test_failing_check_fails_loud(self):
         checks = [{"name": "Static checks", "status": "completed",
