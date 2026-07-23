@@ -1,6 +1,6 @@
 # The agent-ops operating model
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 10 (The Force Multiplier: Building with AI Agents), with section 9.5 as a secondary read.
 
 Agent-assisted development has a default failure mode, and it is not bad code.
 It is fast, plausible, inconsistent work where every session is a cold start,
@@ -169,6 +169,21 @@ hurting.
 10. **The flag lifecycle.** Last because it pays off most once you are shipping
     user-visible features on a cadence.
     [../skills/feature-flag-lifecycle.md](../skills/feature-flag-lifecycle.md)
+
+## The build ladder: verify at the cheapest surface that can answer
+
+A companion habit to lowest-layer testing, for the BUILD side. When a task can
+be verified at several surfaces, work them in cost order: verify claims in the
+SOURCE first (read the code or config that owns the fact), then at the DATA
+layer (a query against the store of record), then in a cheap ARTIFACT REPLICA
+(an in-process harness, a local render, a synthetic fixture), and only last in
+the full APP SURFACE (boot the product, click the flow). Each rung is an order
+of magnitude cheaper than the next, and most questions die on the first two.
+The anti-pattern this replaces is reaching for the app surface first because it
+is the most literal: booting the product to answer a question the config file
+already answers. Agents fall into it more readily than humans, because to an
+agent every surface costs the same number of keystrokes; the ladder is what
+keeps verification spend proportional to the question.
 
 The model is not a way to slow agents down. It is what lets you go fast without
 the system forgetting, drifting, or eroding underneath you.

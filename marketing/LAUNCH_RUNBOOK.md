@@ -92,9 +92,8 @@ files and incidents over adjectives, no em-dashes, nothing that sounds generated
 - The technical challenge (usually the automerge doc): the best possible thread.
   Engage fully, concede what is fair in one sentence, then add the detail behind
   the rest.
-- "Where is the book": just published; the repo README carries the link once the
-  Amazon listing is live. Nothing more. The repo sells the practice, the book
-  sells the story (ruling D-4).
+- "Where is the book": it is out now on Amazon; the repo README carries the link.
+  Nothing more. The repo sells the practice, the book sells the story (ruling D-4).
 - Pricing, dates, launch logistics: not in any reply, per the standing rules in
   marketing/README.md.
 

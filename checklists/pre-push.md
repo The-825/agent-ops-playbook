@@ -1,6 +1,6 @@
 # Pre-push checklist
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.3 (Safety Net First: The Check Ladder).
 
 "Push then clean up" burns a review cycle and a CI run that a 30-second check prevents. The follow-up commit that fixes the breakage costs more than the breakage: a reviewer re-reads the diff, CI re-runs the suite, and the PR history now carries a fix-the-fix commit forever. Run this before every push, no exceptions for small diffs.
 

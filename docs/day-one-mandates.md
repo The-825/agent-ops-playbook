@@ -1,5 +1,7 @@
 # Day-one mandates
 
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 8 (The Implementation Lab).
+
 Every practice on this list is cheap on day one and expensive as a retrofit. The pattern behind all of them is the same: adopted early, the practice shapes everything that follows for free; adopted late, it has to fight everything that already exists, and usually arrives right after the incident that proves it was needed. A clean-slate repo adopts the whole list before the first feature.
 
 Each mandate names the retrofit pain it avoids. The phased version of this list, with exit criteria and gates, is [templates/BLUEPRINT_TEMPLATE.md](../templates/BLUEPRINT_TEMPLATE.md); the founding-docs version is [four-founding-docs.md](four-founding-docs.md).
@@ -20,7 +22,7 @@ Each mandate names the retrofit pain it avoids. The phased version of this list,
 
 **7. A parity contract when replacing an existing system.** Rebuilds fail by silently dropping the capability nobody remembered, discovered only after the old system is off, when recovering it is an emergency. Inventory every old capability as a row before writing code; check rows with evidence. Template: [PARITY_TEMPLATE.md](../templates/PARITY_TEMPLATE.md).
 
-**8. An in-process test harness before the first route.** Adopted at route one, a harness that boots the real app with only the I/O edges faked makes every later route testable by default. Adopted at route one hundred, it competes with a feature backlog and loses, so the routes stay testable only by deploy-and-click.
+**8. An in-process test harness before the first route.** Adopted at route one, a harness that boots the real app with only the I/O edges faked makes every later route testable by default. Adopted at route one hundred, it competes with a feature backlog and loses, so the routes stay testable only by deploy-and-click. Skeleton: [templates/test-harness/](../templates/test-harness/README.md).
 
 **9. Record significant choices as ADRs.** A year in, nobody can explain the warehouse layout or the auth model, so the next rebuild re-litigates both from zero. One page per decision, written the day it lands, is the entire cost. Template: [ADR_TEMPLATE.md](../templates/ADR_TEMPLATE.md).
 

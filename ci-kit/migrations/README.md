@@ -1,8 +1,11 @@
 # Migrations kit: numbering integrity, apply ledger, merge-time policy
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.4 (One Concern Per Change, Reversible by Config).
 
-Two tools guard the same folder at two different layers:
+A loose migrations folder fails in two predictable ways: two changes claim the same number,
+or a destructive statement rides in on a routine-looking PR. Adopt this kit as soon as more
+than one author, human or agent, cuts migrations against the same folder; the first collision
+is cheaper to prevent than to adjudicate. Two tools guard the folder at two different layers:
 
 - **`runner.py`**: repo-state integrity plus the applied-per-tenant ledger. It refuses a
   duplicate migration number anywhere in the folder and an out-of-order apply, and it tracks
@@ -68,6 +71,47 @@ the task prompt (each worker still re-verifies at write time against the base br
 open PRs), and the ledger line is treated as a single-writer resource during the wave, one
 session owning every bump. If a race lands anyway, the earliest-opened PR keeps the contested
 number and later claimants renumber.
+
+## Ending the number race for good: the timestamp-slug era
+
+The claim-first ledger mitigates the race. It does not remove the thing being raced for: a
+shared counter that every parallel session wants the next value of. At low agent traffic the
+ledger is enough. At high traffic it stops being enough, and the honest fix is to retire the
+counter.
+
+> **Incident (anonymized).** In the production repo this pattern comes from, the ledger era
+> ended after three number races in 36 hours: one number claimed by three simultaneous PRs,
+> then two more numbers each double-claimed, with two duplicate seeds reaching the default
+> branch and adjudicated by hand. The counter itself was the problem.
+
+The successor convention names every NEW migration and seed by mint time instead of serial:
+
+```
+YYYYMMDD_HHMM_<slug>.sql        (UTC mint time; date -u +%Y%m%d_%H%M)
+```
+
+Why this ends the race class rather than mitigating it:
+
+1. **No shared counter, nothing to claim.** Parallel sessions cannot contend for "the next
+   value" because there is no next value; each mints its own key locally. The claim-first
+   ledger, the single-writer rule, and pre-assignment all become unnecessary for new files.
+2. **A true collision requires the byte-identical filename** (same UTC minute AND same slug)
+   across independent sessions, and even then it is structurally loud, not silent: git
+   raises a same-path add conflict. Two different slugs in the same minute are not a
+   collision at all.
+3. **Apply ledgers key on filename**, so the runner and any tracker that records applied
+   files by name need zero schema or tooling changes.
+4. **Within the new namespace, lexicographic order is chronological order**, preserving the
+   readable "later file sorts later" property the integers had.
+
+Adoption is a boundary, not a rewrite. Close the numbered era at your last minted number
+(that number is never reused and the next integer is never minted), flip `SLUG_ERA_ENACTED`
+in `policy_checks.py` and record the boundary in `NUMBERED_ERA_CLOSED_AT`, and from then on
+lint 4 blocks any NEW serial-numbered file with a message that teaches the convention. The
+legacy namespace is strictly forward-only: numbered files are never renamed, their history
+notes stay as written, and editing one remains content-checked like any other migration. A
+new repo can skip the numbered era entirely and start slug-first; keep the guard enacted
+from day one and the ledger section above becomes history you never live.
 
 ## Parameterize before adopting
 

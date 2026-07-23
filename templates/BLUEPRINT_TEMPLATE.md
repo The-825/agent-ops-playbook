@@ -1,5 +1,7 @@
 # Blueprint template: the phased build order
 
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 6.
+
 A rebuild is worth doing only if you invert the original build order. The old system built features first and poured the floor later: tests, flags, config, typed loading, and module boundaries all arrived as retrofits, each one paid for at retrofit prices while the features it should have carried fought it. The blueprint flips that. Every retrofit the last system needed becomes a day-one rule here, and the phases below are the schedule on which each rule stops being an intention and becomes enforced reality.
 
 Two structural commitments make the inversion real:

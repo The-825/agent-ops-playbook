@@ -8,13 +8,17 @@ moment he pastes it into a platform.
 ## Links and placeholders
 
 - The repo link is filled in every draft: https://github.com/The-825/agent-ops-playbook
-- The book is on KDP; the Amazon listing link is pending the ASIN. Drafts that need
-  the listing URL (the launch/ announcement pack) carry
-  https://www.amazon.com/dp/ASIN-PENDING with a SWAP-ON-ASIN marker. Swap those, and
-  the README link (ROADMAP item 3), the moment the ASIN exists. Nothing that still
-  carries an ASIN-PENDING link gets posted.
-- The evergreen drafts point at the book with a single pointer line and no URL; they
-  do not wait on the ASIN.
+- `[SWAP-ON-ASIN]` stands in for the book's Amazon listing URL. The book went live on
+  KDP 2026-07-21; the slot stays until the ASIN is confirmed, then every occurrence
+  gets swapped for the real link. A draft that carries `[SWAP-ON-ASIN]` either gets
+  the real link swapped in at posting time or waits for the ASIN; never post the raw
+  slot.
+- The ASIN swap has to catch two token styles, not one. Besides the `[SWAP-ON-ASIN]`
+  slot above, the drafts under `launch/` also carry the URL token
+  `amazon.com/dp/ASIN-PENDING`; in those files both styles sit on the same link line.
+  When the ASIN lands, find every occurrence with
+  `git grep -nE "SWAP-ON-ASIN|ASIN-PENDING"` and replace both, or a draft ships with a
+  dead link.
 
 ## Files
 
@@ -42,9 +46,12 @@ moment he pastes it into a platform.
   Never salesy, never hype.
 - Value first. The reader gets the full lesson without clicking anything.
 - The repo is linked once per piece. The book gets at most one pointer line: the title,
-  "first in a planned series", and where the link lives. Never summarize book content,
-  never cite chapters, never name future titles in the series.
-- No pricing, no dates, no launch logistics, anywhere.
+  out now on Amazon, with `[SWAP-ON-ASIN]` standing in for the link until the ASIN is
+  confirmed. Never summarize book content, never cite chapters, never name future titles
+  in the series.
+- Evergreen drafts stay date-free and carry no launch logistics. Files under `launch/`
+  are the exception: announcement drafts may carry launch dates and logistics, that is
+  their job. A pricing claim still needs a source, anywhere it appears.
 - Anecdotes stay at the level of "a production repo I run" / "a system that handles
   regulated PII". No employer detail, no institution names, no client or student
   specifics, ever.

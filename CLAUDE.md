@@ -28,7 +28,7 @@ Brand context lives in the BetterMe repo: `business-825-v3.md` (company profile)
 
 ## WHAT THIS REPO IS
 
-The public companion repo for **From Archivist to Architect** (Book 1 of the Architect's
+The public companion repo for **From Archivist to Architect** (Book 1 of The Architect's
 Blueprint series). Readers land here from the book. The mission: the working operating
 machinery, ready to copy: templates, the CI kit, command skills, workflows, and pattern
 docs, all written in this repo's own words. No book prose, chapters, excerpts, or

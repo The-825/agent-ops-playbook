@@ -47,7 +47,8 @@ One line per directory; the sections and READMEs below each one carry the depth.
 
 - [`templates/`](templates/): copy-and-adapt working files (agent rules file, session
   handoff, decision and authority ledgers, rebuild blueprint, parity contract) plus
-  slash commands, a test harness, and ledger tools
+  slash commands, a test harness, ledger tools, the standing-agent fleet kit, and
+  harness hooks
 - [`ci-kit/`](ci-kit/): the runnable enforcement kit: self-tested lint guards, a
   migration runner with policy checks, and CI workflow templates around a fail-closed
   automerge gate

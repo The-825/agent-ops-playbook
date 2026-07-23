@@ -78,8 +78,8 @@ Body:
 > Code daily against that production system since 2025, Claude Code helped build the
 > repo itself, and they are the files I actually use, with the domain scrubbed out.
 >
-> (The repo pairs with a book I just published on the analyst-to-architect path, first
-> in a planned series. Pointer in the repo README.)
+> (The repo pairs with my book on the analyst-to-architect path, From Archivist to
+> Architect, out now on Amazon, first in a planned series. Pointer in the repo README.)
 
 ---
 
@@ -142,7 +142,7 @@ Body:
 > explicit release, separate from the machine's opinion. Lower-stakes branches merge
 > on green alone. A missing labels array counts as unlabeled, which counts as no.
 >
-> The workflow file, plus a doc walking six of these failure modes with the incident
+> The workflow file, plus a doc walking ten of these failure modes with the incident
 > behind each one, is in the public playbook repo I keep. MIT, copy freely. The
 > shipped template defaults to the hands-free version and documents the label gate
 > as the trade-off it is. Repo link in the first comment, per the sub's rules.
@@ -151,9 +151,9 @@ First comment (post immediately after publishing):
 
 > Repo: https://github.com/The-825/agent-ops-playbook
 >
-> Context, since people ask: the repo is the companion to a book I just published on
-> going from analyst to architect, first in a planned series. Details in the repo
-> README.
+> Context, since people ask: the repo is the companion to From Archivist to Architect,
+> my book on going from analyst to architect, out now, first in a planned series.
+> Details in the repo README.
 
 ---
 
@@ -223,6 +223,6 @@ First comment (post immediately after publishing):
 
 > Disclosure: the runnable versions of all of the above (the guards with their
 > fixtures, the migration runner, the CI wiring) live in a public MIT repo I maintain,
-> domain scrubbed: https://github.com/The-825/agent-ops-playbook. It doubles as the companion to a book I just published
-> on the analyst-to-architect path, first in a planned series; pointer in the README
-> if you want it.
+> domain scrubbed: https://github.com/The-825/agent-ops-playbook. It doubles as the
+> companion to From Archivist to Architect, my book on the analyst-to-architect path,
+> out now, first in a planned series; pointer in the README if you want it.

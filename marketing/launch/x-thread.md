@@ -8,11 +8,11 @@ Six posts, each 280 characters or fewer. Post 1 doubles as the standalone single
 
 ## Post 1
 
-Today I published my first book. From Archivist to Architect: A Data Analyst's Field Guide to Becoming a Data Architect. It was finished by a coordinated team of Claude Code sessions run under the same discipline the book teaches. I did not get replaced. I ran the machine.
+Today I published my first book. From Archivist to Architect: A Data Analyst's Field Guide to Becoming a Data Architect. A coordinated team of Claude Code sessions finished it under the same discipline the book teaches. I did not get replaced. I ran the machine.
 
 ## Post 2
 
-The manuscript came from months of real practice. It sat reviewed and nearly ready in my Google Drive while the day job kept moving. I pulled it back out on July 18. The finished book went up on KDP on July 21.
+The manuscript came from months of real practice. Then it sat in my Google Drive, reviewed and nearly ready, while the day job kept moving. I pulled it back out on July 18. The finished book went up on KDP on July 21.
 
 ## Post 3
 
@@ -20,7 +20,7 @@ The finishing sprint ran on a team of Claude Code sessions: planning, figures, Q
 
 ## Post 4
 
-Chapter 10 documents exactly that workflow. Ten chapters, 21,546 words, 18 figures. The chapter on building with AI agents was itself built with AI agents and cleared the same human merge gate as every other change. The book is its own proof.
+Chapter 10 documents exactly that workflow. Ten chapters, 21,546 words, 18 figures. The chapter on building with AI agents was itself built with AI agents. It cleared the same human merge gate as every other change. The book is its own proof.
 
 ## Post 5
 

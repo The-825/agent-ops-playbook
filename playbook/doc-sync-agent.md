@@ -1,6 +1,6 @@
 # The doc-sync agent
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 9, Sustainability (The Bus Factor).
 
 Documentation rots on a schedule you can predict: true at commit 1, mostly true at commit 50, lies by commit 200. When the only sync mechanism is one person remembering to update the README after each merge, the docs decay exactly as fast as that person gets busy, and they are usually the same person whose absence the docs were supposed to survive. The fix is an agent that reads what actually merged and updates the docs on a cadence, with a hard contract limiting what it may touch. Below is the pattern as a pair: the workflow that schedules it and the prompt that constrains it.
 
@@ -163,5 +163,7 @@ If nothing needs updating, print exactly DOC_SYNC_NO_CHANGES and stop.
 ## Adoption notes
 
 Start with a scope of two files (README and CHANGELOG) and widen only after a few clean cycles; a narrow scope makes the first reviews fast and builds trust in the contract. Keep the gate number modest (every 10th merge works well) so the agent-minutes cost stays flat as merge volume grows. And the corollary for humans: once the agent owns a doc surface, stop hand-editing what it maintains, because dueling editors is how drift comes back.
+
+A cadence lesson from production mileage: at high merge volume the Nth-merge trigger eventually loses to a plain daily run. One pass every morning over the prior day's merges produces one coherent, reviewable PR per day, keeps the moving-tag logic trivial (yesterday's boundary, not a modulo counter racing concurrent merges), and costs a fixed number of agent minutes regardless of how busy the day was. The Nth-merge gate plus weekly backstop above is still the right way to START, because at low volume a daily run mostly no-ops; switch to daily when the every-Nth runs start firing more than once a day.
 
 The docs your team trusts are the ones something is responsible for. Make that something a process, not a person.

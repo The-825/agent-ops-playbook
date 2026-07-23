@@ -1,6 +1,6 @@
 # Agent session efficiency
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 10 (The Force Multiplier: Building with AI Agents).
 
 One debugging session cost about twice what it should have, and the overage traced almost entirely to recoverable patterns: whole-file reads when 30 lines answered the question, command output echoed back at the operator, long recaps after every step, CI polled seconds after a push. Every turn in an agent session pays for the rules file, the file reads, the tool output, and the response prose. A short set of standing habits caps that budget. Paste the block below into your own agent rules file.
 

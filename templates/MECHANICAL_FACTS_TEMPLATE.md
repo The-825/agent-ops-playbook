@@ -1,6 +1,6 @@
 # Mechanical Facts Template
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.6 (The Ledger and the Live Check).
 
 Every hardcoded count in a prose doc rots the day after you write it. Line counts, endpoint counts, flag counts, test counts: they drift silently, readers trust them anyway, and a few stale numbers teach people to distrust the whole doc. This template gives those numbers one home, a MECHANICAL_FACTS.md that a script regenerates deterministically, so prose everywhere else can point at it instead of restating figures that will be wrong by Friday.
 

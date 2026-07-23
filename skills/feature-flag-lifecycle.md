@@ -1,6 +1,6 @@
 # Feature flag lifecycle
 
-> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1).
+> Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with section 10.4 (One Concern Per Change, Reversible by Config).
 
 Shipping a feature to everyone at once leaves you one bad deploy away from a pressure revert: a rollback commit written at speed, entangled with unrelated changes that landed since, pushed while users are already seeing the breakage. The alternative is a graduation ladder. Every user-visible feature merges dark behind a flag, and rollout becomes a config change instead of a deploy. Paste the rules below into your agent rules file or engineering handbook.
 
@@ -28,6 +28,10 @@ Shipping a feature to everyone at once leaves you one bad deploy away from a pre
    full release cycle. Remove the flag check and the flag row; a dead
    flag is a trap for the next reader.
 ```
+
+## The subtraction review
+
+A flag review that only asks "what should we flip next" grows the flag set forever. Give the periodic review a subtraction section: any flag that has been default-ON for a full cycle with no incident and no plausible rollback story is a candidate to DELETE (remove the flag, keep the code), and any flag that has sat default-OFF with no activation plan is a candidate to delete along with its code. Every surviving flag is a branch both humans and agents pay to reason about on every read; a flag that can never meaningfully be OFF again is dead weight wearing a safety vest.
 
 ## Adoption notes
 
