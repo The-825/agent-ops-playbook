@@ -3,7 +3,12 @@
 The whole launch, in posting order, executable by hand in about an hour of active
 work on day one plus a few five-minute follow-ups across the week. Nothing here
 auto-posts; every step is Jovan pasting final text into a platform. Final text for
-every post lives in this directory.
+every post lives in this directory. The plan runs two tracks. Track A is the book
+announcement volley in marketing/launch/ (email announcement, LinkedIn launch
+post, X thread); it fires only once the Amazon listing is live and its
+ASIN-PENDING links are swapped. Track B is everything else (Substack, the
+LinkedIn lesson posts, Reddit, Show HN); it links only to the repo and can start
+any day.
 
 ## Before anything (ten minutes)
 
@@ -17,6 +22,9 @@ every post lives in this directory.
    Pacific.
 4. Skim each target sub's sidebar rules one last time. The posting notes in
    reddit-posts.md were verified 2026-07-21; sidebars shift.
+5. If firing Track A today: confirm the Amazon listing opens in a logged-out
+   window, and a grep for ASIN-PENDING over marketing/launch/ returns nothing
+   (the swap happened).
 
 ## Day one, the launch hour
 
@@ -29,6 +37,15 @@ every post lives in this directory.
 Substack goes first because it is the durable home of the story and the only step
 with setup weight; everything after it is paste and go. Stop after three channels on
 day one. Three comment threads is one person's load.
+
+## The announcement volley (Track A)
+
+Fire all three launch/ drafts within one morning, the day the Amazon listing is
+live: email announcement first, LinkedIn launch post about ten minutes later, X
+thread last. If that day is also Track B's day one, announcements go first and
+Substack plus r/ClaudeAI move to the afternoon. LinkedIn carries the launch post
+that day, so the first lesson post slides two days out and the rest of the lesson
+cadence shifts with it.
 
 ## The rest of the week
 
@@ -57,6 +74,7 @@ person sharing their work, and it keeps every comment thread answerable.
   answer. Never repost without one.
 - Show HN: the thread itself. Answer every technical question in the first two
   hours; slow starts are the median outcome.
+- X: replies on the thread; answer questions, skip dunks.
 
 ## Answering comments in your voice
 
