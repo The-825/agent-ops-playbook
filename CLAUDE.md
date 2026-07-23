@@ -176,6 +176,7 @@ README.md                    Public landing page: the companion pitch + book lin
 LICENSE                      MIT
 CLAUDE.md                    This file
 SESSION_STATE.md             Living handoff (refresh on "checkpoint")
+netlify.toml                 Netlify config: publishes site/ as the the825.co site, no build step
 planning/
   ROADMAP.md                 Companion-repo roadmap
   DECISIONS.md               The decisions ledger (format defined above)
@@ -192,6 +193,7 @@ templates/                   Copy-and-adapt working-file templates
   ledger-tools/              Conclusions-ledger hygiene tools
 checklists/                  Operational checklists
 marketing/                   Draft posts Jovan publishes himself; nothing auto-posts
+site/                        The the825.co site source (static HTML; Netlify publishes this directory)
 ```
 
 ---

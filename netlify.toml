@@ -1,0 +1,4 @@
+# Netlify config for the the825.co site, published from site/ (no build step).
+# Convention mirrored from The-825/counselorai's netlify.toml (declarative publish dir).
+[build]
+  publish = "site"

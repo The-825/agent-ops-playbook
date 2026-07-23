@@ -69,3 +69,9 @@ stay verbatim.
 Why: The repo was transferred to The-825 on 2026-07-18; recording the current home here
 beats silently rewriting older entries.
 Source: repo transfer 2026-07-18; captured during the 2026-07-21 full-throttle pass.
+
+## D-8 · 2026-07-22 · the825.co site source home
+
+Ruling: The the825.co site source lives in this repo under site/, recovered byte-identical from the production Netlify deploy (6a600ee43a684999b523e743). A root netlify.toml declares publish = "site" with no build step, mirroring the counselorai netlify.toml convention Jovan named as the reference. Netlify keeps serving the existing deploy until Jovan links the Netlify site the825co (id c08f6890-f852-472a-b2d4-d438d6beda59) to this repo.
+Why: Jovan ruled the playbook repo is the public home for the site alongside the companion kit; the site is public content already live at https://the825.co.
+Source: session, Jovan's instruction 2026-07-22.
