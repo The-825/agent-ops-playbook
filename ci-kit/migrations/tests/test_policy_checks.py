@@ -216,3 +216,43 @@ class TestFailClosed(TreeFixture):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestSlugEra(TreeFixture):
+    """Lint 4: the timestamp-slug namespace and the era switch."""
+
+    SLUG = MIG + "20260722_1405_example_flag.sql"
+
+    def test_slug_file_skips_the_numbering_checks(self):
+        # No claim, no ledger read: a mint-dated key has nothing to race.
+        self._write(self.head_root, self.SLUG, CLEAN_SEED)
+        self.assertEqual(self.check([self.SLUG]), [])
+
+    def test_slug_file_still_gets_the_content_lints(self):
+        bad = CLEAN_SEED.replace("FALSE", "TRUE")
+        self._write(self.head_root, self.SLUG, bad)
+        violations = self.check([self.SLUG])
+        self.assertEqual(len(violations), 1)
+        self.assertIn("enabled/true default", violations[0])
+
+    def test_enacted_era_blocks_a_new_numbered_file(self):
+        self._write(self.head_root, MIG + "011_late_arrival.sql", CLEAN_SEED)
+        violations = self.check([MIG + "011_late_arrival.sql"],
+                                slug_era_enacted=True,
+                                numbered_era_closed_at=10)
+        self.assertEqual(len(violations), 1)
+        self.assertIn("closed at 10", violations[0])
+        self.assertIn("YYYYMMDD_HHMM_<slug>", violations[0])
+
+    def test_enacted_era_leaves_legacy_numbered_edits_alone(self):
+        # 010 exists on base: editing it is content-checked only, never
+        # renamed, never re-gated by the namespace guard.
+        self._write(self.head_root, MIG + "010_existing_flag.sql",
+                    CLEAN_SEED + "\n-- annotated\n")
+        self.assertEqual(self.check([MIG + "010_existing_flag.sql"],
+                                    slug_era_enacted=True), [])
+
+    def test_default_era_is_open_and_numbered_flow_unchanged(self):
+        self.assertFalse(pc.SLUG_ERA_ENACTED)
+        self._write(self.head_root, MIG + "011_next_claimed.sql", CLEAN_SEED)
+        self.assertEqual(self.check([MIG + "011_next_claimed.sql"]), [])

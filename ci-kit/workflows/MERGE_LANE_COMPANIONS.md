@@ -119,3 +119,11 @@ One more adoption note: these files ARE merge machinery. If you run a protected-
 policy that human-gates changes to the merge gate itself, list these workflows in it. A
 workflow that applies approval labels, or that pushes to every open PR branch, deserves
 the same skepticism as the gate it feeds.
+
+## Lane-hardening notes from production mileage
+
+Three small, cheap hardenings that each closed a real annoyance:
+
+- **Gate the deploy lane on the test lane, explicitly.** If deploys batch on a schedule, make the deploy workflow run the full test suite (or require the checks workflow's success) BEFORE build-and-push, so a red test lane blocks every deploy instead of racing it. The failure this closes: a lint-guard defect merged to the default branch quietly rides the next scheduled deploy.
+- **Make workflow shell guards SIGPIPE-safe.** A guard step that pipes into `head` or `grep -q` can die on SIGPIPE with the step reading as failed (or worse, as passed, depending on pipefail) once the reader closes early. Structure guards so the producing command cannot outlive its reader, or read into a variable first; the symptom is a safety guard that intermittently reds a healthy run.
+- **Cache the browser install in end-to-end lanes.** A Playwright-style `install --with-deps` on every run is often the single largest line in the lane's bill. Cache the browser directory keyed on the framework version and gate the install step on a cache miss; runs drop by minutes and the lane's cost stops scaling with merge count.

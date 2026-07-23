@@ -6,7 +6,7 @@ An agent session runs on two kinds of settled knowledge. The first kind is facts
 
 The split is the whole idea. A ruling that says "the discount floor is 12 percent" is a fact and goes to the conclusions store. A ruling that says "you may apply forward-only DDL without asking" is a grant and goes here. When one statement carries both, capture both, each in its own file. Facts answer "what is true"; grants answer "what are we allowed to do"; conflating them is how a session quotes a fact as if it were permission.
 
-**Age, plainly:** this is a young pattern. The ledger practice was adopted mid-July 2026 and had about a week of production use behind it when this kit was published. The Phase 2 merge-authority extension below is newer still, days old at publication. It ships early, with its guard, because the shape is simple and the guard proves itself against fixtures; treat the base ledger as settled-enough-to-copy and Phase 2 as a documented contract that has not yet earned gate code in this kit.
+**Age, plainly:** this is a young pattern. The ledger practice was adopted mid-July 2026 and had about a week of production use behind it when this kit was published. The Phase 2 merge-authority extension below is newer still, days old at publication. It ships early, with its guard, because the shape is simple and the guard proves itself against fixtures; treat the base ledger as settled-enough-to-copy; Phase 2's gate code ships in this kit now that its upstream wiring has production mileage behind it.
 
 ## What ships in this kit
 
@@ -17,6 +17,7 @@ The split is the whole idea. A ruling that says "the discount floor is 12 percen
 | Synthetic starter ledger | [templates/authority_ledger.jsonl](../templates/authority_ledger.jsonl) |
 | CI citation guard | [ci-kit/guards/guard_authority_citations.py](../ci-kit/guards/guard_authority_citations.py) |
 | Same-turn capture command | [templates/commands/grant.md](../templates/commands/grant.md) |
+| Phase 2 gate wiring | authority-ledger block in [ci-kit/workflows/decision_script.py](../ci-kit/workflows/decision_script.py), tested in `ci-kit/workflows/tests/` |
 
 ## Schema (one JSON object per line)
 
@@ -75,16 +76,16 @@ In this repo the guard's tests ride the existing `Kit self-tests` job (unittest 
 
 The ledger records durable grants; the operator's approval label (the `<approval-label>` in [ci-kit/workflows/decision_script.py](../ci-kit/workflows/decision_script.py)) stays the per-PR release mechanism. The two are complements, not rivals: the label says "merge this one", a grant says "this class of action is pre-authorized". In the base pattern the ledger never touches merging at all; it is documentation with a validity check. Phase 2, below, is the contract for the day you want a grant to stand in for the label at narrow, named points.
 
-## Phase 2: merge-authority grants (documented contract, no gate code in this kit)
+## Phase 2: merge-authority grants (contract + gate code)
 
-**Status: doc-only.** The production system this kit is extracted from wired these fields into its merge gate days before publication. That code is deliberately NOT in this kit yet; gate code people copy into their merge path should have production mileage first. The contract is published now so the ledger schema is future-proof and so an adopter who wants it early knows exactly what to build. When it lands here, it will land as an extension of the kit's decision gate ([ci-kit/workflows/decision_script.py](../ci-kit/workflows/decision_script.py); read [ci-kit/workflows/AUTOMERGE_GOTCHAS.md](../ci-kit/workflows/AUTOMERGE_GOTCHAS.md) first).
+**Status: shipped.** The production system this kit is extracted from wired these fields into its merge gate first; this kit held the contract doc-only until that wiring had production mileage, and now carries the gate code as an extension of the decision script ([ci-kit/workflows/decision_script.py](../ci-kit/workflows/decision_script.py), the authority-ledger block, unit-tested in `tests/test_decision_script.py`; read [ci-kit/workflows/AUTOMERGE_GOTCHAS.md](../ci-kit/workflows/AUTOMERGE_GOTCHAS.md) first). Grants are inert until you configure them: set `LEDGER_REL_PATH` to your ledger, name `PROMOTION_HEADS` if you run a promotion lane, and pass the PR body via `--pr-body-file`.
 
 ### Machine fields (optional, on top of the base schema)
 
 | Field | Type | Meaning |
 |---|---|---|
 | `grant_type` | string | Only `"merge-authority"` affects merging. Absent or anything else: the grant is documentation, cited or not. |
-| `applies_to` | string | Names the ONE wait site the grant can clear, e.g. `"migration-policy"` or `"promotion"`. |
+| `applies_to` | string | Names the ONE wait site the grant can clear: `"content-policy"` (a path-scoped clear of a content-policy wait; a migrations lane is the worked example) or `"promotion"` (a dated window for a promotion head branch). |
 | `paths` | list of globs | Required for path-scoped grants: EVERY changed file in the citing PR must match at least one glob, or the grant does not apply. |
 | `until` | `YYYY-MM-DD` | Required for window grants: the grant is a dated window, `date`..`until` inclusive, evaluated in the operator's timezone. Optional end-bound otherwise. |
 
