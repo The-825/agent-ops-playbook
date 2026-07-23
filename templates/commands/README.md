@@ -2,7 +2,7 @@
 
 > Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 10 (The Force Multiplier: Building with AI Agents).
 
-Twenty-two copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Without a shared command set, every session re-derives its own procedure for branching, shipping, and closing out, and the write-authority boundary drifts with it. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
+Twenty-three copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Without a shared command set, every session re-derives its own procedure for branching, shipping, and closing out, and the write-authority boundary drifts with it. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
 
 Note: this location is provisional pending a repo-layout decision on how command artifacts are packaged; if they move, it is one `git mv` and the files themselves do not change.
 
@@ -24,6 +24,7 @@ Frontmatter fields: `description` (shown in the command picker), `argument-hint`
 | [tiered-review.md](tiered-review.md) | Reviews a change set with a model-tier ladder: cheap draft pass, stronger adversarial verify pass, whole-change reconcile pass only when the change is wide. Run on large or risky change sets. |
 | [model-check.md](model-check.md) | Classifies a task description (LOOKUP / SHIP / COMPLEX) and recommends a model tier from a table you fill in. Run before starting work when the right tier is not obvious. |
 | [retro.md](retro.md) | Post-task retrospective: mines the arc that just finished for lessons and lands each as exactly one artifact (conclusions append, command edit, or wishlist row). Run at the end of a coherent arc; pairs with docs/self-improvement-loop.md. |
+| [deflake.md](deflake.md) | Works one flaky test: reproduce N times at zero retries, classify race / baseline / env, fix by class, log the row in the flake ledger. Run on any test that passed on retry. |
 | [status.md](status.md) | One-screen snapshot: open PRs, local tree, what awaits the operator, what is blocked, next recommended action. Run at session start or after time away. |
 | [checkpoint.md](checkpoint.md) | Rewrites `SESSION_STATE.md`, the living handoff file, from current reality, preserving the irreplaceable-values section verbatim. Run on the operator's "checkpoint" trigger, and before any model or session switch. |
 | [warp.md](warp.md) | Answers "what do we know about X?" from the conclusions store, the repo index, and recent git history, without re-deriving from source. Run before touching an area you have not worked in recently. |

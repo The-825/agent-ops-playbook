@@ -8,6 +8,7 @@ Copy-paste starting points for the working files an agent-assisted repo needs. T
 |---|---|
 | [CLAUDE_TEMPLATE.md](CLAUDE_TEMPLATE.md) | Starter rules file for any agent-assisted repo: operating tier, binding rules, PR conventions, known-issues ledger |
 | [SESSION_STATE_TEMPLATE.md](SESSION_STATE_TEMPLATE.md) | The living handoff file, refreshed on "checkpoint", so a new session picks up mid-flight |
+| [FLAKE_LEDGER_TEMPLATE.md](FLAKE_LEDGER_TEMPLATE.md) | One row per flake sighting, pass-on-retry included; pairs with the deflake command and the retries-green-but-filed CI posture. |
 | [DECISIONS_TEMPLATE.md](DECISIONS_TEMPLATE.md) | Append-only decisions ledger: durable rulings captured the turn they land, plus the rebuild variant pairing each day-one decision with the failure it prevents |
 | [CONCLUSIONS_TEMPLATE.md](CONCLUSIONS_TEMPLATE.md) | JSONL store of settled facts, keyed by path, read at session start so knowledge survives sessions |
 | [PARITY_TEMPLATE.md](PARITY_TEMPLATE.md) | Zero-regression parity inventory for a rebuild or migration, bucketed and checked with evidence |
