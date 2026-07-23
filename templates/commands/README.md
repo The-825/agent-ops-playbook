@@ -2,7 +2,7 @@
 
 > Part of the companion kit for *From Archivist to Architect* (The Architect's Blueprint, Book 1). Pairs with chapter 10 (The Force Multiplier: Building with AI Agents).
 
-Twenty-three copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Without a shared command set, every session re-derives its own procedure for branching, shipping, and closing out, and the write-authority boundary drifts with it. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
+Twenty-five copy-paste slash-command definitions for Claude Code, extracted from a production agent-ops setup and generalized. Without a shared command set, every session re-derives its own procedure for branching, shipping, and closing out, and the write-authority boundary drifts with it. Each is a markdown file with YAML frontmatter; the body is the instruction the model follows when the command is invoked. They pair with the templates one directory up (the session-state and conclusions-store templates especially), but each works alone.
 
 Note: this location is provisional pending a repo-layout decision on how command artifacts are packaged; if they move, it is one `git mv` and the files themselves do not change.
 
@@ -34,6 +34,8 @@ Frontmatter fields: `description` (shown in the command picker), `argument-hint`
 | [optimize.md](optimize.md) | Five-phase performance review (baseline, frontend, transport, backend runtime, regression guards) with evidence-only findings. Run a few times a year or after a slow-feeling stretch. |
 | [session-cost.md](session-cost.md) | Prints a per-model token and estimated-cost table for a saved session transcript, via a small stdlib-only helper script included in the file. Run when you want to know what a session cost. |
 | [verify-deploy.md](verify-deploy.md) | Confirms a merge actually rolled out by checking the deploy workflow's runs and the health endpoint's version contract. Run after a merge you care about, mindful of batched deploy windows. |
+| [merge-train.md](merge-train.md) | Serial merge driver for a wave of open PRs: order, scope-check, consolidate compatible small ones, and unstick each car while the gate lands them. Run when several PRs are ready at once. |
+| [promote.md](promote.md) | Drives one staging-to-main promotion: preflight, the manifest PR, the known snags, the post-merge staging reset. Run at promotion time; pairs with docs/staging-promotion.md. |
 | [land.md](land.md) | Shepherds one or more open PRs to merged: checks, conflicts resolved on the feature branch, and the correct automerge path. Never merges by hand and never applies the approval label. Run when a green PR sits unmerged or a wave needs walking home. |
 | [close-out.md](close-out.md) | End-of-session close-out: every PR accounted for, feature-toggle state noted, every ruling captured, ledgers ticked, then a checkpoint refresh of the handoff file. Run before ending any session that produced work. |
 | [grant.md](grant.md) | Records a standing authority grant in the authority ledger, or flips an existing grant to revoked or expired (lines never deleted). Run the same turn the operator issues a grant, before the agent work that needs it. |

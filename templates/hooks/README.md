@@ -10,6 +10,8 @@ A rule that lives only in the rules file holds only while the model remembers it
 | [batch-cadence.md](batch-cadence.md) | The pattern behind it: two good rules that fight, the window rule, the unconditional safety checks, and the durability trick that survives launcher re-provisioning |
 | [pre-compact-save.sh](pre-compact-save.sh) | PreCompact hook that copies the full transcript to a local save directory before compaction can lose detail |
 | [post-compact-pointer.sh](post-compact-pointer.sh) | SessionStart companion (matcher "compact") that tells the post-compaction session where the save landed |
+| [model-routing-prompt-hook.sh](model-routing-prompt-hook.sh) | UserPromptSubmit hook that classifies the prompt's task shape and injects a one-line model-tier hint; continuation replies stay silent |
+| [task_shape.py](task_shape.py) | The classifier behind it (LOOKUP / SHIP / COMPLEX, mirroring the model-check table); fail-open, at most one line of output |
 
 This directory is a bundle seed, not a framework. It ships one worked pattern per lifecycle event, and the events compose: the stop hook guards turn end, the compaction pair guards the context window, and the prompt-side capture nudge in [../ledger-tools/capture-nudge.md](../ledger-tools/capture-nudge.md) guards the ledger. Grow your own bundle by adding one hook per failure you have actually watched happen, and keep every hook cheap and silent by default. A hook that talks on every event is a second boot surface taxing every session ([../../docs/context-budget.md](../../docs/context-budget.md)).
 
