@@ -10,6 +10,7 @@ title says which.
 |---|---|
 | [context-budget.md](context-budget.md) | Price what every session auto-loads, and enforce the budget in CI so it cannot silently regrow. |
 | [day-one-mandates.md](day-one-mandates.md) | Nine practices that are cheap at commit one and expensive as retrofits, with a starter checklist. |
+| [self-improvement-loop.md](self-improvement-loop.md) | The evidence-driven loop that makes the rules compound: instrument session exhaust, retro every arc, land each lesson as exactly one artifact. |
 | [decision-capture.md](decision-capture.md) | Why rulings get written down the same turn they land, not at end of session. |
 | [four-founding-docs.md](four-founding-docs.md) | The four files a disciplined repo is born with: rules, build order, parity, decisions. |
 | [how-this-was-built.md](how-this-was-built.md) | The launch build story, told the way the kit teaches. |
