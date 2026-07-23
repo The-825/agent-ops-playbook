@@ -24,10 +24,10 @@ brake in the first hour. The CI kit comes after.
 ## The book
 
 This repo is the code companion to **From Archivist to Architect**, Book 1 of The
-Architect's Blueprint series, by Jovan Smith, 825 Consulting. The book is out,
-published July 21, 2026. It tells the story; this repo is the practice.
+Architect's Blueprint series, by Mr. Jovan Smith, 825 Consulting. The book is finished
+and publishing on Amazon soon. It tells the story; this repo is the practice.
 
-> On Amazon: **[SWAP-ON-ASIN]** <!-- swap this placeholder for the live Amazon listing URL once the ASIN exists -->
+> On Amazon: listing coming at launch. <!-- swap this line for the live Amazon listing URL once the ASIN exists -->
 
 ## Three ways in
 
@@ -102,6 +102,15 @@ work a memory and a brake:
    label, so nothing lands unreviewed while you sleep. Relaxing `REQUIRE_LABEL` once
    trust is earned is the documented graduation step in
    `ci-kit/workflows/AUTOMERGE_GOTCHAS.md`.
+
+Those three primitives are four files copied into place:
+
+```
+templates/CLAUDE_TEMPLATE.md          ->  CLAUDE.md                         (rules + the issue ledger)
+templates/SESSION_STATE_TEMPLATE.md   ->  SESSION_STATE.md                  (the session handoff)
+templates/DECISIONS_TEMPLATE.md       ->  planning/DECISIONS.md             (the decisions ledger)
+ci-kit/workflows/automerge.yml        ->  .github/workflows/automerge.yml   (the label-gated merge)
+```
 
 Then adopt the full CI kit:
 
