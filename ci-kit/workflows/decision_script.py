@@ -87,7 +87,10 @@ of the maturity ladder):
 from __future__ import annotations
 
 import argparse
+import datetime
+import fnmatch
 import json
+import os
 import re
 import sys
 
@@ -155,6 +158,49 @@ CONDITIONAL_CHECKS = ()
 #   CONTENT_POLICIES = (("migrations/", policy_violations),)
 CONTENT_POLICIES = ()
 
+# ---------------------------------------------------------------------------
+# Authority-ledger merge grants (Phase 2 of docs/authority-ledger.md; that
+# doc is the contract, this block is the gate code it promised). A ledger
+# line may carry the optional machine fields grant_type / applies_to /
+# paths / until. When a PR body cites one (`Authority: G-YYYYMMDD-NN`),
+# the citation can clear a WAIT at exactly two named sites in
+# lane_decision, never a failing check and never a protected path:
+#
+#   applies_to="content-policy" -> the content-policy-violation wait, only
+#       when EVERY changed file in the PR matches the grant's paths globs;
+#   applies_to="promotion"      -> the non-agent-head wait for a head
+#       branch listed in PROMOTION_HEADS, only while today (in
+#       OPERATOR_TZ) is inside the grant's date..until window. A window
+#       grant is the operator's standing release for that lane, so it
+#       stands in for the approval label during the window.
+#
+# The ledger is read from the BASE branch checkout, never the PR head: a
+# PR cannot mint or edit the grant that merges it. Free-text grants (no
+# grant_type) never affect merging. Anything defective (unreadable
+# ledger, malformed line, duplicate id, missing required field,
+# unparseable date) evaluates as no-grant: the wait stands, the gate
+# never crashes into a verdict.
+# ---------------------------------------------------------------------------
+
+# Where the ledger lives, relative to the BASE branch checkout root.
+# EDIT ME to your ledger's path (the pattern doc suggests one per repo).
+LEDGER_REL_PATH = "AUTHORITY_LEDGER.jsonl"
+
+# Head branches whose PRs are promotion merges (e.g. a staging branch
+# promoting into main; see docs/staging-promotion.md). Empty tuple =
+# promotion-window grants are inert. EDIT ME, e.g. ("staging",).
+PROMOTION_HEADS = ()
+
+# Grant windows are dated in the operator's timezone. EDIT ME.
+OPERATOR_TZ = "America/Los_Angeles"
+OPERATOR_TZ_FALLBACK_UTC_OFFSET = -8  # standard offset; a window can never open early
+
+GRANT_CITATION_RE = re.compile(r"Authority:\s*(G-\d{8}-\d{2})")
+GRANT_ID_RE = re.compile(r"^G-\d{8}-\d{2}$")
+MERGE_GRANT_TYPE = "merge-authority"
+GRANT_CONTENT_POLICY = "content-policy"
+GRANT_PROMOTION = "promotion"
+
 # Check-run conclusions that block a merge outright.
 FAILING_CONCLUSIONS = {"failure", "cancelled", "timed_out", "action_required"}
 
@@ -180,27 +226,179 @@ def is_protected(path, protected=None):
     return False
 
 
+def load_grants(ledger_path):
+    """Grants by id from the base branch's ledger. ANY defect in the file
+    (unreadable, a non-JSON or non-object line, a malformed or duplicate
+    id) discards the WHOLE ledger: {} means no grants and the wait
+    stands."""
+    grants = {}
+    try:
+        with open(ledger_path, "r", encoding="utf-8") as fh:
+            for raw in fh:
+                line = raw.strip()
+                if not line:
+                    continue
+                entry = json.loads(line)
+                if not isinstance(entry, dict):
+                    return {}
+                gid = entry.get("id")
+                if not isinstance(gid, str) or not GRANT_ID_RE.match(gid) \
+                        or gid in grants:
+                    return {}
+                grants[gid] = entry
+    except Exception:
+        return {}
+    return grants
+
+
+def parse_citations(pr_body):
+    """Ordered, deduplicated Authority citations from a PR body."""
+    out = []
+    for gid in GRANT_CITATION_RE.findall(pr_body or ""):
+        if gid not in out:
+            out.append(gid)
+    return out
+
+
+def _parse_date(value):
+    try:
+        return datetime.date.fromisoformat(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def today_operator_tz():
+    """Today in OPERATOR_TZ (grant windows are dated there). The no-tzdata
+    fallback uses the configured standard offset, so a window can never
+    open early through the fallback."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.datetime.now(ZoneInfo(OPERATOR_TZ)).date()
+    except Exception:
+        return (datetime.datetime.now(datetime.timezone.utc)
+                + datetime.timedelta(hours=OPERATOR_TZ_FALLBACK_UTC_OFFSET)).date()
+
+
+def grant_clears_wait(kind, entry, files, today, protected=None):
+    """May this one grant clear a wait of `kind` for this file set? Every
+    branch answers False unless the grant affirmatively covers the PR.
+    Protected paths are never grant-overridable: machinery keeps the
+    human gate regardless of any citation."""
+    if files is None:
+        return False
+    if any(is_protected(f, protected) for f in files):
+        return False
+    if entry.get("status") != "active":
+        return False
+    if entry.get("grant_type") != MERGE_GRANT_TYPE:
+        return False
+    if entry.get("applies_to") != kind:
+        return False
+    expiry = entry.get("expiry")
+    if expiry is not None:
+        expiry_date = _parse_date(expiry)
+        if expiry_date is None or today > expiry_date:
+            return False
+    until = entry.get("until")
+    until_date = _parse_date(until) if until is not None else None
+    if until is not None and until_date is None:
+        return False
+    if until_date is not None and today > until_date:
+        return False
+    if kind == GRANT_PROMOTION:
+        start = _parse_date(entry.get("date"))
+        # A promotion grant is a dated window: both ends required.
+        if start is None or until_date is None:
+            return False
+        return start <= today
+    if kind == GRANT_CONTENT_POLICY:
+        globs = entry.get("paths")
+        if not isinstance(globs, list) or not globs or \
+                not all(isinstance(g, str) and g for g in globs):
+            return False
+        return all(any(fnmatch.fnmatchcase(f, g) for g in globs)
+                   for f in files)
+    return False
+
+
+def grant_clearance(kind, pr_body, files, base_root, today=None,
+                    ledger_rel_path=None, protected=None):
+    """First cited grant that validly clears a wait of `kind`.
+    Returns (grant_id, scope_text), or (None, None) when no citation
+    qualifies (which leaves the wait exactly as it was)."""
+    ledger_rel_path = LEDGER_REL_PATH if ledger_rel_path is None else ledger_rel_path
+    citations = parse_citations(pr_body)
+    if not citations or base_root is None:
+        return None, None
+    grants = load_grants(os.path.join(base_root, ledger_rel_path))
+    if not grants:
+        return None, None
+    if today is None:
+        today = today_operator_tz()
+    for gid in citations:
+        entry = grants.get(gid)
+        if entry is not None and grant_clears_wait(kind, entry, files, today,
+                                                  protected=protected):
+            return gid, _grant_scope_text(kind, entry)
+    return None, None
+
+
+def _grant_scope_text(kind, entry):
+    """Human-readable scope for the audit line; kept parenthesis-free so
+    the full audit text stays machine-extractable from the reason."""
+    if kind == GRANT_PROMOTION:
+        return "promotion window %s..%s" % (entry.get("date"), entry.get("until"))
+    return "%s, paths %s" % (GRANT_CONTENT_POLICY,
+                             ", ".join(entry.get("paths") or []))
+
+
+def grant_audit_text(gid, scope):
+    """The exact audit string carried in the decision reason and posted as
+    the PR comment when a grant clears a wait."""
+    return "Merged under Authority: %s (scope: %s)" % (gid, scope)
+
+
 def lane_decision(base, head, labels, draft, files,
                   head_root=None, base_root=None,
-                  require_label=None, content_policies=None, protected=None):
+                  require_label=None, content_policies=None, protected=None,
+                  pr_body=None, today=None,
+                  promotion_heads=None, ledger_rel_path=None):
     """May this PR merge at all once checks are green?
 
     files is the changed-path list (renames contribute BOTH paths), or
     None when the listing failed: every label-free decision then fails
     closed. head_root/base_root are filesystem checkouts of the PR head
-    and the base branch, consumed by content policies; None when
-    unavailable (fail closed for any PR a content policy covers).
+    and the base branch, consumed by content policies and the authority
+    ledger; None when unavailable (fail closed for any PR a content
+    policy covers, and no grants). pr_body is the PR description, scanned
+    for `Authority: G-...` citations; None consults no grants. today is a
+    date override for tests.
 
     Returns (verdict, reason) with verdict in {"merge", "wait"}.
     """
     require_label = REQUIRE_LABEL if require_label is None else require_label
     content_policies = CONTENT_POLICIES if content_policies is None else content_policies
+    promotion_heads = PROMOTION_HEADS if promotion_heads is None else promotion_heads
+
+    def grant_for(kind):
+        return grant_clearance(kind, pr_body, files, base_root, today=today,
+                               ledger_rel_path=ledger_rel_path,
+                               protected=protected)
 
     if draft:
         return "wait", "draft PR; automerge never merges drafts"
     if base != MAIN_BRANCH:
         return "wait", f"base branch {base!r} is not {MAIN_BRANCH!r}; not this gate's business"
     if not head.startswith(AGENT_PREFIXES):
+        if head in promotion_heads:
+            if APPROVAL_LABEL in labels:
+                return "merge", "promotion lane: approval label present, explicit operator release"
+            gid, scope = grant_for(GRANT_PROMOTION)
+            if gid:
+                return "merge", ("promotion lane cleared by grant; "
+                                 + grant_audit_text(gid, scope))
+            return "wait", (f"promotion head {head!r}: waiting for the approval label "
+                            "or a valid promotion-window grant citation")
         return "wait", f"head branch {head!r} is not an agent branch; not this gate's business"
     if APPROVAL_LABEL in labels:
         # The operator's explicit release. It overrides protected paths and
@@ -224,6 +422,10 @@ def lane_decision(base, head, labels, draft, files,
                             "the content policy; failing closed, PR waits for the label")
         violations = policy(scoped, head_root, base_root)
         if violations:
+            gid, scope = grant_for(GRANT_CONTENT_POLICY)
+            if gid:
+                return "merge", ("content-policy wait cleared by grant; "
+                                 + grant_audit_text(gid, scope))
             return "wait", ("content-policy violations require the approval label: "
                             + "; ".join(violations))
     return "merge", "label-free rung: no protected paths, content policies clean, merges on green"
@@ -305,6 +507,9 @@ def main(argv=None):
                       help="the file listing failed; fail closed")
     lane.add_argument("--head-root", help="checkout of the PR head (content-policy file contents)")
     lane.add_argument("--base-root", help="checkout of the base branch (the trusted tree)")
+    lane.add_argument("--pr-body-file",
+                      help="file holding the PR body, scanned for Authority: G-... "
+                           "citations (omit to consult no grants)")
 
     checks = sub.add_parser("checks", help="check runs + mergeable state")
     checks.add_argument("--checks-json-file", required=True,
@@ -316,10 +521,18 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     if args.phase == "lane":
+        pr_body = None
+        if getattr(args, "pr_body_file", None):
+            try:
+                with open(args.pr_body_file, "r", encoding="utf-8") as fh:
+                    pr_body = fh.read()
+            except OSError:
+                pr_body = None  # unreadable body consults no grants; waits stand
         verdict, reason = lane_decision(
             args.base, args.head, json.loads(args.labels_json),
             args.draft == "true", _read_files_arg(args),
-            head_root=args.head_root, base_root=args.base_root)
+            head_root=args.head_root, base_root=args.base_root,
+            pr_body=pr_body)
     else:
         with open(args.checks_json_file, "r", encoding="utf-8") as fh:
             check_runs = json.load(fh)
