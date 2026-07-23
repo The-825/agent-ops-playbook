@@ -27,6 +27,13 @@ Three lints, each answering one question the operator used to answer by eye:
      next-free ledger (claim first, author second; see README.md here).
      Deleting or renaming an existing migration file is also blocked: the
      applied history is an audit trail.
+  4. NAMESPACE GUARD (off until you enact it). Numbering is generation
+     one; when the counter itself becomes the thing agents race for, close
+     the numbered era and switch new files to timestamp-slug keys
+     (YYYYMMDD_HHMM_<slug>.sql; README, "Ending the number race"). With
+     SLUG_ERA_ENACTED, any NEW serial-numbered file is a violation and
+     slug files skip the numbering checks entirely, because a mint-dated
+     key has nothing to claim. Content lints 1 and 2 apply to both eras.
 
 Fail-closed floor: a missing base tree, a missing head tree, or an
 unparseable next-free ledger is a violation, never a pass. If the check
@@ -87,6 +94,21 @@ NUMBERED_MIGRATION_RE = re.compile(r"^(\d{3})_.+\.sql$")
 # a number is claimed only when it is BELOW the next-free number.
 NEXT_FREE_RE = re.compile(r"next-free number is `(\d+)`")
 
+# The timestamp-slug era switch (lint 4). EDIT ME when you enact the slug
+# convention: flip the switch and record the last number you ever minted,
+# so the violation message teaches the boundary. Until then the guard is
+# inert and the numbered convention above is the only one.
+SLUG_ERA_ENACTED = False
+NUMBERED_ERA_CLOSED_AT = None  # e.g. 311, the last minted number
+
+# Timestamp-slug migration files: YYYYMMDD_HHMM_<slug>.sql, UTC mint time.
+# The prefix is a mint date, not a claimable serial, so no duplicate-number
+# guard and no next-free ledger apply: the only true collision is a
+# byte-identical filename, which git itself rejects as a same-path add
+# conflict. (NUMBERED_MIGRATION_RE cannot reach into the 8-digit prefix:
+# after exactly three digits it requires an underscore.)
+SLUG_MIGRATION_RE = re.compile(r"^\d{8}_\d{4}_.+\.sql$")
+
 DESTRUCTIVE_SQL = [
     (re.compile(r"\bDROP\s+TABLE\b", re.IGNORECASE), "DROP TABLE"),
     (re.compile(r"\bDROP\s+COLUMN\b", re.IGNORECASE), "DROP COLUMN"),
@@ -129,10 +151,11 @@ def sql_policy_violations(path, raw_sql, protected_tables=None):
             out.append(f"{path}: DELETE targeting a protected table "
                        "(archive, do not lose)")
 
-    # Lint 2: flag seeds ship default OFF. Scoped to numbered migrations;
-    # unnumbered re-dump files are exempt by construction.
+    # Lint 2: flag seeds ship default OFF. Scoped to numbered and slug
+    # migrations; unnumbered re-dump files are exempt by construction.
     name = path.rsplit("/", 1)[-1]
-    if NUMBERED_MIGRATION_RE.match(name) and INSERT_FLAGS_RE.search(stripped):
+    if (NUMBERED_MIGRATION_RE.match(name) or SLUG_MIGRATION_RE.match(name)) \
+            and INSERT_FLAGS_RE.search(stripped):
         if SEED_OVERRIDE_MARKER not in raw_sql:
             for stmt in with_strings.split(";"):
                 if not INSERT_FLAGS_RE.search(stmt):
@@ -149,7 +172,8 @@ def sql_policy_violations(path, raw_sql, protected_tables=None):
 
 
 def policy_violations(changed, head_root, base_root,
-                      migrations_dir=None, protected_tables=None):
+                      migrations_dir=None, protected_tables=None,
+                      slug_era_enacted=None, numbered_era_closed_at=None):
     """Policy checks for the PR-changed files under the migrations folder.
 
     changed:   changed paths under migrations_dir (renames contribute BOTH
@@ -161,6 +185,10 @@ def policy_violations(changed, head_root, base_root,
     inspect is itself a violation: fail closed.
     """
     migrations_dir = MIGRATIONS_DIR if migrations_dir is None else migrations_dir
+    slug_era_enacted = (SLUG_ERA_ENACTED if slug_era_enacted is None
+                        else slug_era_enacted)
+    numbered_era_closed_at = (NUMBERED_ERA_CLOSED_AT if numbered_era_closed_at is None
+                              else numbered_era_closed_at)
     if head_root is None or base_root is None:
         return ["no head/base checkout to inspect; failing closed"]
     base_dir = os.path.join(base_root, migrations_dir)
@@ -200,7 +228,19 @@ def policy_violations(changed, head_root, base_root,
         with open(head_file, "r", encoding="utf-8", errors="replace") as fh:
             out.extend(sql_policy_violations(path, fh.read(), protected_tables))
 
+        if SLUG_MIGRATION_RE.match(name):
+            # Mint-dated key: nothing to claim, nothing to collide with
+            # short of a same-path git conflict. Content lints already ran.
+            continue
+
         m = NUMBERED_MIGRATION_RE.match(name)
+        if m and not in_base and slug_era_enacted:
+            closed = (f" (closed at {numbered_era_closed_at})"
+                      if numbered_era_closed_at is not None else "")
+            out.append(f"{path}: new serial-numbered migration; the numbered "
+                       f"era is closed{closed}. Name it YYYYMMDD_HHMM_<slug>"
+                       ".sql, UTC mint time")
+            continue
         if m and not in_base:  # a NEW numbered file: duplicate-number guard
             num = int(m.group(1))
             for existing in base_names:
