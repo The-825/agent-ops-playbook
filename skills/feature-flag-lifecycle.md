@@ -29,6 +29,10 @@ Shipping a feature to everyone at once leaves you one bad deploy away from a pre
    flag is a trap for the next reader.
 ```
 
+## The subtraction review
+
+A flag review that only asks "what should we flip next" grows the flag set forever. Give the periodic review a subtraction section: any flag that has been default-ON for a full cycle with no incident and no plausible rollback story is a candidate to DELETE (remove the flag, keep the code), and any flag that has sat default-OFF with no activation plan is a candidate to delete along with its code. Every surviving flag is a branch both humans and agents pay to reason about on every read; a flag that can never meaningfully be OFF again is dead weight wearing a safety vest.
+
 ## Adoption notes
 
 The binding rule is only the first hop: ship OFF. Every later hop is a judgment call the owner makes when ready, which is exactly the point. The ladder separates "is the code deployed" from "who can see it", and once those are separate questions, launches stop being events.
