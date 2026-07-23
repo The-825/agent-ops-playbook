@@ -4,7 +4,7 @@
 
 On Tuesday, July 21, 2026, I uploaded *From Archivist to Architect* to Amazon KDP. The repo it shipped from was created the previous Friday evening. The book is much older than that.
 
-That gap is the honest center of this story. I drafted the book over months, into May 2026, then stalled. The manuscript sat in Google Drive, reviewed as publication-ready. It did not move. What happened in July was not a book written in four days. It was a finished draft recovered and shipped in four days, by me running a coordinated set of Claude Code agent sessions on the machinery this repo now hands you. This page is the record of how. That includes the parts that went sideways.
+That gap is the honest center of this story. The book distills years of building and running a real production system; the writing came together over months, into May 2026, then stalled. The manuscript sat in Google Drive, reviewed as publication-ready. It did not move. What happened in July was not a book written in four days. It was a finished draft recovered and shipped in four days, by me running a coordinated set of Claude Code agent sessions on the machinery this repo now hands you. The sessions did the labor. Every decision, every fact, and every word is mine, checked and owned; if a line is wrong, that is on me, not the tool. This page is the record of how, including the parts that went sideways.
 
 ## Friday night to Tuesday afternoon
 
@@ -40,7 +40,7 @@ When I reversed an earlier call (a nine-chapter upload had been ruled that same 
 
 **Verify against live.** Every claim in the book that describes a system was checked against the thing it describes, never against vibes. The fact-check table ran 66 claims to verdicts: 34 verified, 9 mostly true, 15 kicked up to me, 8 contradicted and fixed. The statistics were reproduced read-only from the live aggregate data they summarize. Platform mechanics were re-verified against the platform's own current help pages.
 
-The production system the book draws on is one I built and run for an Honors program at a major public research university in California. Claims about it were verified against its actual repos, not my memory of them.
+The production system the book draws on is one I built and run for an Honors program at a public research university in California. Claims about it were verified against its actual repos, not my memory of them.
 
 ## What went wrong, and what caught it
 
@@ -58,4 +58,4 @@ A build story that only lists wins is marketing. Here is the other column.
 
 Nothing above is exotic. It is a rules file, two ledgers, a handoff file, CI guards, and a label a human applies. This repo carries all of it: the enforcement kit in [ci-kit/](../ci-kit/), the operating model in [playbook/](../playbook/), the pattern essays in this directory (docs/), paste-able skill definitions in [skills/](../skills/), the working-file templates in [templates/](../templates/), and the runnable checklists in [checklists/](../checklists/).
 
-The book took months to write and four days to finish. Copy the kit. Go finish the thing you stalled on.
+The book took years of practice, months to write, and four days to finish. Copy the kit. Go finish the thing you stalled on.

@@ -9,6 +9,7 @@ title says which.
 | Essay | Why read it |
 |---|---|
 | [context-budget.md](context-budget.md) | Price what every session auto-loads, and enforce the budget in CI so it cannot silently regrow. |
+| [the-airport-model.md](the-airport-model.md) | The wayfinding idea grown up: one warehouse is a signed terminal, an institution is the airport, and the operation is reflected in code. The bridge to Book 2. |
 | [day-one-mandates.md](day-one-mandates.md) | Nine practices that are cheap at commit one and expensive as retrofits, with a starter checklist. |
 | [self-improvement-loop.md](self-improvement-loop.md) | The evidence-driven loop that makes the rules compound: instrument session exhaust, retro every arc, land each lesson as exactly one artifact. |
 | [decision-capture.md](decision-capture.md) | Why rulings get written down the same turn they land, not at end of session. |
