@@ -327,6 +327,32 @@ class TestChecksDecision(unittest.TestCase):
         verdict, _ = ds.checks_decision(checks, "CLEAN")
         self.assertEqual(verdict, "merge")
 
+    def test_superseded_cancelled_run_does_not_poison_the_sha(self):
+        # Duplicate workflow events: the same check name carries an old
+        # cancelled run and a newer success. Only the newest run counts.
+        checks = [dict(c, id=100 + i) for i, c in enumerate(GREEN)] + [
+            {"id": 50, "name": "Static checks", "status": "completed",
+             "conclusion": "cancelled"},
+        ]
+        verdict, _ = ds.checks_decision(checks, "CLEAN")
+        self.assertEqual(verdict, "merge")
+
+    def test_newer_failure_still_fails_after_dedup(self):
+        checks = [{"id": 50, "name": "Static checks", "status": "completed",
+                   "conclusion": "success"},
+                  {"id": 90, "name": "Static checks", "status": "completed",
+                   "conclusion": "failure"}]
+        verdict, _ = ds.checks_decision(checks, "CLEAN")
+        self.assertEqual(verdict, "fail")
+
+    def test_runs_without_ids_keep_fail_closed_behavior(self):
+        # No ids means no ordering; both runs stay and the cancelled one
+        # still blocks, exactly the pre-dedup read.
+        checks = GREEN + [{"name": "Static checks", "status": "completed",
+                           "conclusion": "cancelled"}]
+        verdict, _ = ds.checks_decision(checks, "CLEAN")
+        self.assertEqual(verdict, "fail")
+
     def test_failing_check_fails_loud(self):
         checks = [{"name": "Static checks", "status": "completed",
                    "conclusion": "failure"}]
