@@ -233,14 +233,44 @@ def lane_decision(base, head, labels, draft, files,
 # Phase two: the checks decision.
 # ---------------------------------------------------------------------------
 
+def latest_runs_per_name(checks):
+    """Collapse duplicate check runs to the newest run per check name.
+
+    A push that fires duplicate workflow events leaves the superseded run's
+    conclusion (usually `cancelled`) permanently attached to the head SHA
+    alongside the superseding run's `success` of the SAME check name. The
+    platform's "latest" filter does not save you: duplicate events create
+    separate check suites, and the filter collapses within a suite, not
+    across them. Without this dedup the SHA is poisoned forever and only an
+    empty-commit re-fire unblocks it. Check-run ids are assigned in creation
+    order, so the newest run per name is the max `id`. Runs without an
+    integer id cannot be ordered; they are ALL kept, preserving the
+    pre-dedup fail-closed behavior for payloads that lack the field.
+    """
+    latest = {}
+    unordered = []
+    for c in checks:
+        cid = c.get("id")
+        if not isinstance(cid, int):
+            unordered.append(c)
+            continue
+        name = c.get("name") or ""
+        prev = latest.get(name)
+        if prev is None or cid > prev["id"]:
+            latest[name] = c
+    return unordered + list(latest.values())
+
+
 def checks_decision(checks, merge_state, files=None,
                     always_required=None, conditional=None):
     """Are the checks and mergeable state good enough to merge RIGHT NOW?
 
-    checks: list of {"name", "status", "conclusion"} dicts for the head
-    SHA. merge_state: the platform's mergeable-state string (CLEAN, DIRTY,
-    UNKNOWN, ...). files: changed paths, or None when the listing failed
-    (which makes every conditional check required, fail closed).
+    checks: list of {"id", "name", "status", "conclusion"} dicts for the
+    head SHA (`id` may be absent in older payloads; see
+    latest_runs_per_name). merge_state: the platform's mergeable-state
+    string (CLEAN, DIRTY, UNKNOWN, ...). files: changed paths, or None
+    when the listing failed (which makes every conditional check required,
+    fail closed).
 
     Returns (verdict, reason) with verdict in {"merge", "wait", "fail"}.
     """
@@ -250,6 +280,7 @@ def checks_decision(checks, merge_state, files=None,
     checks = [c for c in checks if not SELF_CHECK_RE.search(c.get("name") or "")]
     if not checks:
         return "wait", "zero check runs for this SHA; failing closed (no merge without CI evidence)"
+    checks = latest_runs_per_name(checks)
 
     for c in checks:
         if c.get("status") == "completed" and (c.get("conclusion") or "") in FAILING_CONCLUSIONS:
@@ -308,7 +339,8 @@ def main(argv=None):
 
     checks = sub.add_parser("checks", help="check runs + mergeable state")
     checks.add_argument("--checks-json-file", required=True,
-                        help='path to a JSON array of {"name","status","conclusion"}')
+                        help='path to a JSON array of {"id","name","status","conclusion"};'
+                             ' id optional but enables duplicate-run dedup')
     checks.add_argument("--merge-state", required=True)
     checks.add_argument("--files-file", help="newline-separated changed paths")
     checks.add_argument("--files-error", action="store_true")

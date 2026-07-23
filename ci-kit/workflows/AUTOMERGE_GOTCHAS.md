@@ -121,6 +121,21 @@ listing: paginate it (the un-paginated files field caps out on large PRs, and a 
 file at position two hundred is still protected), and count a rename as touching BOTH paths,
 so renaming a file out of a protected directory does not slip it past the gate.
 
+## Gotcha 11: judge only the newest run per check name, or one duplicate event poisons the SHA
+
+A push can fire duplicate workflow events, and duplicate events create separate check
+suites. The superseded suite's run finishes `cancelled` and stays attached to the head SHA
+forever, right next to the newer suite's `success` of the same check name. A gate that
+reads "any completed failing run means fail" then blocks that SHA permanently, and nothing
+on the PR looks wrong: the checks tab shows green, the gate keeps saying a check failed,
+and only an empty-commit push (a new SHA) unblocks it. The platform's "latest" filter does
+not protect you, because it collapses runs within one suite, not across suites. The fix is
+to dedup check runs to the newest run per check name before judging them; run ids are
+assigned in creation order, so newest is the max id. Keep runs that carry no id at all,
+which preserves fail-closed behavior for payloads that lack the field. Both generations
+need it: the first-generation inline check loop and the second-generation decision script
+in this directory carry the dedup.
+
 ## Design trade-offs from two generations of this workflow
 
 The shipped file is the simplified distillation. An earlier, more elaborate production
